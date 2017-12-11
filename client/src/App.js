@@ -12,7 +12,7 @@ import Saved from "./pages/Saved";
 const App = () =>
   <Router>
     <div>
-      <Main />
+      <Search />
       <Switch>
         <Route exact path="/" component={Search} />
         <Route exact path={`${process.env.PUBLIC_URL}/search`} component={Search} />
