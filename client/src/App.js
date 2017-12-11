@@ -14,7 +14,7 @@ const App = () =>
       <Main />
       <Switch>
       {/* If user selects Search or Saved show the appropriate component */}
-      <Route exact path="/search" component={Search} />
+      <Route exact path="/" component={Search} />
       <Route exact path="/saved" component={Saved} />
         {/* <Route exact path="/" component={Books} /> */}
         <Route exact path="/books" component={Books} />
