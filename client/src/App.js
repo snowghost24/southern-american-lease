@@ -12,7 +12,7 @@ import Saved from "./components/Saved";
 const App = () =>
   <Router>
     <div>
-      <Nav />
+      <Main />
       <Switch>
         <Route exact path="/" component={Books} />
         <Route exact path="/books" component={Books} />
