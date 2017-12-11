@@ -5,6 +5,9 @@ import Books from "./pages/Books";
 import Detail from "./pages/Detail";
 import NoMatch from "./pages/NoMatch";
 import Nav from "./components/Nav";
+import Main from "./components/Main";
+import Search from "./components/Search";
+import Saved from "./components/Saved";
 
 const App = () =>
   <Router>
@@ -20,3 +23,8 @@ const App = () =>
   </Router>;
 
 export default App;
+
+
+
+
+
