@@ -13,13 +13,11 @@ const App = () =>
     <div>
       <Main />
       <Switch>
-      {/* If user selects Search or Saved show the appropriate component */}
       <Route exact path="/" component={Search} />
       <Route exact path="/saved" component={Saved} />
-        {/* <Route exact path="/" component={Books} /> */}
         <Route exact path="/books" component={Books} />
         <Route exact path="/books/:id" component={Detail} />
-        <Route component={NoMatch} />
+        {/* <Route component={NoMatch} /> */}
       </Switch>
     </div>
   </Router>;
