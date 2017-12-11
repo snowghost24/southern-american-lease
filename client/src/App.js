@@ -5,7 +5,7 @@ import Books from "./pages/Books";
 import Detail from "./pages/Detail";
 import NoMatch from "./pages/NoMatch";
 import Nav from "./components/Nav";
-import Main from "./components/Main";
+import Main from "./pages/Main";
 import Search from "./components/Search";
 import Saved from "./components/Saved";
 
