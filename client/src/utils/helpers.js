@@ -34,7 +34,7 @@ const helpers = {
   },
   // This will return any saved articles from our database
   getSaved: function() {
-    return axios.get("/api/saved")
+    return axios.get("/api/saving/saved")
       .then(function(results) {
         console.log("axios results", results);
         return results;
@@ -44,7 +44,7 @@ const helpers = {
   postSaved: function(title, date, url) {
     var newArticle = { title: title, date: date, url: url };
     console.log('postSaved', title)
-    return axios.post("/api/saved", newArticle)
+    return axios.post("/api/saving/saved", newArticle)
       .then(function(response) {
         console.log("axios results", response.data._id);
         return response.data._id;
@@ -52,7 +52,7 @@ const helpers = {
   },
   // This will remove saved articles from our database
   deleteSaved: function(title, data, url) {
-    return axios.delete("/api/saved", {
+    return axios.delete("/api/saving/saved", {
       params: {
         "title": title,
         "data": data,
