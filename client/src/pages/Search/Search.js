@@ -2,11 +2,11 @@
 import React, { Component } from 'react'
 
 // Include the Query and Results components
-import Query from "./Search/Query";
-import Results from "./Search/Results";
+import Query from "../../components/Search/Query";
+import Results from "../../components/Search/Results";
 
 // Include the helpers for making API calls
-import helpers from "../utils/helpers";
+import helpers from "../../utils/helpers";
 
 // Create the Search component
 class Search extends Component {

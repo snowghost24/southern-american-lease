@@ -6,15 +6,17 @@ import Detail from "./pages/Detail";
 import NoMatch from "./pages/NoMatch";
 // import Nav from "./components/Nav";
 import Main from "./pages/Main";
-import Search from "./components/Search";
-import Saved from "./components/Saved";
+import Search from "./pages/Search";
+import Saved from "./pages/Saved";
 
 const App = () =>
   <Router>
     <div>
       <Main />
       <Switch>
-        <Route exact path="/" component={Books} />
+        <Route exact path="/" component={Search} />
+        <Route exact path="/search" component={Search} />
+            <Route exact path="/saved" component={Saved} />
         <Route exact path="/books" component={Books} />
         <Route exact path="/books/:id" component={Detail} />
         <Route component={NoMatch} />
