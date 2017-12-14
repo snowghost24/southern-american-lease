@@ -28,7 +28,7 @@ class Main extends Component {
                   <span className="icon-bar"></span>
                   <span className="icon-bar"></span>
                 </button>
-                <Link className="navbar-brand" to="/">NYT-React</Link>
+                <Link className="navbar-brand" to="/">Dean Marco</Link>
               </div>
 
               <div className="collapse navbar-collapse navbar-ex1-collapse">
@@ -43,8 +43,8 @@ class Main extends Component {
 
           {/* Jumbotron */}
           <div className="jumbotron">
-            <h2 className="text-center"><strong>(ReactJS) New York Times Article Scrubber</strong></h2>
-            <h3 className="text-center">Search for and save articles of interest.</h3>
+            <h2 className="text-center"><strong>Southern American Lease Group</strong></h2>
+            <h3 className="text-center">Vehicles to Inventory</h3>
           </div>
 
 
