@@ -47,14 +47,10 @@ class Results extends Component {
               </span>
             </h3>
             <p>Date Published: {article.pub_date}</p>
-
           </li>
-
         </div>
       );
-
     });
-
   }
 
   // A helper method for rendering a container to hold all of our articles

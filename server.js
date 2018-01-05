@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const routes = require("./routes");
+const requesting = require('request')
 const app = express();
 const PORT = process.env.PORT || 3001;
 // var Article = require("./model");
@@ -21,6 +22,8 @@ app.use((req, res, next) => {
 });
 app.use(express.static("client/build"));
 // Add routes, both API and view
+
+
 app.use(routes);
 
 

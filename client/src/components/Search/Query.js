@@ -1,15 +1,42 @@
 // Include React as a dependency
 import React, { Component } from 'react'
+import axios from "axios";
 
 // Query Component Declaration
 class Query extends Component {
+
+  constructor(props){
+    super(props)
+    // API.changeBgc((err, data)=>this.getVehicleInfo(data));
+  
+}
   // Here we set initial variables for the component to be blanks
-  state = { 
-    search: "baseball",
-    start: "2006",
-    end: "2016"
+  state = {
+    vin: "",
+    make: "",
+    model: "",
+    year: ""
   }
 
+  onNameChange = (e)=>{
+    this.setState({
+      vin: e.target.value
+    })
+  }
+
+  getVehicleInfo = ()=>{
+    var vin = { vin: this.state.vin};
+    console.log('postSaved', vin)
+     axios.post("/api/saving/saved", vin)
+      .then(function(response) {
+        console.log("axios results", response.data.data);
+        // return response;
+      });
+  }
+
+  // onBlur = () => {
+  //   console.log("I'm on Blur")
+  // }
   // Whenever we detect ANY change in the textbox, we register it.
   handleChange = (event) => {
     // Here we create syntax to capture any change in text to the query terms (pre-search).
@@ -39,7 +66,7 @@ class Query extends Component {
               <div className="panel-heading">
                 <h1 className="panel-title">
                   <strong>
-                    <i className="fa fa-newspaper-o" aria-hidden="true"></i> Query
+                    <i className="fa fa-newspaper-o" aria-hidden="true"></i> Add Vehicle
                   </strong>
                 </h1>
               </div>
@@ -48,31 +75,43 @@ class Query extends Component {
                 {/* Note how we associate the text-box inputs with the state values */}
                 <form onSubmit={this.handleSubmit}>
                   <div className="form-group">
-                    <h4 className=""><strong>Topic</strong></h4>
+                    <h4 className=""><strong>VIN Number</strong></h4>
                     <input
                       type="text"
-                      value={this.state.search}
+                      value={this.state.vin}
                       className="form-control"
                       id="search"
-                      onChange={this.handleChange}
+                      onChange={this.onNameChange}
+                      onBlur={this.getVehicleInfo}
                       required
                     />
 
-                    <h4><strong>Start Year</strong></h4>
+                    <h4><strong>Make</strong></h4>
                     <input
                       type="number"
-                      value={this.state.start}
+                      value={this.state.make}
                       className="form-control"
                       id="start"
                       onChange={this.handleChange}
                       required
                     />
 
-                    <h4><strong>End Year</strong></h4>
+                    <h4><strong>Model</strong></h4>
 
                     <input
                       type="number"
-                      value={this.state.end}
+                      value={this.state.model}
+                      className="form-control"
+                      id="end"
+                      onChange={this.handleChange}
+                      required
+                    />
+
+                    <h4><strong>Year</strong></h4>
+
+                    <input
+                      type="number"
+                      value={this.state.year}
                       className="form-control"
                       id="end"
                       onChange={this.handleChange}
@@ -85,16 +124,13 @@ class Query extends Component {
                   <div className="pull-right">
                     <button
                       type="submit"
-                      className="btn btn-danger"
-                    >
+                      className="btn btn-danger">
                       <h4>Submit</h4>
                     </button>
                   </div>
                 </form>
-
               </div>
             </div>
-
           </div>
         </div>
       </div>
