@@ -27,11 +27,37 @@ class Query extends Component {
   getVehicleInfo = ()=>{
     var vin = { vin: this.state.vin};
     console.log('postSaved', vin)
-     axios.post("/api/saving/saved", vin)
-      .then(function(response) {
-        console.log("axios results", response.data.data);
-        // return response;
-      });
+    // makes sure you dont submit empty values
+      if (vin.vin !== "") {
+        axios.post("/api/saving/saved", vin)
+        .then(function(response) {
+          if (response.data.data == "No results found for this vin"){
+          }else{
+           
+            console.log(results);
+
+          //   for (var key in results) {
+          //     // skip loop if the property is from prototype
+          //     if (!results.hasOwnProperty(key)) continue;
+          //     var obj = results[key];
+          //     for (var prop in obj) {
+          //         // skip loop if the property is from prototype
+          //         if(!obj.hasOwnProperty(prop)) continue;
+          // console.log(prop);
+          // console.log(obj[prop]);  
+          //     }
+          // }  
+          
+          
+          }
+          
+        }).catch(function (error) {
+          console.log(error);
+          alert("Invalid vin");
+        });
+      }else{
+        console.log("vin is empty");
+      }
   }
 
   // onBlur = () => {
@@ -51,6 +77,12 @@ class Query extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.props.updateSearch(this.state.search, this.state.start, this.state.end);
+  }
+
+  //handles ajax request on blur
+  handleBlur = (event) => {
+    event.preventDefault();
+    this.props.vinSearch(this.state.vin);
   }
 
   // Here we render the Query component
@@ -82,7 +114,7 @@ class Query extends Component {
                       className="form-control"
                       id="search"
                       onChange={this.onNameChange}
-                      onBlur={this.getVehicleInfo}
+                      onBlur={this.handleBlur}
                       required
                     />
 
