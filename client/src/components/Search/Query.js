@@ -35,8 +35,7 @@ class Query extends Component {
     this.setState({
       make:nextProps.make,
       model:nextProps.model,
-      year:nextProps.year
-      
+      year:nextProps.year  
     })
   }
 
