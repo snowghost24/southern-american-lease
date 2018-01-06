@@ -2,7 +2,7 @@ const router = require("express").Router();
 const savedArticles = require("./saved");
 
 
-// Book routes
+// if any api/saving/saved routes are thig send them to the file saved
 router.use("/saved", savedArticles);
 
 

@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 app.use(express.static("client/build"));
 // Add routes, both API and view
 
-
+//request send them to folder routes
 app.use(routes);
 
 

@@ -28,12 +28,12 @@ class Search extends Component {
   // to perform a new search
 
 
-  // setQuery = (newQuery, newStart, newEnd) => {
-  //   helpers.runQuery(newQuery, newStart, newEnd)
-  //   .then((data) => {
-  //     this.setState({ results: { docs: data.docs } });
-  //   });
-  // }
+  setQuery = ( newVin,newMake, newModel, newYear) => {
+    helpers.runQuery(newVin,newMake, newModel, newYear)
+    .then((data) => {
+      this.setState({ results: { docs: data.docs } });
+    });
+  }
 
 
    // this.setState(this.state)
@@ -65,7 +65,7 @@ class Search extends Component {
 {/* updateSearch={this.setQuery} */}
 {/* sentDown = {results} */}
         {/* Note how we pass the setQuery function to enable Query to perform searches */}
-        <Query  vinSearch={this.setAjax}  make={this.state.make} model={this.state.model} year={this.state.year} />
+        <Query  updateSearch={this.setQuery} vinSearch={this.setAjax}  make={this.state.make} model={this.state.model} year={this.state.year} />
         {/* Note how we pass in the results into this component */}
         {/* In order to pass down you have to save into a variable */}
         <Results />

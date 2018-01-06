@@ -2,7 +2,7 @@ const path = require("path");
 const router = require("express").Router();
 const apiRoutes = require("./api");
 
-// API Routes
+// If any api routes are hit send them to the API folder
 router.use("/api", apiRoutes);
 
 // If no API routes are hit, send the React app

@@ -2,7 +2,7 @@ const router = require("express").Router();
 const bookRoutes = require("./books");
 
 
-// Book routes
+// api/booking/books
 router.use("/books", bookRoutes);
 
 

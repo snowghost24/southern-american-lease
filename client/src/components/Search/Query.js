@@ -56,7 +56,7 @@ class Query extends Component {
   // This code handles the sending of the search terms to the parent Search component
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.updateSearch(this.state.search, this.state.start, this.state.end);
+    this.props.updateSearch(this.state.vin, this.state.make, this.state.model,this.state.year);
   }
 
   //handles ajax request on blur
