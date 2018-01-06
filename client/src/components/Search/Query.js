@@ -1,6 +1,6 @@
 // Include React as a dependency
 import React, { Component } from 'react'
-import axios from "axios";
+
 
 // Query Component Declaration
 class Query extends Component {
@@ -13,9 +13,9 @@ class Query extends Component {
   // Here we set initial variables for the component to be blanks
   state = {
     vin: "",
-    make: "",
-    model: "",
-    year: ""
+    make:"",
+    model:"",
+    year:""
   }
 
   onNameChange = (e)=>{
@@ -25,40 +25,21 @@ class Query extends Component {
   }
 
   getVehicleInfo = ()=>{
-    var vin = { vin: this.state.vin};
-    console.log('postSaved', vin)
-    // makes sure you dont submit empty values
-      if (vin.vin !== "") {
-        axios.post("/api/saving/saved", vin)
-        .then(function(response) {
-          if (response.data.data == "No results found for this vin"){
-          }else{
-           
-            console.log(results);
-
-          //   for (var key in results) {
-          //     // skip loop if the property is from prototype
-          //     if (!results.hasOwnProperty(key)) continue;
-          //     var obj = results[key];
-          //     for (var prop in obj) {
-          //         // skip loop if the property is from prototype
-          //         if(!obj.hasOwnProperty(prop)) continue;
-          // console.log(prop);
-          // console.log(obj[prop]);  
-          //     }
-          // }  
-          
-          
-          }
-          
-        }).catch(function (error) {
-          console.log(error);
-          alert("Invalid vin");
-        });
-      }else{
-        console.log("vin is empty");
-      }
+   
+   
   }
+
+// fires when props are passed down
+  componentWillReceiveProps = (nextProps) =>{
+    console.log("I received props" , nextProps);
+    this.setState({
+      make:nextProps.make,
+      model:nextProps.model,
+      year:nextProps.year
+      
+    })
+  }
+
 
   // onBlur = () => {
   //   console.log("I'm on Blur")
@@ -82,12 +63,33 @@ class Query extends Component {
   //handles ajax request on blur
   handleBlur = (event) => {
     event.preventDefault();
-    this.props.vinSearch(this.state.vin);
+// if the vin is empty do not run search
+    if (this.state.vin === "") {
+      console.log("vin is empty");
+    } else {
+      this.props.vinSearch(this.state.vin)
+   
+      
+    }
   }
+
+
+  renderResults = () => {
+    // this.setState({
+    //   make:this.props.sentDown[0],
+    //   model:this.props.sentDown[1],
+    //   year:this.props.sentDown[2]
+    // })
+    
+    // console.log("This was sent down", this.props.sentDown);
+  }
+
+
+
 
   // Here we render the Query component
   render() {
-
+      
     return (
       <div className="main-container">
 
@@ -114,13 +116,15 @@ class Query extends Component {
                       className="form-control"
                       id="search"
                       onChange={this.onNameChange}
+                      //triggers on blue push
                       onBlur={this.handleBlur}
                       required
                     />
+                     {this.renderResults()}
 
-                    <h4><strong>Make</strong></h4>
+                     <h4><strong>Make</strong></h4>
                     <input
-                      type="number"
+                      type="text"
                       value={this.state.make}
                       className="form-control"
                       id="start"
@@ -131,7 +135,7 @@ class Query extends Component {
                     <h4><strong>Model</strong></h4>
 
                     <input
-                      type="number"
+                      type="text"
                       value={this.state.model}
                       className="form-control"
                       id="end"
@@ -149,6 +153,7 @@ class Query extends Component {
                       onChange={this.handleChange}
                       required
                     />
+
 
                   </div>
 

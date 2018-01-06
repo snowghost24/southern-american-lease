@@ -5,6 +5,7 @@
   "proxy": "http://localhost:3001/",
   "dependencies": {
     "react": "^15.6.1",
+    "react-addons-create-fragment": "^15.6.2",
     "react-dom": "^15.6.1",
     "react-scripts": "1.0.14"
   },

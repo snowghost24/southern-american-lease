@@ -1,8 +1,6 @@
 const router = require("express").Router();
 var Article = require("../../../model");
 const requesting = require('request');
-var resultValues = [];
-
 
 // Matches with "/api/books"
 router.route("/")
@@ -10,7 +8,7 @@ router.route("/")
     Article.find({})
       .exec(function(err, doc) {
         if (err) {
-          console.log(err);
+          // console.log(err);
         }
         else {
           res.send(doc);
@@ -19,12 +17,9 @@ router.route("/")
   })
   .post(function(req, res, next) {
     //this array will be returned back to the front end with vehicle info
-    // var newArticle = new Article(req.body);
-    // console.log(req.body);
     var myUrl = 'https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValuesBatch/';
-    var vin = req.body
-    var obj = { format: "json", data:vin.vin};
-      //  console.log(req.body);
+    var vin = req.body.vin
+    var obj = { format: "json", data:vin};
        requesting.post({
          headers: {'content-type':'application/json'},
          url:myUrl,
@@ -32,47 +27,57 @@ router.route("/")
      },function(error, response, body){
       var apiResults = JSON.parse(body)
        if (apiResults["Results"][0]["Make"] == "") {
-         console.log(error);
-         console.log(response);
         // if an error occurs send back this error      
         next(res.send({data:"No results found for this vin"}))
        }else{
 var resultValues = [];
 
-resultValues.push({"make":apiResults["Results"][0]["Make"]});
-resultValues.push({"model":apiResults["Results"][0]["Model"]});
-resultValues.push({"modelYear":apiResults["Results"][0]["ModelYear"]});
+var make = apiResults["Results"][0]["Make"];
+var model = apiResults["Results"][0]["Model"];
+var modelYear = apiResults["Results"][0]["ModelYear"];
+var series = apiResults["Results"][0]["Series"];
+var bodyCabType = apiResults["Results"][0]["BodyCabType"];
+var bodyClass =apiResults["Results"][0]["BodyClass"] ;
+var trim = apiResults["Results"][0]["Trim"];
+var driveType = apiResults["Results"][0]["DriveType"];
+var doors = apiResults["Results"][0]["Doors"];
+var fuelType = apiResults["Results"][0]["FuelTypePrimary"];
 
-if (apiResults["Results"][0]["Series"] != ""){
- resultValues.push({"Series":apiResults["Results"][0]["Series"]});
+resultValues.push({make:make});
+resultValues.push({model:model});
+resultValues.push({year:modelYear});
+
+if (series != ""){
+ resultValues.push({series:series});
 }
 
-if (apiResults["Results"][0]["BodyCabType"] != ""){
- resultValues.push({"bodyCabType":apiResults["Results"][0]["BodyCabType"]});
+if ( bodyCabType!= ""){
+ resultValues.push({bodyCabType:bodyCabType});
 }
 
-if (apiResults["Results"][0]["BodyClass"] != ""){
- resultValues.push({"bodyClass":apiResults["Results"][0]["BodyClass"]});
+if ( bodyClass!= ""){
+ resultValues.push({bodyClass:bodyClass});
 }
 
-if (apiResults["Results"][0]["Trim"] != ""){
- resultValues.push({"trim":apiResults["Results"][0]["Trim"]});
+if ( trim != ""){
+ resultValues.push({trim:trim});
 }
 
-if (apiResults["Results"][0]["DriveType"] != ""){
- resultValues.push({"driveType":apiResults["Results"][0]["DriveType"]});
+if ( driveType != ""){
+ resultValues.push({driveType:driveType});
 }
 
-if (apiResults["Results"][0]["Doors"] != ""){
- resultValues.push({"doors":apiResults["Results"][0]["Doors"]});
+if ( doors != ""){
+ resultValues.push({doors:doors});
 }
 
-if (apiResults["Results"][0]["FuelTypePrimary"] != ""){
- resultValues.push({"fuelType":apiResults["Results"][0]["FuelTypePrimary"]});
+if ( fuelType != ""){
+ resultValues.push({fuelType:fuelType});
 }
-//  console.log(error);
-// console.log(apiResults);
-next(res.send({data:resultValues}))
+
+console.log(apiResults);
+//sends the response back to the client
+next(res.send(resultValues))
        }
     });
   })
@@ -80,7 +85,7 @@ next(res.send({data:resultValues}))
     var url = req.param("url");
     Article.find({ url: url }).remove().exec(function(err) {
       if (err) {
-        console.log(err);
+        // console.log(err);
       }
       else {
         res.send("Deleted");

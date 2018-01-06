@@ -31,7 +31,26 @@ const helpers = {
       console.log("Axios Results", results.data.response);
       return results.data.response;
     });
-  },
+  }
+  //---------------------------------------------------------------------------------
+  ,  runQueryAjax: function(vinNumb) {
+
+    // Adjust to get search terms in proper format
+    var formattedVinNum = vinNumb.trim();
+    // var vin = {"vin":formattedVinNum}
+    return axios.post("/api/saving/saved", {vin: formattedVinNum})
+    .then(function(response) {
+     
+   
+      return response
+    }).catch(function (error) {
+      console.log(error);
+      // alert("Invalid vin");
+    });
+  
+
+  }
+  ,
   // This will return any saved articles from our database
   getSaved: function() {
     return axios.get("/api/saving/saved")
