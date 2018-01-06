@@ -21,8 +21,9 @@ class Saved extends Component {
 
   // This code handles the deleting saved articles from our database
   handleClick = (item) => {
+    console.log(item);
     // Delete the list!
-    helpers.deleteSaved(item.title, item.date, item.url)
+    helpers.deleteSaved(item.vin, item.make, item.model,item.year, item.data)
     .then(() => {
 
       // Get the revised list!
@@ -56,16 +57,23 @@ class Saved extends Component {
           <li className="list-group-item">
             <h3>
               <span>
-                <em>{article.title}</em>
+                <em>{article.make }&nbsp;&nbsp;&nbsp;</em>
+                <em>{article.model}&nbsp;&nbsp;&nbsp;</em>
+                <em>{article.year}&nbsp;&nbsp;&nbsp;</em>
+               
               </span>
-              <span className="btn-group pull-right">
+              <span>
+              <em>{article.vin}</em>
+              </span>   
+                         <span className="btn-group pull-right">
                 <a href={article.url} rel="noopener noreferrer" target="_blank">
                   <button className="btn btn-default ">View Article</button>
                 </a>
+                {/* pass the pressed item () => this.handleClick(article) */}
                 <button className="btn btn-primary" onClick={() => this.handleClick(article)}>Delete</button>
               </span>
             </h3>
-            <p>Date Published: {article.date}</p>
+            <p>Date Entered: {article.date}</p>
           </li>
         </div>
       );
@@ -82,7 +90,7 @@ class Saved extends Component {
               <div className="panel-heading">
                 <h1 className="panel-title">
                   <strong>
-                    <i className="fa fa-download" aria-hidden="true"></i> Saved Articles</strong>
+                    <i className="fa fa-download" aria-hidden="true"></i> Vehicle Inventory</strong>
                 </h1>
               </div>
               <div className="panel-body">

@@ -1,29 +1,30 @@
 const router = require("express").Router();
-var Article = require("../../../model");
+var AutoEntry = require("../../../models/book");
 const requesting = require('request');
 
 //This is where api/savings/saved routes are handled
 router.route("/")
   .get(function(req, res) {
-    Article.find({})
+    AutoEntry.find({})
       .exec(function(err, doc) {
         if (err) {
-          // console.log(err);
+          console.log(err);
         }
         else {
+          console.log("Im sending back docs",doc);
           res.send(doc);
         }
       });
   })
   .post(function(req, res) {
-    var newArticle = new Article(req.body);
+    var newAutoEntry = new AutoEntry(req.body);
     console.log("this is article data", req.body);
-    newArticle.save(function(err, doc) {
+    newAutoEntry.save(function(err, doc) {
       if (err) {
         console.log(err);
       }
       else {
-        console.log(doc);
+        console.log("this is the doc",doc);
         res.send(doc);
       }
     });

@@ -1,6 +1,5 @@
 // Include React as a dependency
 import React, { Component } from 'react'
-import createFragment from 'react-addons-create-fragment';
 
 // Include the Query and Results components
 import Query from "../../components/Search/Query";
@@ -17,9 +16,11 @@ class Search extends Component {
   // (this allows us to propagate the variables for maniuplation by the children components
   // Also note the "resuls" state. This will be where we hold the data from our results
   this.state = { 
+    vin:"",
     make :"",
     model:"",
     year:"",
+    results:[]
 
   }
   }
@@ -31,15 +32,15 @@ class Search extends Component {
   setQuery = ( newVin,newMake, newModel, newYear) => {
     helpers.runQuery(newVin,newMake, newModel, newYear)
     .then((data) => {
+      console.log(data);
+
       this.setState({ results: { docs: data.docs } });
     });
   }
 
 
    // this.setState(this.state)
-      // console.log(this.state);
 
-      // 
   setAjax = (vinNumb) => {
     helpers.runQueryAjax(vinNumb)
     .then((response) => {
