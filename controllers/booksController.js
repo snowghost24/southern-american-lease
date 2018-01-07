@@ -32,7 +32,7 @@ module.exports = {
       next(res.send({data:"No results found for this vin"}))
      }else{
 var resultValues = [];
-
+var vin = apiResults["Results"][0]["VIN"];
 var make = apiResults["Results"][0]["Make"];
 var model = apiResults["Results"][0]["Model"];
 var modelYear = apiResults["Results"][0]["ModelYear"];
@@ -43,7 +43,7 @@ var trim = apiResults["Results"][0]["Trim"];
 var driveType = apiResults["Results"][0]["DriveType"];
 var doors = apiResults["Results"][0]["Doors"];
 var fuelType = apiResults["Results"][0]["FuelTypePrimary"];
-
+resultValues.push({vin:vin});
 resultValues.push({make:make});
 resultValues.push({model:model});
 resultValues.push({year:modelYear});

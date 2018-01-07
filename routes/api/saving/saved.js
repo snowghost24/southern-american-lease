@@ -31,8 +31,9 @@ router.route("/")
    
   })
   .delete(function(req, res) {
-    var url = req.param("url");
-    Article.find({ url: url }).remove().exec(function(err) {
+    var vin = req.param("vin");
+    console.log("im deleting");
+    AutoEntry.find({ vin:vin }).remove().exec(function(err) {
       if (err) {
         // console.log(err);
       }

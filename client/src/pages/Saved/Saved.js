@@ -23,7 +23,7 @@ class Saved extends Component {
   handleClick = (item) => {
     console.log(item);
     // Delete the list!
-    helpers.deleteSaved(item.vin, item.make, item.model,item.year, item.data)
+    helpers.deleteSaved(item.vin)
     .then(() => {
 
       // Get the revised list!

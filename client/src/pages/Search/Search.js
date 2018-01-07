@@ -32,8 +32,14 @@ class Search extends Component {
   setQuery = ( newVin,newMake, newModel, newYear) => {
     helpers.runQuery(newVin,newMake, newModel, newYear)
     .then((data) => {
-      console.log(data);
-
+      //this clears the fields after the form has been submited
+      // vin is cleared in the query component
+      this.setState({
+        vin:"",
+        make:"",
+        model:"",
+        year:""
+      })
       this.setState({ results: { docs: data.docs } });
     });
   }
@@ -44,10 +50,12 @@ class Search extends Component {
   setAjax = (vinNumb) => {
     helpers.runQueryAjax(vinNumb)
     .then((response) => {
+      //retrieved values from api
       this.setState({
-        make:response.data[0]['make'],
-        model:response.data[1]['model'],
-        year:response.data[2]['year']
+        vin:response.data[0]['vin'],
+        make:response.data[1]['make'],
+        model:response.data[2]['model'],
+        year:response.data[3]['year']
       })
       console.log("data",response.data[0]['make']);
       // this.setState(this.state)
@@ -66,7 +74,7 @@ class Search extends Component {
 {/* updateSearch={this.setQuery} */}
 {/* sentDown = {results} */}
         {/* Note how we pass the setQuery function to enable Query to perform searches */}
-        <Query  updateSearch={this.setQuery} vinSearch={this.setAjax}  make={this.state.make} model={this.state.model} year={this.state.year} />
+        <Query  updateSearch={this.setQuery} vinSearch={this.setAjax}  make={this.state.make} model={this.state.model} year={this.state.year} vin={this.state.vin} />
         {/* Note how we pass in the results into this component */}
         {/* In order to pass down you have to save into a variable */}
         <Results />

@@ -50,14 +50,11 @@ const helpers = {
       });
   },
   // This will remove saved articles from our database
-  deleteSaved: function(vin, make, model, year,date) {
+  deleteSaved: function(vin) {
     return axios.delete("/api/saving/saved", {
       params: {
-        "vin": vin,
-        "make": make,
-        "model": model,
-        "year":year,
-        "date":date
+        "vin": vin
+       
 
 
       }

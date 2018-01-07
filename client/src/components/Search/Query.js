@@ -20,6 +20,7 @@ class Query extends Component {
   onNameChange = (e)=>{
     this.setState({
       vin: e.target.value
+      
     })
   }
 
@@ -32,6 +33,7 @@ class Query extends Component {
   componentWillReceiveProps = (nextProps) =>{
     console.log("I received props" , nextProps);
     this.setState({
+      make:nextProps.vin,
       make:nextProps.make,
       model:nextProps.model,
       year:nextProps.year  
@@ -56,17 +58,24 @@ class Query extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.props.updateSearch(this.state.vin, this.state.make, this.state.model,this.state.year);
+   this.setState({
+     vin:""
+   })
   }
 
   //handles ajax request on blur
   handleBlur = (event) => {
     event.preventDefault();
-// if the vin is empty do not run search
-    if (this.state.vin === "") {
+
+// Filter request conditions
+    if ( this.state.vin.length > 17 ) {
+      console.log("Vin number is too big");
+    } else if (this.state.vin.length < 11){
+      console.log("Vin number is too small");
+    }else if (this.state.vin === ""){
       console.log("vin is empty");
-    } else {
-      this.props.vinSearch(this.state.vin)
-   
+    }else{
+      this.props.vinSearch(this.state.vin);
       
     }
   }
