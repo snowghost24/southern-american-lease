@@ -1,4 +1,4 @@
-const db = require("../models");
+const  AutoEntry = require("../models/book");
 const requesting = require('request');
 
 // Defining methods for the booksController
@@ -17,6 +17,9 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   create: function(req, res,next) {
+
+
+
   //this array will be returned back to the front end with vehicle info
   var myUrl = 'https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValuesBatch/';
   var vin = req.body.vin
@@ -28,9 +31,11 @@ module.exports = {
    },function(error, response, body){
     var apiResults = JSON.parse(body)
      if (apiResults["Results"][0]["Make"] == "") {
-      // if an error occurs send back this error      
+      // if an error occurs send back this error   
+      console.log("this is the error",error);   
       next(res.send({data:"No results found for this vin"}))
      }else{
+         
 var resultValues = [];
 var vin = apiResults["Results"][0]["VIN"];
 var make = apiResults["Results"][0]["Make"];

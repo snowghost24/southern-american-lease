@@ -32,15 +32,29 @@ class Search extends Component {
   setQuery = ( newVin,newMake, newModel, newYear) => {
     helpers.runQuery(newVin,newMake, newModel, newYear)
     .then((data) => {
-      //this clears the fields after the form has been submited
-      // vin is cleared in the query component
-      this.setState({
+      if(data.data === "duplicate vehicle entry"){
+       alert("Denied: This vehicle exists in inventory")
+       this.setState({
         vin:"",
         make:"",
         model:"",
         year:""
       })
-      this.setState({ results: { docs: data.docs } });
+      }else {
+        console.log(data);
+        //this clears the fields after the form has been submited
+        // vin is cleared in the query component
+        this.setState({
+          vin:"",
+          make:"",
+          model:"",
+          year:""
+        })
+        this.setState({ results: { docs: data.docs } });
+      }
+
+      
+      
     });
   }
 
@@ -50,14 +64,24 @@ class Search extends Component {
   setAjax = (vinNumb) => {
     helpers.runQueryAjax(vinNumb)
     .then((response) => {
-      //retrieved values from api
-      this.setState({
-        vin:response.data[0]['vin'],
-        make:response.data[1]['make'],
-        model:response.data[2]['model'],
-        year:response.data[3]['year']
-      })
-      console.log("data",response.data[0]['make']);
+
+      if (response.data.data === "No results found for this vin"){
+          alert("VIN number is invalid")
+      }else{
+  //retrieved values from api
+  this.setState({
+    vin:response.data[0]['vin'],
+    make:response.data[1]['make'],
+    model:response.data[2]['model'],
+    year:response.data[3]['year']
+  })
+
+      }
+     
+      
+
+
+  
       // this.setState(this.state)
     }).catch(error =>{
       console.log(error);

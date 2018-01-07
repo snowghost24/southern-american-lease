@@ -21,6 +21,12 @@ router.route("/")
     console.log("this is article data", req.body);
     newAutoEntry.save(function(err, doc) {
       if (err) {
+        //note sure whey the error had to be inside error
+        if (err.name === 'MongoError' && err.code === 11000) {
+        
+          console.log("this is a duplicate entry");
+          res.send("duplicate vehicle entry");
+        } 
         console.log(err);
       }
       else {

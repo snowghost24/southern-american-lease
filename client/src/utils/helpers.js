@@ -14,7 +14,7 @@ const helpers = {
     return axios.post("/api/booking/books", {vin: formattedVinNum})
     .then(function(response) {
      
-   
+   console.log(" this is the reponse or empty",response);
       return response
     }).catch(function (error) {
       console.log(error);
@@ -35,8 +35,15 @@ const helpers = {
     console.log('postSaved', newArticle)
     return axios.post("/api/saving/saved", newArticle)
       .then(function(response) {
-        console.log("axios results", response.data._id);
-        return response.data._id;
+        console.log(response);
+        
+        if(response.data === "duplicate vehicle entry"){
+          return response
+        }else {
+          console.log("axios results", response.data._id);
+          return response.data._id;
+        }
+        
       });
   }
   //---------------------------------------------------------------------------------
