@@ -24,10 +24,6 @@ class Query extends Component {
     })
   }
 
-  getVehicleInfo = ()=>{
-   
-   
-  }
 
 // fires when props are passed down
   componentWillReceiveProps = (nextProps) =>{

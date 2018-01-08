@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 
 // Include the Helper (for the saved recall)
 import helpers from "../../utils/helpers";
-
+import Filter from "../../components/filter/filter";
 // Create the Main component
 class Saved extends Component {
   state = {
@@ -92,6 +92,7 @@ class Saved extends Component {
                   <strong>
                     <i className="fa fa-download" aria-hidden="true"></i> Vehicle Inventory</strong>
                 </h1>
+                <Filter />
               </div>
               <div className="panel-body">
                 <ul className="list-group">
