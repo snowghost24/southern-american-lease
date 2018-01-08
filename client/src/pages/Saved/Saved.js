@@ -25,14 +25,20 @@ class Saved extends Component {
     // Delete the list!
     helpers.deleteSaved(item.vin)
     .then(() => {
-
       // Get the revised list!
       helpers.getSaved()
       .then((articleData) => {
         this.setState({ savedArticles: articleData.data });
         console.log("saved results", articleData.data);
       });
+    });
+  }
 
+  handleFilteredSearch =(searchType,searchItem)=>{  
+    helpers.getFilteredSaved(searchType, searchItem)
+    .then((articleData) => {
+      this.setState({ savedArticles: articleData.data });
+      console.log("saved results", articleData.data);
     });
   }
   // A helper method for rendering the HTML when we have no saved articles
@@ -92,7 +98,7 @@ class Saved extends Component {
                   <strong>
                     <i className="fa fa-download" aria-hidden="true"></i> Vehicle Inventory</strong>
                 </h1>
-                <Filter />
+                <Filter filteredSearch={this.handleFilteredSearch} />
               </div>
               <div className="panel-body">
                 <ul className="list-group">

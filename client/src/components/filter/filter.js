@@ -134,8 +134,11 @@ class Filter extends React.Component {
   }
 
   handleSubmit(event) {
+    var searchType = this.state.value;
+    var searchItem = this.state.searchText;
     alert('Your favorite flavor is: ' + this.state.value);
     event.preventDefault();
+    this.props.filteredSearch(searchType,searchItem)
   }
 
   render() {
@@ -154,7 +157,7 @@ class Filter extends React.Component {
           <input className="form-control" placeholder="search" type="text" value={this.state.searchText} onChange={this.typeChange}/>
      </label>
      <label>
-        <input className="form-control" type="submit" value="Submit" />
+        <input className="form-control" type="submit" value="Submit"/>
      </label>
       </form>
     );

@@ -4,17 +4,29 @@ const requesting = require('request');
 // Defining methods for the booksController
 module.exports = {
   findAll: function(req, res) {
-    db.Book
-      .find(req.query)
-      .sort({ date: -1 })
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+    
+    console.log("Ive been hit");
+    console.log(req.query.searchType);
+    console.log(req.query.searchItem);
+    var searchType = req.query.searchType;
+    var searchItem = req.query.searchItem.toUpperCase();
+    AutoEntry.find({[searchType]:searchItem})
+    .exec(function(err, doc) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        console.log("Im sending back docs",doc);
+        res.send(doc);
+      }
+    });
   },
   findById: function(req, res) {
-    db.Book
-      .findById(req.params.id)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+    console.log("Ive alsoe been hit");
+    // db.Book
+    //   .findById(req.params.id)
+    //   .then(dbModel => res.json(dbModel))
+    //   .catch(err => res.status(422).json(err));
   },
   create: function(req, res,next) {
 

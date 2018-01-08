@@ -26,9 +26,9 @@ const helpers = {
   // This will run our query.
   runQuery: function(vin, make, model, year) {
     // Adjust to get search terms in proper format
-    var formattedVin = vin.trim();
-    var formattedMake = make.trim();
-    var formattedModel = model.trim() ;
+    var formattedVin = vin.trim().toUpperCase();
+    var formattedMake = make.trim().toUpperCase();
+    var formattedModel = model.trim().toUpperCase() ;
     var formattedYear = year.trim() ;
 
     var newArticle = { vin: formattedVin, make: formattedMake, model: formattedModel, year: formattedYear};
@@ -44,6 +44,8 @@ const helpers = {
           return response.data._id;
         }
         
+      }).catch(function (error) {
+        console.log(error);
       });
   }
   //---------------------------------------------------------------------------------
@@ -54,6 +56,23 @@ const helpers = {
       .then(function(results) {
         console.log("axios results", results);
         return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
+  },
+  getFilteredSaved: function(searchType,searchItem) {
+    var searchTypeFormatted = searchType.toLowerCase().trim();
+    var searchItemFormatted = searchItem.trim()
+    return axios.get("/api/booking/books",{
+      params :{
+        searchType: searchTypeFormatted,
+        searchItem:searchItemFormatted}
+    })
+      .then(function(results) {
+        console.log("axios results", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
       });
   },
   // This will remove saved articles from our database
@@ -61,14 +80,13 @@ const helpers = {
     return axios.delete("/api/saving/saved", {
       params: {
         "vin": vin
-       
-
-
       }
     })
     .then(function(results) {
       console.log("axios results", results);
       return results;
+    }).catch(function (error) {
+      console.log(error);
     });
   }
 };
