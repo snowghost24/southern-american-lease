@@ -23,10 +23,9 @@ module.exports = {
   },
   findById: function(req, res) {
     console.log("Ive alsoe been hit");
-    // db.Book
-    //   .findById(req.params.id)
-    //   .then(dbModel => res.json(dbModel))
-    //   .catch(err => res.status(422).json(err));
+    AutoEntry.findById(req.params.id)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
   },
   create: function(req, res,next) {
 
@@ -50,6 +49,8 @@ module.exports = {
          
 var resultValues = [];
 var vin = apiResults["Results"][0]["VIN"];
+var lastsix = vin.slice(-6);
+console.log(lastsix);
 var make = apiResults["Results"][0]["Make"];
 var model = apiResults["Results"][0]["Model"];
 var modelYear = apiResults["Results"][0]["ModelYear"];
@@ -64,6 +65,7 @@ resultValues.push({vin:vin});
 resultValues.push({make:make});
 resultValues.push({model:model});
 resultValues.push({year:modelYear});
+resultValues.push({lastsix:lastsix});
 
 if (series != ""){
 resultValues.push({series:series});

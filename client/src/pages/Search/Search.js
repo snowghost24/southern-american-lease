@@ -20,6 +20,7 @@ class Search extends Component {
     make :"",
     model:"",
     year:"",
+    lastsix:"",
     results:[]
 
   }
@@ -29,8 +30,8 @@ class Search extends Component {
   // to perform a new search
 
 
-  setQuery = ( newVin,newMake, newModel, newYear) => {
-    helpers.runQuery(newVin,newMake, newModel, newYear)
+  setQuery = ( newVin,newMake, newModel, newYear,lastSix) => {
+    helpers.runQuery(newVin,newMake, newModel, newYear,lastSix)
     .then((data) => {
       if(data.data === "duplicate vehicle entry"){
        alert("Denied: This vehicle exists in inventory")
@@ -38,7 +39,8 @@ class Search extends Component {
         vin:"",
         make:"",
         model:"",
-        year:""
+        year:"",
+        lastsix:""
       })
       }else {
         console.log(data);
@@ -48,13 +50,11 @@ class Search extends Component {
           vin:"",
           make:"",
           model:"",
-          year:""
+          year:"",
+          lastsix:""
         })
         this.setState({ results: { docs: data.docs } });
       }
-
-      
-      
     });
   }
 
@@ -68,12 +68,14 @@ class Search extends Component {
       if (response.data.data === "No results found for this vin"){
           alert("VIN number is invalid")
       }else{
-  //retrieved values from api
+ console.log("retrieved data from api in setAjax", response.data);
   this.setState({
     vin:response.data[0]['vin'],
     make:response.data[1]['make'],
     model:response.data[2]['model'],
-    year:response.data[3]['year']
+    year:response.data[3]['year'],
+    lastsix:response.data[4]['lastsix']
+
   })
 
       }
@@ -98,7 +100,7 @@ class Search extends Component {
 {/* updateSearch={this.setQuery} */}
 {/* sentDown = {results} */}
         {/* Note how we pass the setQuery function to enable Query to perform searches */}
-        <Query  updateSearch={this.setQuery} vinSearch={this.setAjax}  make={this.state.make} model={this.state.model} year={this.state.year} vin={this.state.vin} />
+        <Query  updateSearch={this.setQuery} vinSearch={this.setAjax}  make={this.state.make} model={this.state.model} year={this.state.year} vin={this.state.vin} lastsix={this.state.lastsix}/>
         {/* Note how we pass in the results into this component */}
         {/* In order to pass down you have to save into a variable */}
         <Results />

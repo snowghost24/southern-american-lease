@@ -6,8 +6,10 @@ const AutoEntrySchema = new Schema({
   make: { type: String, required: true },
   model: { type: String, required: true },
   year: { type: Number, required: true },
+  lastsix: { type: String, required: true },
   synopsis: String,
   date: { type: Date, default: Date.now }
+
 });
 
 const AutoEntry = mongoose.model("AutoEntry", AutoEntrySchema);

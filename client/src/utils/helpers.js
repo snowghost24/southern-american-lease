@@ -24,14 +24,16 @@ const helpers = {
   ,
 
   // This will run our query.
-  runQuery: function(vin, make, model, year) {
+  //responds to se
+  runQuery: function(vin, make, model, year,lastsix) {
     // Adjust to get search terms in proper format
     var formattedVin = vin.trim().toUpperCase();
     var formattedMake = make.trim().toUpperCase();
     var formattedModel = model.trim().toUpperCase() ;
     var formattedYear = year.trim() ;
+    var formattedLastSix = lastsix;
 
-    var newArticle = { vin: formattedVin, make: formattedMake, model: formattedModel, year: formattedYear};
+    var newArticle = { vin: formattedVin, make: formattedMake, model: formattedModel, year: formattedYear,lastsix:formattedLastSix};
     console.log('postSaved', newArticle)
     return axios.post("/api/saving/saved", newArticle)
       .then(function(response) {

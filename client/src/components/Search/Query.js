@@ -14,12 +14,29 @@ class Query extends Component {
     vin: "",
     make:"",
     model:"",
-    year:""
+    year:"",
+    lastsix:""
   }
-
-  onNameChange = (e)=>{
+// come back and find a way to change the states all at once
+  onVinChange = (e)=>{
     this.setState({
-      vin: e.target.value
+      vin: e.target.value,  
+    })
+  }
+  onMakeChange = (e)=>{
+    this.setState({
+      make:e.target.value
+    })
+  }
+  onModelChange = (e)=>{
+    this.setState({
+      model:e.target.value
+      
+    })
+  }
+  onYearChange = (e)=>{
+    this.setState({
+      year:e.target.value
       
     })
   }
@@ -32,7 +49,8 @@ class Query extends Component {
       make:nextProps.vin,
       make:nextProps.make,
       model:nextProps.model,
-      year:nextProps.year  
+      year:nextProps.year, 
+      lastsix:nextProps.lastsix  
     })
   }
 
@@ -53,7 +71,7 @@ class Query extends Component {
   // This code handles the sending of the search terms to the parent Search component
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.updateSearch(this.state.vin, this.state.make, this.state.model,this.state.year);
+    this.props.updateSearch(this.state.vin, this.state.make, this.state.model,this.state.year,this.state.lastsix);
    this.setState({
      vin:""
    })
@@ -118,7 +136,7 @@ class Query extends Component {
                       value={this.state.vin}
                       className="form-control"
                       id="search"
-                      onChange={this.onNameChange}
+                      onChange={this.onVinChange}
                       //triggers on blue push
                       onBlur={this.handleBlur}
                       required
@@ -131,7 +149,7 @@ class Query extends Component {
                       value={this.state.make}
                       className="form-control"
                       id="start"
-                      onChange={this.handleChange}
+                      onChange={this.onMakeChange}
                       required
                     />
 
@@ -142,7 +160,7 @@ class Query extends Component {
                       value={this.state.model}
                       className="form-control"
                       id="end"
-                      onChange={this.handleChange}
+                      onChange={this.onModelChange}
                       required
                     />
 
@@ -153,7 +171,7 @@ class Query extends Component {
                       value={this.state.year}
                       className="form-control"
                       id="end"
-                      onChange={this.handleChange}
+                      onChange={this.onYearChange}
                       required
                     />
 

@@ -1,5 +1,6 @@
 // Include React as a dependency
 import React, { Component } from 'react'
+import { Link } from "react-router-dom";
 
 // Include the Helper (for the saved recall)
 import helpers from "../../utils/helpers";
@@ -73,7 +74,10 @@ class Saved extends Component {
               </span>   
                          <span className="btn-group pull-right">
                 <a href={article.url} rel="noopener noreferrer" target="_blank">
-                  <button className="btn btn-default ">View Article</button>
+                <Link to={"/books/" + article._id}>
+                 <button className="btn btn-default ">View Vehicle</button>
+                    </Link>
+                  
                 </a>
                 {/* pass the pressed item () => this.handleClick(article) */}
                 <button className="btn btn-primary" onClick={() => this.handleClick(article)}>Delete</button>
