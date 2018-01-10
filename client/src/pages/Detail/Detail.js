@@ -4,6 +4,42 @@ import { Col, Row, Container } from "../../components/Grid";
 import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
 
+import Select from 'react-select';
+
+class Appi extends React.Component {
+  state = {
+    selectedOption: '',
+  }
+  handleChange = (selectedOption) => {
+    console.log(selectedOption);
+    this.setState({ selectedOption });
+    console.log(`Selected: ${selectedOption.label}`);
+  }
+  render() {
+  	const { selectedOption } = this.state;
+  	const value = selectedOption && selectedOption.value;
+
+    return (
+      <Select
+        name="form-field-name"
+        value={value}
+        onChange={this.handleChange}
+        options={[
+          { value: 'one', label: 'One' },
+          { value: 'two', label: 'Two' },
+        ]}
+      />
+    );
+  }
+}
+
+
+
+
+
+
+
+
 class Detail extends Component {
   state = {
     book: {}
@@ -28,15 +64,16 @@ class Detail extends Component {
           <Col size="md-12">
             <Jumbotron>
               <h1>
-                {this.state.book.make} by {this.state.book.model}
+                {this.state.book.make} {this.state.book.model}
               </h1>
             </Jumbotron>
+       
           </Col>
         </Row>
         <Row>
           <Col size="md-10 md-offset-1">
             <article>
-              <h1>Synopsis</h1>
+              <h1>Features</h1>
               <p>
                 {this.state.book.vin}
               </p>

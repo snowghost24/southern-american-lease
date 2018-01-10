@@ -6,7 +6,6 @@ class Filter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {value: 'lastsix', searchText: ''};
-
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -37,6 +36,7 @@ class Filter extends React.Component {
           <option value="vin">VIN</option>
            <option value="make">Make</option>
            <option value="model">Model</option>
+           <option value="year">Year</option>
           </select>
         </label>
         <label>

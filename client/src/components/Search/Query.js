@@ -7,16 +7,16 @@ class Query extends Component {
   constructor(props){
     super(props)
     // API.changeBgc((err, data)=>this.getVehicleInfo(data));
-  
+    // Here we set initial variables for the component to be blanks 
 }
-  // Here we set initial variables for the component to be blanks
-  state = {
-    vin: "",
-    make:"",
-    model:"",
-    year:"",
-    lastsix:""
-  }
+
+ state = {
+      vin: "",
+      make:"",
+      model:"",
+      year:"",
+      lastsix:""
+    }
 // come back and find a way to change the states all at once
   onVinChange = (e)=>{
     this.setState({
@@ -55,10 +55,9 @@ class Query extends Component {
   }
 
 
-  // onBlur = () => {
-  //   console.log("I'm on Blur")
-  // }
+
   // Whenever we detect ANY change in the textbox, we register it.
+// this is not working figure out why
   handleChange = (event) => {
     // Here we create syntax to capture any change in text to the query terms (pre-search).
     // See this Stack Overflow answer for more details:
@@ -90,33 +89,16 @@ class Query extends Component {
       console.log("vin is empty");
     }else{
       this.props.vinSearch(this.state.vin);
-      
     }
   }
-
-
-  renderResults = () => {
-    // this.setState({
-    //   make:this.props.sentDown[0],
-    //   model:this.props.sentDown[1],
-    //   year:this.props.sentDown[2]
-    // })
-    
-    // console.log("This was sent down", this.props.sentDown);
-  }
-
-
-
 
   // Here we render the Query component
   render() {
       
     return (
       <div className="main-container">
-
         <div className="row">
           <div className="col-lg-12">
-
             <div className="panel panel-primary">
               <div className="panel-heading">
                 <h1 className="panel-title">
@@ -126,7 +108,6 @@ class Query extends Component {
                 </h1>
               </div>
               <div className="panel-body">
-
                 {/* Note how we associate the text-box inputs with the state values */}
                 <form onSubmit={this.handleSubmit}>
                   <div className="form-group">
@@ -141,8 +122,7 @@ class Query extends Component {
                       onBlur={this.handleBlur}
                       required
                     />
-                     {this.renderResults()}
-
+                     {/* {this.renderResults()} */}
                      <h4><strong>Make</strong></h4>
                     <input
                       type="text"
@@ -152,9 +132,7 @@ class Query extends Component {
                       onChange={this.onMakeChange}
                       required
                     />
-
                     <h4><strong>Model</strong></h4>
-
                     <input
                       type="text"
                       value={this.state.model}
@@ -163,9 +141,7 @@ class Query extends Component {
                       onChange={this.onModelChange}
                       required
                     />
-
                     <h4><strong>Year</strong></h4>
-
                     <input
                       type="number"
                       value={this.state.year}
@@ -174,10 +150,7 @@ class Query extends Component {
                       onChange={this.onYearChange}
                       required
                     />
-
-
                   </div>
-
                   {/* Here we create the onClick event that triggers the HandleSubmit */}
                   <div className="pull-right">
                     <button
