@@ -4,8 +4,7 @@ const requesting = require('request');
 // Defining methods for the booksController
 module.exports = {
   findAll: function(req, res) {
-    
-    console.log("Ive been hit");
+    console.log("Find all querys");
     console.log(req.query.searchType);
     console.log(req.query.searchItem);
     var searchType = req.query.searchType;
@@ -16,7 +15,7 @@ module.exports = {
         console.log(err);
       }
       else {
-        console.log("Im sending back docs",doc);
+        console.log("Find all sent back docs",doc);
         res.send(doc);
       }
     });
@@ -49,8 +48,8 @@ module.exports = {
          
 var resultValues = [];
 var vin = apiResults["Results"][0]["VIN"];
+//takes vin and trims it to last 6
 var lastsix = vin.slice(-6);
-console.log(lastsix);
 var make = apiResults["Results"][0]["Make"];
 var model = apiResults["Results"][0]["Model"];
 var modelYear = apiResults["Results"][0]["ModelYear"];

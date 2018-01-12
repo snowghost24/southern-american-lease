@@ -6,54 +6,35 @@ import API from "../../utils/API";
 import { Input, TextArea, FormBtn } from "../../components/Form";
 import CurrencyInput from 'react-currency-input';
 
-// import TextArea from "../../components/Form/TextArea";
-import Select from 'react-select';
 
-const MyApp = React.createClass({
-  getInitialState(){
-      return ({amount: "0.00"});
-  },
-
-  handleChange(event, maskedvalue, floatvalue){
-      this.setState({amount: maskedvalue});
-  },
-  render() {
-      return (
-          <div>
-              <CurrencyInput value={this.state.amount} onChangeEvent={this.handleChange}/>
-          </div>
-      );
-  }
-});
-
-
-
-class Reservation extends React.Component {
+class AutoDetailsForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      released: false,
-
-      price: 2,
+      released: "pending released",
+      price: "",
       textAreaValue:"",
-      leatherColor: 'black',
+      leatherColor: '',
       miles:"",
       location:"",
-      liftstyle:"",
+      liftrange:"",
       trim:"",
       color:"",
-      options:"",
-      fueltype:"",
+      fueltype:"gas",
+      drivetrain:"",
       keyfeatures:"",
-      liftdetails:""
+      liftdetails:"",
+      detail:"",
+      bodywork:"not required",
+      dentwork:"not required",
+      bedliner:"not required"
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  
   }
 
- 
+
   handleInputChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -65,6 +46,9 @@ class Reservation extends React.Component {
   }
 
   handleSubmit(event) {
+    console.log("the state", 
+      this.state
+    );
     alert('An essay was submitted: ' + this.state.value);
     event.preventDefault();
   }
@@ -73,23 +57,14 @@ class Reservation extends React.Component {
     console.log(this.state);
     return (
       <form onSubmit={this.handleSubmit}>
-        {/* <label>
-          Released Status:
-          <input
-            name="released"
-            type="checkbox"
-            checked={this.state.released}
-            onChange={this.handleInputChange} />
-        </label> */}
-   
-
+       
         <label>
           Released Status:
           <select type="string" name="released" value={this.state.released} onChange={this.handleInputChange}>
-            <option value="pending_released">Pending Release</option>
-            <option value="relased_pending_transfer">Released</option>
-            <option value="black">Released Intransit</option>
-            <option value="licore">Arrived</option>
+            <option value="pending released">Pending Release</option>
+            <option value="relased pending transfer">Released</option>
+            <option value="released intransit">Released Intransit</option>
+            <option value="arrived">Arrived</option>
           </select>
         </label>
         
@@ -99,13 +74,13 @@ class Reservation extends React.Component {
           <select type="string" name="location" value={this.state.location} onChange={this.handleInputChange}>
             <option value="auction">Auction</option>
             <option value="watson">Watson</option>
-            <option value="black">High Standards</option>
-            <option value="licore">GO</option>
+            <option value="high standards">High Standards</option>
+            <option value="go">GO</option>
             <option value="southern Leather">Southern Leather</option>
             <option value="joes">Joes</option>
-            <option value="body_shop">Body Shop</option>
+            <option value="body shop">Body Shop</option>
             <option value="delivered">Delivered to buyer</option>
-            <option value="delivered">Other</option>
+            <option value="other">Other</option>
           </select>
         </label>
         <br/>
@@ -122,7 +97,7 @@ class Reservation extends React.Component {
 
         <label>
           Fuel Type:
-          <select type="string" name="fueltype" value={this.state.value} onChange={this.handleInputChange}>
+          <select type="string" name="fueltype" value={this.state.fueltype} onChange={this.handleInputChange}>
             <option value="gas">Gas</option>
             <option value="diesel">Diesel</option>
             <option value="licore">Hybrid</option>
@@ -183,7 +158,7 @@ class Reservation extends React.Component {
           <Input
             name="drivetrain"
             type="string"
-            value={this.state.bodytype}
+            value={this.state.drivetrain}
             onChange={this.handleInputChange} />
         </label>
 
@@ -213,16 +188,16 @@ class Reservation extends React.Component {
   
         <label>
           Install Leather:
-          <select type="string" name="leatherColor" value={this.state.value} onChange={this.handleInputChange}>
+          <select type="string" name="leatherColor" value={this.state.leatherColor} onChange={this.handleInputChange}>
             <option value="black">Black</option>
-            <option value="black_stone_stone">Black/Stone/Stone</option>
+            <option value="black stone stone">Black/Stone/Stone</option>
             <option value="licore">Licore</option>
             <option value="barracuda">Barracuda</option>
-            <option value="limited_kit">Limited</option>
+            <option value="limited kit">Limited</option>
             <option value="stone">Stone</option>
             <option value="sandstone">Sandstone</option>
-            <option value="black_cardinal">black_cardinal</option>
-            <option value="xtra_woodland">Xtra Woodland</option>
+            <option value="black cardinal">black_cardinal</option>
+            <option value="xtra woodland">Xtra Woodland</option>
             <option value="lightgrey">Light Grey</option>
             <option value="puddy">Puddy</option>
             <option value="shale">shale</option>
@@ -232,39 +207,59 @@ class Reservation extends React.Component {
       
         <label>
           Lift Kit Range:
-          {/* <Input type="string" name="liftstyle" value={this.state.value} onChange={this.handleInputChange}/> */}
-          <select type="string" name="liftstyle" value={this.state.value} onChange={this.handleInputChange}>
-            <option value="7000_6500">7000 - 6500</option>
-            <option value="6000_5500">6500 - 6000</option>
-            <option value="6000_5500">6000 - 5500</option>
-            <option value="5500_5000">5500 - 5000</option>
-            <option value="5000_4500">5000 - 4500</option>
-            <option value="4500_4000">4500 - 4000</option>
-            <option value="4000_3500">4000 - 3500</option>
-            <option value="3500_3000">3500 - 3000</option>
+          <select type="string" name="liftrange" value={this.state.liftrange} onChange={this.handleInputChange}>
+            <option value="7000-6500">7000 - 6500</option>
+            <option value="6000-5500">6500 - 6000</option>
+            <option value="6000-5500">6000 - 5500</option>
+            <option value="5500-5000">5500 - 5000</option>
+            <option value="5000-4500">5000 - 4500</option>
+            <option value="4500-4000">4500 - 4000</option>
+            <option value="4000-3500">4000 - 3500</option>
+            <option value="3500-3000">3500 - 3000</option>
             <option value="none">None</option>
           </select>
         </label>
         <label>
           Detail:
-          <select type="string" name="liftstyle" value={this.state.value} onChange={this.handleInputChange}>
-            <option value="7000_6500">7000 - 6500</option>
-            <option value="6000_5500">6500 - 6000</option>
-            <option value="6000_5500">6000 - 5500</option>
-            <option value="5500_5000">5500 - 5000</option>
-            <option value="5000_4500">5000 - 4500</option>
-            <option value="4500_4000">4500 - 4000</option>
-            <option value="4000_3500">4000 - 3500</option>
-            <option value="3500_3000">3500 - 3000</option>
-            <option value="none">None</option>
+          <select type="string" name="detail" value={this.state.detail} onChange={this.handleInputChange}>
+          <option value="full detail">Full Detail</option>
+          <option value="washandvac">Wash and Vac</option>
+          <option value="spruce">Spruce</option>
+          <option value="none">None</option>
           </select>
         </label>
+        <label>
+          Body Work:
+          <select type="string" name="bodywork" value={this.state.bodywork} onChange={this.handleInputChange}>
+          <option value="not required">Not Required</option>
+          <option value="required">Required</option>
+          </select>
+        </label>
+        <br />
+        <label>
+          Dent Work:
+          <select type="string" name="dentwork" value={this.state.dentwork} onChange={this.handleInputChange}>
+          <option value="not required">Not Required</option>
+          <option value="required">Required</option>
+          </select>
+        </label>
+        <label>
+          BedLiner:
+          <select type="string" name="bedliner" value={this.state.bedliner} onChange={this.handleInputChange}>
+          <option value="not required">Not Required</option>
+          <option value="required">Required</option>
+          </select>
+        </label>
+         
+
+        
+      
         <br />
         <label>
           Vehicle Notes:
         <TextArea type="string" name="textAreaValue" value={this.state.textAreaValue} onChange={this.handleInputChange} />
         </label>
-        {/* <Input type="submit" value="Submit" /> */}
+        <Input type="submit" value="Submit" />
       </form>
     );
   }
@@ -313,7 +308,7 @@ class Detail extends Component {
           <Col size="md-10 md-offset-1">
           <h1>Update Vehicle Data</h1>
           <h3>Vehicle Info</h3>
-          <Reservation />
+          <AutoDetailsForm />
           
             {/* <article>
               <h1>Features</h1>
@@ -323,7 +318,7 @@ class Detail extends Component {
             </article> */}
           </Col>
           <Col size="md-10 md-offset-1">
-          <h1>Update Vehicle Data</h1>
+          
           {/* <Reservation /> */}
           
             {/* <article>
@@ -336,7 +331,7 @@ class Detail extends Component {
         </Row>
         <Row>
           <Col size="md-2">
-            <Link to="/">← Back to Authors</Link>
+            <Link to="/">← Back to Inventory</Link>
           </Col>
         </Row>
       </Container>
