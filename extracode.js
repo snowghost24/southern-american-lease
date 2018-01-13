@@ -39,34 +39,6 @@ class AutoDetailsForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  //brings values in from db after they have been saved
-  componentWillReceiveProps =(props)=>{
-    this.setState({
-      released: props.sentDownStates.vehicle.released,
-      doors:props.sentDownStates.vehicle.doors,
-      price:props.sentDownStates.vehicle.price,
-      textAreaValue:props.sentDownStates.vehicle.textAreaValue,
-      leatherColor: props.sentDownStates.vehicle.leatherColor,
-      miles:props.sentDownStates.vehicle.miles,
-      location:props.sentDownStates.vehicle.location,
-      liftrange:props.sentDownStates.vehicle.liftrange,
-      trim:props.sentDownStates.vehicle.trim,
-      drivetrain:props.sentDownStates.vehicle.drivetrain,
-      keyfeatures:props.sentDownStates.vehicle.keyfeatures,
-      liftdetails:props.sentDownStates.vehicle.liftdetails,
-      detail:props.sentDownStates.vehicle.detail,
-      bodywork:props.sentDownStates.vehicle.bodywork,
-      dentwork:props.sentDownStates.vehicle.dentwork,
-      bedliner:props.sentDownStates.vehicle.bedliner,
-      fuelType:props.sentDownStates.vehicle.fuelType,
-      series:props.sentDownStates.vehicle.series,
-      color:props.sentDownStates.vehicle.color,
-      bodyCabType:props.sentDownStates.vehicle.bodyCabType,
-      bodyClass:props.sentDownStates.vehicle.bodyClass  
-    })
-    console.log("received states ->", props.sentDownStates.vehicle);
-
-  }
 
   handleInputChange(event) {
     const target = event.target;
@@ -98,7 +70,6 @@ class AutoDetailsForm extends React.Component {
   render() {
     console.log(this.state);
     return (
-      <fieldset disabled={this.props.editForm}>
       <form onSubmit={this.handleSubmit}>
        
         <label>
@@ -190,9 +161,9 @@ class AutoDetailsForm extends React.Component {
         <label>
         Body Type:
           <Input
-            name="bodyCabType"
+            name="bodytype"
             type="string"
-            value={this.state.bodyCabType}
+            value={this.state.bodytype}
             onChange={this.handleInputChange} />
         </label>
 
@@ -304,7 +275,6 @@ class AutoDetailsForm extends React.Component {
         </label>
         <Input type="submit" value="Submit" />
       </form>
-      </fieldset >
     );
   }
 }
@@ -314,36 +284,28 @@ class AutoDetailsForm extends React.Component {
 
 class Detail extends Component {
   state = {
-    vehicle: {},
-    editForm:true
+    vehicle: {}
   };
-
-  handleEditFormChange(event) {
-   
-      const target = event.target;
-      const value = target.type === 'checkbox' ? target.checked : target.value;
-      console.log(value);
-      const name = target.name;
-      console.log(name);
-  
-      this.setState({
-        [name]: value
-      });
-    }    
+  // When this component mounts, grab the book with the _id of this.props.match.params.id
+  //takes the value from the url and sends it as id
+  // componentDidMount() {
+  //   API.getBook(this.props.match.params.id)
+  //     .then((res) => {
+  //       console.log("API.get books res data",res.data);
+  //       this.setState({ vehicle: res.data })
+  //     }
+  //   )
+  //     .catch(err => console.log(err));
+  // }
 
   componentDidMount() {
     this.loadVehicle()
     }
-
     loadVehicle = () => {
       API.getBook(this.props.match.params.id)
       .then((res) => {
         console.log("API.get books res data from detail",res.data);
-        this.setState({ 
-            vehicle: res.data,
-            editForm:true
-
-         })
+        this.setState({ vehicle: res.data })
       }
     )
       .catch(err => console.log(err));
@@ -354,86 +316,31 @@ class Detail extends Component {
       <Container fluid>
         <Row>
           <Col size="md-12">
-          <h3>Vehicle Information</h3>
-            <hr/>
-            {/* <Jumbotron> */}
-            
-            <Col size="md-4">
-              
-              
-              
-              <p><strong>VIN:</strong> {this.state.vehicle.vin}</p>
-              <p><strong>Make:</strong>{this.state.vehicle.make}</p>
-              <p><strong>Model:</strong>{this.state.vehicle.model}</p>
-              <p><strong>Year:</strong>{this.state.vehicle.year}</p>
-              <p><strong>Trim:</strong> {this.state.vehicle.trim}</p>
-              </Col >
-              <Col size="md-4">
-             
-              <p><strong>Miles:</strong>{this.state.vehicle.miles}</p>
-              <p><strong>Asking Price:</strong>{this.state.vehicle.price}</p>
-              <p><strong>Doors:</strong>{this.state.vehicle.doors}</p>
-              <p><strong>Body Type:</strong>{this.state.vehicle.bodyCabType}</p>
-              </Col >
-              <Col size="md-4">
-              <p><strong>Drivetrain:</strong> {this.state.vehicle.drivetrain}</p>
-              <p><strong>Key Features:</strong>{this.state.vehicle.keyfeatures}</p>
-              <p><strong>Lift Details:</strong>{this.state.vehicle.liftdetails}</p>
-              <p><strong>Fuel Type:</strong>{this.state.vehicle.fuelType}</p>
-              </Col >
-              {/*
+            <Jumbotron>
+              <h3>
+                {this.state.vehicle.make} {this.state.vehicle.model}
+              </h3>
+              <article>
+              <h3>Update Features</h3>
+              <p>Vin: {this.state.vehicle.vin}</p>
               <p>Year: {this.state.vehicle.year}</p>
               <p>Body: {this.state.vehicle.bodyCabType}</p>
               <p>Body Class: {this.state.vehicle.bodyClass}</p>
               <p>
                 Drive Train:{this.state.vehicle.drivetrain}</p>
               <p> Fuel Type: {this.state.vehicle.fuelType}</p>
-              <p> Released: {this.state.vehicle.released}</p> */}
+              <p> Released: {this.state.vehicle.released}</p>
     
-          <form>
-        <label>
-          <strong>Form Locked:</strong>
-          <input
-            name="editForm"
-            type="checkbox"
-            checked={this.state.editForm}
-            onChange={this.handleEditFormChange.bind(this)} />
-        </label>
-      </form>
-            {/* </Jumbotron> */}
+            </article>
+            </Jumbotron>
        
-          </Col>
-        </Row>
-        <h3>Vehicle Jobs Status</h3>
-         
-        <Row>
-          <Col size="md-3">
-          <h4>Leather Kit Installation</h4>
-          <p><strong>Leather Kit:</strong> {this.state.vehicle.leatherColor}</p>
-          <p><strong>Status:</strong> </p>
-          </Col>
-          <Col size="md-3">
-          <h4>Lift Kit Installation</h4>
-          <p><strong>Leather Kit:</strong> {this.state.vehicle.liftrange}</p>
-          <p><strong>Status:</strong> </p>
-          </Col>
-          <Col size="md-3">
-          <h4>Cleaning Detail</h4>
-          <p><strong>Leather Kit:</strong> {this.state.vehicle.leatherColor}</p>
-          <p><strong>Status:</strong> </p>
-          </Col>
-          <Col size="md-3">
-          <h4>Body Shop Work</h4>
-          <p><strong>Body Shop:</strong> {this.state.vehicle.bodywork}</p>
-          <p><strong>Status:</strong> </p>
           </Col>
         </Row>
         <Row>
           <Col size="md-10 md-offset-1">
-          <hr/>
-          <h1>Edit Vehicle Data</h1>
-          {/* <h3>Vehicle Info</h3> */}
-    <AutoDetailsForm loadVehicle={this.loadVehicle.bind(this)} id={this.props.match.params.id} sentDownStates={this.state} editForm={this.state.editForm}/>
+          <h1>Update Vehicle Data</h1>
+          <h3>Vehicle Info</h3>
+    <AutoDetailsForm loadVehicle={this.loadVehicle.bind(this)} id={this.props.match.params.id}sentDownStates={this.state}/>
           
             {/* <article>
               <h1>Features</h1>

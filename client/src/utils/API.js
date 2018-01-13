@@ -10,7 +10,7 @@ export default {
     return axios.get("/api/booking/books/" + id);
   },
   dataEntryUpdateHelper: function (id,theStates) {
-    console.log(id,theStates);
+    console.log("update date helper",id,theStates);
     return axios.put("/api/booking/books/"+ id, {
         theStates
     })

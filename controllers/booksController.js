@@ -114,10 +114,8 @@ next(res.send(resultValues))
     console.log("update id",req.params.id);
     AutoEntry.findOneAndUpdate({ _id: req.params.id }, req.body.theStates)
       .then((dbModel) => {
-        console.log("db model is", dbModel);
-        res.send(dbModel)}
-    
-    )
+        console.log("the model", dbModel );
+        res.send(dbModel)})
       .catch(err => res.status(422).json(err));
   },
   remove: function(req, res) {
@@ -128,3 +126,5 @@ next(res.send(resultValues))
       .catch(err => res.status(422).json(err));
   }
 };
+
+
