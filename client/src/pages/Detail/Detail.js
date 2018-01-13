@@ -4,7 +4,8 @@ import { Col, Row, Container } from "../../components/Grid";
 import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
 import { Input, TextArea, FormBtn } from "../../components/Form";
-import CurrencyInput from 'react-currency-input';
+// import helpers from "../../utils/helpers";
+
 
 
 class AutoDetailsForm extends React.Component {
@@ -16,6 +17,7 @@ class AutoDetailsForm extends React.Component {
       textAreaValue:"",
       leatherColor: '',
       miles:"",
+      doors:"4",
       location:"",
       liftrange:"",
       trim:"",
@@ -46,11 +48,20 @@ class AutoDetailsForm extends React.Component {
   }
 
   handleSubmit(event) {
-    console.log("the state", 
+    event.preventDefault();
+    console.log("the state of form", 
       this.state
     );
-    alert('An essay was submitted: ' + this.state.value);
-    event.preventDefault();
+    console.log(this.props.id)
+   
+    
+    API. dataEntryUpdateHelper(this.props.id,this.state)
+    .then((res) => {
+      console.log("API.get books res data",res.data);
+      this.setState({ book: res.data })
+    }
+  )
+    .catch(err => console.log(err));
   }
 
   render() {
@@ -88,7 +99,7 @@ class AutoDetailsForm extends React.Component {
         <hr/>
         <label>
           Doors:
-          <select type="number" name="doors" value={this.state.value} onChange={this.handleInputChange}>
+          <select type="number" name="doors" value={this.state.doors} onChange={this.handleInputChange}>
             <option value="4" >4</option>
             <option value="2">2</option>
             <option value="other">Other</option>
@@ -278,7 +289,7 @@ class Detail extends Component {
     console.log("the props match",this.props.match.params.id);
     API.getBook(this.props.match.params.id)
       .then((res) => {
-        console.log("returning res data",res.data);
+        console.log("API.get books res data",res.data);
         this.setState({ book: res.data })
       }
     )
@@ -296,13 +307,14 @@ class Detail extends Component {
               </h3>
               <article>
               <h3>Update Features</h3>
-              <p> Vin: {this.state.book.vin}</p>
+              <p>Vin: {this.state.book.vin}</p>
               <p>Year: {this.state.book.year}</p>
               <p>Body: {this.state.book.bodyCabType}</p>
               <p>Body Class: {this.state.book.bodyClass}</p>
               <p>
                 Drive Train:{this.state.book.drivetrain}</p>
               <p> Fuel Type: {this.state.book.fuelType}</p>
+              <p> Released: {this.state.book.released}</p>
     
             </article>
             </Jumbotron>
@@ -313,7 +325,7 @@ class Detail extends Component {
           <Col size="md-10 md-offset-1">
           <h1>Update Vehicle Data</h1>
           <h3>Vehicle Info</h3>
-          <AutoDetailsForm />
+    <AutoDetailsForm id={this.props.match.params.id}/>
           
             {/* <article>
               <h1>Features</h1>

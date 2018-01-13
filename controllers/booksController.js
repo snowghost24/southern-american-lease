@@ -109,9 +109,15 @@ next(res.send(resultValues))
 
   },
   update: function(req, res) {
-    db.Book
-      .findOneAndUpdate({ _id: req.params.id }, req.body)
-      .then(dbModel => res.json(dbModel))
+    console.log("update id",req.params.id);
+    console.log("update body",req.body.theStates);
+    console.log("update id",req.params.id);
+    AutoEntry.findOneAndUpdate({ _id: req.params.id }, req.body.theStates)
+      .then((dbModel) => {
+        console.log("db model is", dbModel);
+        res.send(dbModel)}
+    
+    )
       .catch(err => res.status(422).json(err));
   },
   remove: function(req, res) {

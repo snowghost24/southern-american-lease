@@ -17,7 +17,7 @@ const helpers = {
   ,
 
   // This will run our query.
-  //responds to se
+ 
   enterVehicleDataHelper: function (entryData) {
     console.log(entryData);
     var newArticle = { 
@@ -83,7 +83,9 @@ const helpers = {
     return axios.delete("/api/saving/saved", {
       params: {
         "vin": vin
-      }
+      },
+     
+
     })
       .then(function (results) {
         console.log("axios results", results);
@@ -92,21 +94,8 @@ const helpers = {
         console.log(error);
       });
   }
-  ,
-  dataEntryUpdate: function (vin) {
-    //  return axios.get("/api/booking/books/" + id);
-    return axios.put("/api/saving/saved", {
-      params: {
-        "vin": vin
-      }
-    })
-      .then(function (results) {
-        console.log("axios results", results);
-        return results;
-      }).catch(function (error) {
-        console.log(error);
-      });
-  }
+  
+
 };
 
 

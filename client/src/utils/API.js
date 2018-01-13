@@ -9,6 +9,18 @@ export default {
   getBook: function(id) {
     return axios.get("/api/booking/books/" + id);
   },
+  dataEntryUpdateHelper: function (id,theStates) {
+    console.log(id,theStates);
+    return axios.put("/api/booking/books/"+ id, {
+        theStates
+    })
+      .then(function (results) {
+        console.log("data update results", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
+  }
   // Deletes the book with the given id
   // deleteBook: function(id) {
   //   return axios.delete("/api/booking/books/" + id);

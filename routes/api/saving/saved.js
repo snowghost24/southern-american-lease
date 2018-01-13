@@ -38,7 +38,7 @@ router.route("/")
   })
   .delete(function(req, res) {
     var vin = req.param("vin");
-    console.log("im deleting");
+    console.log("im deleting", vin);
     AutoEntry.find({ vin:vin }).remove().exec(function(err) {
       if (err) {
         // console.log(err);
