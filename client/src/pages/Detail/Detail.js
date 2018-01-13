@@ -20,7 +20,7 @@ class AutoDetailsForm extends React.Component {
       liftrange:"",
       trim:"",
       color:"",
-      fueltype:"gas",
+      fueltype:"Gasoline",
       drivetrain:"",
       keyfeatures:"",
       liftdetails:"",
@@ -296,9 +296,14 @@ class Detail extends Component {
               </h3>
               <article>
               <h3>Update Features</h3>
+              <p> Vin: {this.state.book.vin}</p>
+              <p>Year: {this.state.book.year}</p>
+              <p>Body: {this.state.book.bodyCabType}</p>
+              <p>Body Class: {this.state.book.bodyClass}</p>
               <p>
-                {this.state.book.vin}
-              </p>
+                Drive Train:{this.state.book.drivetrain}</p>
+              <p> Fuel Type: {this.state.book.fuelType}</p>
+    
             </article>
             </Jumbotron>
        

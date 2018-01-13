@@ -18,7 +18,7 @@ router.route("/")
   })
   .post(function(req, res) {
     var newAutoEntry = new AutoEntry(req.body);
-    console.log("this is article data", req.body);
+    console.log("Entry Data", req.body);
     newAutoEntry.save(function(err, doc) {
       if (err) {
         //note sure whey the error had to be inside error
@@ -48,6 +48,12 @@ router.route("/")
       }
     });
   })
+  .put(function(req, res) {
+    db.Book
+      .findOneAndUpdate({ _id: req.params.id }, req.body)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  }),
 
 
 

@@ -23,6 +23,7 @@ const AutoEntrySchema = new Schema({
   bodywork:String,
   dentwork:String,
   bedliner:String,
+  fuelType:String,
   series:String,
   bodyCabType:String,
   bodyClass:String,

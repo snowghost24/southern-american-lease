@@ -1,76 +1,77 @@
 // Include the Axios library for HTTP requests
 import axios from "axios";
 
-
-
 // Helper Functions
 const helpers = {
-// retrieves vehicle data from api
-  runQueryAjax: function(vinNumb) {
-
-    // Adjust to get search terms in proper format
+  // retrieves vehicle data from NHTSA
+  vinSearchNHTSAHelper: function (vinNumb) {
     var formattedVinNum = vinNumb.trim();
-    // var vin = {"vin":formattedVinNum}
-    return axios.post("/api/booking/books", {vin: formattedVinNum})
-    .then(function(response) {
-     
-   console.log(" this is the reponse or empty",response);
-      return response
-    }).catch(function (error) {
-      console.log(error);
-      // alert("Invalid vin");
-    });
+    return axios.post("/api/booking/books", { vin: formattedVinNum })
+      .then(function (response) {
+        console.log("vinSearchNHTSAHelper func response", response);
+        return response
+      }).catch(function (error) {
+        console.log(error);
+      });
   }
   ,
 
   // This will run our query.
   //responds to se
-  runQuery: function(vin, make, model, year,lastsix) {
-    // Adjust to get search terms in proper format
-    var formattedVin = vin.trim().toUpperCase();
-    var formattedMake = make.trim().toUpperCase();
-    var formattedModel = model.trim().toUpperCase() ;
-    var formattedYear = year.trim() ;
-    var formattedLastSix = lastsix;
-
-    var newArticle = { vin: formattedVin, make: formattedMake, model: formattedModel, year: formattedYear,lastsix:formattedLastSix};
+  enterVehicleDataHelper: function (entryData) {
+    console.log(entryData);
+    var newArticle = { 
+      vin: entryData[0], 
+      make: entryData[1], 
+      model: entryData[2], 
+      year: entryData[3], 
+      lastsix: entryData[4], 
+      series:entryData[5], 
+      bodyCabType:entryData[6], 
+      bodyClass:entryData[7],
+      trim:entryData[8],
+      drivetrain:entryData[9],
+      doors:entryData[10],
+      fuelType:entryData[11]
+    };
     console.log('postSaved', newArticle)
     return axios.post("/api/saving/saved", newArticle)
-      .then(function(response) {
+      .then(function (response) {
         console.log(response);
-        
-        if(response.data === "duplicate vehicle entry"){
+
+        if (response.data === "duplicate vehicle entry") {
           return response
-        }else {
+        } else {
           console.log("axios results", response.data._id);
           return response.data._id;
         }
-        
+
       }).catch(function (error) {
         console.log(error);
       });
   }
   //---------------------------------------------------------------------------------
-  ,  
+  ,
   // This will return any saved articles from our database
-  getSaved: function() {
+  getSaved: function () {
     return axios.get("/api/saving/saved")
-      .then(function(results) {
+      .then(function (results) {
         console.log("axios results", results);
         return results;
       }).catch(function (error) {
         console.log(error);
       });
   },
-  getFilteredSaved: function(searchType,searchItem) {
+  getFilteredSaved: function (searchType, searchItem) {
     var searchTypeFormatted = searchType.toLowerCase().trim();
     var searchItemFormatted = searchItem.trim()
-    return axios.get("/api/booking/books",{
-      params :{
+    return axios.get("/api/booking/books", {
+      params: {
         searchType: searchTypeFormatted,
-        searchItem:searchItemFormatted}
+        searchItem: searchItemFormatted
+      }
     })
-      .then(function(results) {
+      .then(function (results) {
         console.log("axios results", results);
         return results;
       }).catch(function (error) {
@@ -78,18 +79,33 @@ const helpers = {
       });
   },
   // This will remove saved articles from our database
-  deleteSaved: function(vin) {
+  deleteSaved: function (vin) {
     return axios.delete("/api/saving/saved", {
       params: {
         "vin": vin
       }
     })
-    .then(function(results) {
-      console.log("axios results", results);
-      return results;
-    }).catch(function (error) {
-      console.log(error);
-    });
+      .then(function (results) {
+        console.log("axios results", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
+  }
+  ,
+  dataEntryUpdate: function (vin) {
+    //  return axios.get("/api/booking/books/" + id);
+    return axios.put("/api/saving/saved", {
+      params: {
+        "vin": vin
+      }
+    })
+      .then(function (results) {
+        console.log("axios results", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
   }
 };
 

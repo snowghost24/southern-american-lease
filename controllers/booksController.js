@@ -9,6 +9,7 @@ module.exports = {
     console.log(req.query.searchItem);
     var searchType = req.query.searchType;
     var searchItem = req.query.searchItem.toUpperCase();
+    //Donot search for searchType but for the value 
     AutoEntry.find({[searchType]:searchItem})
     .exec(function(err, doc) {
       if (err) {
@@ -26,11 +27,9 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+
   create: function(req, res,next) {
-
-
-
-  //this array will be returned back to the front end with vehicle info
+//this array will be returned back to the front end with vehicle info
   var myUrl = 'https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValuesBatch/';
   var vin = req.body.vin
   var obj = { format: "json", data:vin};
@@ -65,36 +64,44 @@ resultValues.push({make:make});
 resultValues.push({model:model});
 resultValues.push({year:modelYear});
 resultValues.push({lastsix:lastsix});
-
-if (series != ""){
 resultValues.push({series:series});
-}
-
-if ( bodyCabType!= ""){
-resultValues.push({bodyCabType:bodyCabType});
-}
-
-if ( bodyClass!= ""){
+resultValues.push({bodyCabType:bodyCabType});  
 resultValues.push({bodyClass:bodyClass});
-}
+resultValues.push({trim:trim});  
+resultValues.push({driveType:driveType});  
+resultValues.push({doors:doors}); 
+resultValues.push({fuelType:fuelType}); 
 
-if ( trim != ""){
-resultValues.push({trim:trim});
-}
 
-if ( driveType != ""){
-resultValues.push({driveType:driveType});
-}
+// if (series != ""){
+// resultValues.push({series:series});
+// }
 
-if ( doors != ""){
-resultValues.push({doors:doors});
-}
+// if ( bodyCabType!= ""){
+// resultValues.push({bodyCabType:bodyCabType});
+// }
 
-if ( fuelType != ""){
-resultValues.push({fuelType:fuelType});
-}
+// if ( bodyClass!= ""){
+// resultValues.push({bodyClass:bodyClass});
+// }
 
-console.log(apiResults);
+// if ( trim != ""){
+// resultValues.push({trim:trim});
+// }
+
+// if ( driveType != ""){
+// resultValues.push({driveType:driveType});
+// }
+
+// if ( doors != ""){
+// resultValues.push({doors:doors});
+// }
+
+// if ( fuelType != ""){
+// resultValues.push({fuelType:fuelType});
+// }
+
+console.log(resultValues);
 //sends the response back to the client
 next(res.send(resultValues))
      }

@@ -44,7 +44,7 @@ class Query extends Component {
 
 // fires when props are passed down
   componentWillReceiveProps = (nextProps) =>{
-    console.log("I received props" , nextProps);
+    console.log("props received in query" , nextProps);
     this.setState({
       make:nextProps.vin,
       make:nextProps.make,
@@ -70,7 +70,7 @@ class Query extends Component {
   // This code handles the sending of the search terms to the parent Search component
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.updateSearch(this.state.vin, this.state.make, this.state.model,this.state.year,this.state.lastsix);
+    this.props.enterVehicleData(this.state.vin, this.state.make, this.state.model,this.state.year,this.state.lastsix);
    this.setState({
      vin:""
    })
@@ -88,7 +88,7 @@ class Query extends Component {
     }else if (this.state.vin === ""){
       console.log("vin is empty");
     }else{
-      this.props.vinSearch(this.state.vin);
+      this.props.vinSearchNHTSA(this.state.vin);
     }
   }
 

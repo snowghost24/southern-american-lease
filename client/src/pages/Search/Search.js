@@ -15,26 +15,46 @@ class Search extends Component {
   // Here we set the initial state variables
   // (this allows us to propagate the variables for maniuplation by the children components
   // Also note the "resuls" state. This will be where we hold the data from our results
-  this.state = { 
-    vin:"",
-    make :"",
-    model:"",
-    year:"",
-    lastsix:"",
-    results:[]
+    this.state = { 
+      vin:"",
+      make :"",
+      model:"",
+      year:"",
+      lastsix:"",
 
-  }
+      results:[]
+    }
   }
   // This function will be passed down into child components so they can change the "parent"
   // i.e we will pass this method to the query component that way it can change the main component
   // to perform a new search
 
 
-  setQuery = ( newVin,newMake, newModel, newYear,lastSix) => {
-    helpers.runQuery(newVin,newMake, newModel, newYear,lastSix)
+  enterVehicleData = ( newVin,newMake, newModel, newYear) => {
+    // here we combine front end and back end data to save vehicle
+    var vin = newVin.trim().toUpperCase();
+    var make = newMake.trim().toUpperCase();
+    var model= newModel.trim().toUpperCase();
+    var year = newYear.trim();
+    var lastSix = this.state.results[4]['lastsix']
+    var series = this.state.results[5]['series'];
+    var bodyCabType = this.state.results[6]['bodyCabType'];
+    var bodyClass = this.state.results[7]['bodyClass'];
+    var trim = this.state.results[8]['trim'];
+    var drivetrain = this.state.results[9]['driveType'];
+    var doors = this.state.results[10]['doors'];
+    var fuelType = this.state.results[11]['fuelType'];
+
+var entryData = [vin,make,model,year,lastSix,series,bodyCabType,bodyClass,trim,drivetrain,doors,fuelType]
+
+    console.log("Entry Data",entryData);
+   
+    
+    helpers.enterVehicleDataHelper(entryData)
     .then((data) => {
       if(data.data === "duplicate vehicle entry"){
        alert("Denied: This vehicle exists in inventory")
+       //onnce data is entred clear fields
        this.setState({
         vin:"",
         make:"",
@@ -42,8 +62,10 @@ class Search extends Component {
         year:"",
         lastsix:""
       })
+      
       }else {
         console.log(data);
+        console.log("in Search this is the state of results", this.state);
         //this clears the fields after the form has been submited
         // vin is cleared in the query component
         this.setState({
@@ -61,23 +83,23 @@ class Search extends Component {
 
    // this.setState(this.state)
 
-  setAjax = (vinNumb) => {
-    helpers.runQueryAjax(vinNumb)
+   vinSearchNHTSA = (vinNumb) => {
+    helpers.vinSearchNHTSAHelper(vinNumb)
     .then((response) => {
 
       if (response.data.data === "No results found for this vin"){
           alert("VIN number is invalid")
       }else{
- console.log("retrieved data from api in setAjax", response.data);
+ console.log("func vinSearchNHTSA in Search", response.data);
+ //Here we split the data front end and back end
   this.setState({
     vin:response.data[0]['vin'],
     make:response.data[1]['make'],
     model:response.data[2]['model'],
     year:response.data[3]['year'],
-    lastsix:response.data[4]['lastsix']
-
+    lastsix:response.data[4]['lastsix'],
+    results:response.data
   })
-
       }
      
       
@@ -95,14 +117,9 @@ class Search extends Component {
 
     return (
       <div className="main-container">
-{/* vinSearchResults={this.state.results} */}
-{/* results={this.state.results}  */}
-{/* updateSearch={this.setQuery} */}
-{/* sentDown = {results} */}
-        {/* Note how we pass the setQuery function to enable Query to perform searches */}
-        <Query  updateSearch={this.setQuery} vinSearch={this.setAjax}  make={this.state.make} model={this.state.model} year={this.state.year} vin={this.state.vin} lastsix={this.state.lastsix}/>
-        {/* Note how we pass in the results into this component */}
-        {/* In order to pass down you have to save into a variable */}
+
+      
+        <Query  enterVehicleData={this.enterVehicleData} vinSearchNHTSA={this.vinSearchNHTSA}  make={this.state.make} model={this.state.model} year={this.state.year} vin={this.state.vin} lastsix={this.state.lastsix}/>
         <Results />
       </div>
     );

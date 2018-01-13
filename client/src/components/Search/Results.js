@@ -93,7 +93,7 @@ class Results extends Component {
 
 
   render() {
-    console.log("these are the results in results",this.props.sentDown);
+    // console.log("these are the results in results",this.props.sentDown);
     // If we have no articles, render this HTML
     if (!this.props.sentDown) {
       return (
