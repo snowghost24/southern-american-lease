@@ -121,4 +121,26 @@ input:focus {
   
 }
 
+.Complete{
+  background-color: rgb(67, 170, 67);
+  color: aliceblue;
+  border-radius: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
 
+.Pending{
+  background-color: #fec42d;
+  color: aliceblue;
+  border-radius: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.Processing{
+  background-color:#009df6;
+  color: aliceblue;
+  border-radius: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+}

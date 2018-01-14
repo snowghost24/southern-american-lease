@@ -8,6 +8,7 @@ import NoMatch from "./pages/NoMatch";
 import Main from "./pages/Main";
 import Search from "./pages/Search";
 import Saved from "./pages/Saved";
+import Leather from "./pages/Leather";
 
 const App = () =>
   <Router>
@@ -16,6 +17,10 @@ const App = () =>
       <Switch>
         <Route exact path="/" component={Search} />
         <Route exact path={`${process.env.PUBLIC_URL}/search`} component={Search} />
+        <Route exact path={`${process.env.PUBLIC_URL}/sell/:id`} component={Search} />
+        <Route exact path={`${process.env.PUBLIC_URL}/leather`} component={Leather} />
+        <Route exact path={`${process.env.PUBLIC_URL}/lift`} component={Leather} />
+        <Route exact path={`${process.env.PUBLIC_URL}/detail`} component={Leather} />
         <Route exact path="/saved" component={Saved} />
         <Route exact path="/books" component={Books} />
         <Route exact path="/books/:id" component={Detail} />

@@ -52,7 +52,7 @@ const helpers = {
   }
   //---------------------------------------------------------------------------------
   ,
-  // This will return any saved articles from our database
+  // This will return all saved vehicles in database 
   getSaved: function () {
     return axios.get("/api/saving/saved")
       .then(function (results) {

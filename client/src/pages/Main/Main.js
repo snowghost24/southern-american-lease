@@ -36,6 +36,9 @@ class Main extends Component {
                   {/* Using <Link> in place of <a> and "to" in place of "href" */}
                   <li><Link to="/search">Add Vehicle</Link></li>
                   <li><Link to="/saved">Inventory</Link></li>
+                  <li><Link to="/leather">Leather</Link></li>
+                  <li><Link to="/lift">Lift</Link></li>
+                  <li><Link to="/detail">Detail</Link></li>
                 </ul>
               </div>
             </div>

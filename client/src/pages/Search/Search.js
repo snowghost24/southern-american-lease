@@ -21,7 +21,6 @@ class Search extends Component {
       model:"",
       year:"",
       lastsix:"",
-
       results:[]
     }
   }
@@ -29,9 +28,8 @@ class Search extends Component {
   // i.e we will pass this method to the query component that way it can change the main component
   // to perform a new search
 
-
+ // here we combine front end and back end data to save vehicle
   enterVehicleData = ( newVin,newMake, newModel, newYear) => {
-    // here we combine front end and back end data to save vehicle
     var vin = newVin.trim().toUpperCase();
     var make = newMake.trim().toUpperCase();
     var model= newModel.trim().toUpperCase();
@@ -44,82 +42,82 @@ class Search extends Component {
     var drivetrain = this.state.results[9]['driveType'];
     var doors = this.state.results[10]['doors'];
     var fuelType = this.state.results[11]['fuelType'];
+    var entryData = [
+      vin,
+      make,
+      model,
+      year,
+      lastSix,
+      series,
+      bodyCabType,
+      bodyClass,
+      trim,
+      drivetrain,
+      doors,
+      fuelType
+    ]
 
-var entryData = [vin,make,model,year,lastSix,series,bodyCabType,bodyClass,trim,drivetrain,doors,fuelType]
-
-    console.log("Entry Data",entryData);
    
-    
     helpers.enterVehicleDataHelper(entryData)
-    .then((data) => {
-      if(data.data === "duplicate vehicle entry"){
-       alert("Denied: This vehicle exists in inventory")
-       //onnce data is entred clear fields
-       this.setState({
-        vin:"",
-        make:"",
-        model:"",
-        year:"",
-        lastsix:""
-      })
-      
-      }else {
-        console.log(data);
-        console.log("in Search this is the state of results", this.state);
-        //this clears the fields after the form has been submited
-        // vin is cleared in the query component
-        this.setState({
-          vin:"",
-          make:"",
-          model:"",
-          year:"",
-          lastsix:""
-        })
-        this.setState({ results: { docs: data.docs } });
-      }
-    });
+      .then((data) => {
+        if (data.data === "duplicate vehicle entry") {
+          alert("Denied: This vehicle exists in inventory")
+          //once data is entered clear fields
+          this.setState({
+            vin: "",
+            make: "",
+            model: "",
+            year: "",
+            lastsix: ""
+          })
+        } else {
+          //this clears the fields after the form has been submited
+          // vin is cleared in the query component
+          this.setState({
+            vin: "",
+            make: "",
+            model: "",
+            year: "",
+            lastsix: ""
+          })
+          this.setState({ results: { docs: data.docs } });
+        }
+      });
   }
 
-
-   // this.setState(this.state)
-
-   vinSearchNHTSA = (vinNumb) => {
+  vinSearchNHTSA = (vinNumb) => {
     helpers.vinSearchNHTSAHelper(vinNumb)
-    .then((response) => {
-
-      if (response.data.data === "No results found for this vin"){
+      .then((response) => {
+        if (response.data.data === "No results found for this vin") {
           alert("VIN number is invalid")
-      }else{
- console.log("func vinSearchNHTSA in Search", response.data);
- //Here we split the data front end and back end
-  this.setState({
-    vin:response.data[0]['vin'],
-    make:response.data[1]['make'],
-    model:response.data[2]['model'],
-    year:response.data[3]['year'],
-    lastsix:response.data[4]['lastsix'],
-    results:response.data
-  })
-      }
-     
-      
-
-
-  
-      // this.setState(this.state)
-    }).catch(error =>{
+        } else {
+          //Here we split the data front end and back end
+           // this.setState(this.state)
+          this.setState({
+            vin: response.data[0]['vin'],
+            make: response.data[1]['make'],
+            model: response.data[2]['model'],
+            year: response.data[3]['year'],
+            lastsix: response.data[4]['lastsix'],
+            results: response.data
+          })
+        }}).catch(error =>{
       console.log(error);
     })
   }
 
   // Render the component. Note how we deploy both the Query and the Results Components
   render() {
-
     return (
       <div className="main-container">
-
-      
-        <Query  enterVehicleData={this.enterVehicleData} vinSearchNHTSA={this.vinSearchNHTSA}  make={this.state.make} model={this.state.model} year={this.state.year} vin={this.state.vin} lastsix={this.state.lastsix}/>
+        <Query  
+        enterVehicleData={this.enterVehicleData} 
+        vinSearchNHTSA={this.vinSearchNHTSA}  
+        make={this.state.make} 
+        model={this.state.model} 
+        year={this.state.year} 
+        vin={this.state.vin} 
+        lastsix={this.state.lastsix}/>
         <Results />
       </div>
     );
