@@ -6,8 +6,6 @@ import API from "../../utils/API";
 import { Input, TextArea, FormBtn } from "../../components/Form";
 // import helpers from "../../utils/helpers";
 
-
-
 class AutoDetailsForm extends React.Component {
   constructor(props) {
     super(props);
@@ -32,7 +30,14 @@ class AutoDetailsForm extends React.Component {
       series:"",
       color:"",
       bodyCabType:"",
-      bodyClass:""  
+      bodyClass:"",
+      liftNote:"",
+      leatherNote:"",
+      detailNote:"",
+      leatherStatus:"",
+      liftStatus:"",
+      detailStatus:""
+     
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -62,7 +67,13 @@ class AutoDetailsForm extends React.Component {
       series:props.sentDownStates.vehicle.series,
       color:props.sentDownStates.vehicle.color,
       bodyCabType:props.sentDownStates.vehicle.bodyCabType,
-      bodyClass:props.sentDownStates.vehicle.bodyClass  
+      bodyClass:props.sentDownStates.vehicle.bodyClass,
+      liftNote:props.sentDownStates.vehicle.liftNote,
+      leatherNote:props.sentDownStates.vehicle.leatherNote,
+      detailNote:props.sentDownStates.vehicle.detailNote,
+      leatherStatus:props.sentDownStates.vehicle.leatherStatus,
+      liftStatus:props.sentDownStates.vehicle.liftStatus,
+      detailStatus:props.sentDownStates.vehicle.detailStatus,
     })
     console.log("received states ->", props.sentDownStates.vehicle);
 
@@ -115,12 +126,12 @@ class AutoDetailsForm extends React.Component {
         <label>
           Current Location:
           <select type="string" name="location" value={this.state.location} onChange={this.handleInputChange}>
-            <option value="auction">Auction</option>
-            <option value="watson">Watson</option>
-            <option value="high standards">High Standards</option>
-            <option value="go">GO</option>
-            <option value="southern Leather">Southern Leather</option>
-            <option value="joes">Joes</option>
+            <option value="Auction">Auction</option>
+            <option value="Watson">Watson</option>
+            <option value="High Standards">High Standards</option>
+            <option value="Go">GO</option>
+            <option value="Southern Leather">Southern Leather</option>
+            <option value="Distinction Detail">Joes</option>
             <option value="body shop">Body Shop</option>
             <option value="delivered">Delivered to buyer</option>
             <option value="other">Other</option>
@@ -223,12 +234,10 @@ class AutoDetailsForm extends React.Component {
             onChange={this.handleInputChange} />
         </label>
 <hr/>
-       
-   
- 
-       
         <h3>Work Required</h3>
-  
+          <Row>
+        <Col size="md-4">
+
         <label>
           Install Leather:
           <select type="string" name="leatherColor" value={this.state.leatherColor} onChange={this.handleInputChange}>
@@ -247,7 +256,23 @@ class AutoDetailsForm extends React.Component {
             <option value="none">None</option>
           </select>
         </label>
-      
+        <br />
+        <label>
+        Leather Status:
+          <select type="string" name="leatherStatus" value={this.state.leatherStatus} onChange={this.handleInputChange}>
+          <option value="Pending">Pending</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Complete">Complete</option>
+          </select>
+        </label>
+        <br />
+        <label>
+          Leather Notes:
+        <TextArea type="string" name="leatherNote" value={this.state.leatherNote} onChange={this.handleInputChange} />
+        </label>
+        </Col>
+        <Col size="md-4">
+
         <label>
           Lift Kit Range:
           <select type="string" name="liftrange" value={this.state.liftrange} onChange={this.handleInputChange}>
@@ -262,6 +287,22 @@ class AutoDetailsForm extends React.Component {
             <option value="none">None</option>
           </select>
         </label>
+        <br />
+        <label>
+        Lift Status:
+          <select type="string" name="liftStatus" value={this.state.liftStatus} onChange={this.handleInputChange}>
+          <option value="Pending">Pending</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Complete">Complete</option>
+          </select>
+        </label>
+        <br />
+        <label>
+          Lift Notes
+        <TextArea type="string" name="liftNote" value={this.state. liftNote} onChange={this.handleInputChange} />
+        </label>
+        </Col>
+        <Col size="md-4">
         <label>
           Detail:
           <select type="string" name="detail" value={this.state.detail} onChange={this.handleInputChange}>
@@ -271,6 +312,26 @@ class AutoDetailsForm extends React.Component {
           <option value="none">None</option>
           </select>
         </label>
+        <br />
+    
+        <label>
+        Detail Status:
+          <select type="string" name="detailStatus" value={this.state.detailStatus} onChange={this.handleInputChange}>
+          <option value="Pending">Pending</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Complete">Complete</option>
+          </select>
+        </label>
+        <br />
+        <label>
+          Detail Notes
+        <TextArea type="string" name="detailNote" value={this.state.detailNote} onChange={this.handleInputChange} />
+        </label>
+        </Col>
+        </Row>
+        <Row>
+        
+        <Col size="md-3">
         <label>
           Body Work:
           <select type="string" name="bodywork" value={this.state.bodywork} onChange={this.handleInputChange}>
@@ -278,7 +339,8 @@ class AutoDetailsForm extends React.Component {
           <option value="required">Required</option>
           </select>
         </label>
-        <br />
+        </Col>
+        <Col size="md-3">
         <label>
           Dent Work:
           <select type="string" name="dentwork" value={this.state.dentwork} onChange={this.handleInputChange}>
@@ -286,6 +348,8 @@ class AutoDetailsForm extends React.Component {
           <option value="required">Required</option>
           </select>
         </label>
+        </Col>
+        <Col size="md-3">
         <label>
           BedLiner:
           <select type="string" name="bedliner" value={this.state.bedliner} onChange={this.handleInputChange}>
@@ -293,16 +357,15 @@ class AutoDetailsForm extends React.Component {
           <option value="required">Required</option>
           </select>
         </label>
-         
+        </Col>
+        <Col size="md-3">
+     
+        </Col>
+       
 
-        
-      
-        <br />
-        <label>
-          Vehicle Notes:
-        <TextArea type="string" name="textAreaValue" value={this.state.textAreaValue} onChange={this.handleInputChange} />
-        </label>
+         </Row>
         <Input type="submit" value="Submit" />
+        
       </form>
       </fieldset >
     );
@@ -361,7 +424,7 @@ class Detail extends Component {
             <Col size="md-4">
               
               
-              
+            <p><strong>Location:</strong> {this.state.vehicle.location}</p>
               <p><strong>VIN:</strong> {this.state.vehicle.vin}</p>
               <p><strong>Make:</strong>{this.state.vehicle.make}</p>
               <p><strong>Model:</strong>{this.state.vehicle.model}</p>
@@ -410,22 +473,22 @@ class Detail extends Component {
           <Col size="md-3">
           <h4>Leather Kit Installation</h4>
           <p><strong>Leather Kit:</strong> {this.state.vehicle.leatherColor}</p>
-          <p><strong>Status:</strong> </p>
+          <p><strong>Status:</strong>{this.state.vehicle.leatherStatus} </p>
           </Col>
           <Col size="md-3">
           <h4>Lift Kit Installation</h4>
           <p><strong>Leather Kit:</strong> {this.state.vehicle.liftrange}</p>
-          <p><strong>Status:</strong> </p>
+          <p><strong>Status:</strong> {this.state.vehicle.liftStatus}</p>
           </Col>
           <Col size="md-3">
           <h4>Cleaning Detail</h4>
-          <p><strong>Leather Kit:</strong> {this.state.vehicle.leatherColor}</p>
-          <p><strong>Status:</strong> </p>
+          <p><strong>Leather Kit:</strong> {this.state.vehicle.detail}</p>
+          <p><strong>Status:</strong> {this.state.vehicle.detailStatus}</p>
           </Col>
           <Col size="md-3">
           <h4>Body Shop Work</h4>
           <p><strong>Body Shop:</strong> {this.state.vehicle.bodywork}</p>
-          <p><strong>Status:</strong> </p>
+          
           </Col>
         </Row>
         <Row>

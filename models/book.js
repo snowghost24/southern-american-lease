@@ -26,16 +26,15 @@ const AutoEntrySchema = new Schema({
   fuelType:String,
   series:String,
   color:String,
-  liftNote:String,
-  leatherNote:String,
-  detailNote:String,
-  bodyShopNote:String,
   bodyCabType:String,
   bodyClass:String,
   leatherStatus:String,
   liftStatus:String,
   detailStatus:String,
-  bodyShopStatus:String,
+  liftNote:String,
+  leatherNote:String,
+  detailNote:String,
+
   date: { type: Date, default: Date.now }
 
 });
