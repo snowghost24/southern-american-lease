@@ -7,7 +7,7 @@ import NoMatch from "./pages/NoMatch";
 // import Nav from "./components/Nav";
 import Main from "./pages/Main";
 import Search from "./pages/Search";
-import Saved from "./pages/Saved";
+import Inventory from "./pages/Inventory";
 import Leather from "./pages/Leather";
 
 const App = () =>
@@ -21,7 +21,7 @@ const App = () =>
         <Route exact path={`${process.env.PUBLIC_URL}/leather`} component={Leather} />
         <Route exact path={`${process.env.PUBLIC_URL}/lift`} component={Leather} />
         <Route exact path={`${process.env.PUBLIC_URL}/detail`} component={Leather} />
-        <Route exact path="/saved" component={Saved} />
+        <Route exact path="/saved" component={Inventory} />
         <Route exact path="/books" component={Books} />
         <Route exact path="/books/:id" component={Detail} />
         <Route component={NoMatch} />

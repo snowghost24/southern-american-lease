@@ -93,6 +93,14 @@ const helpers = {
       }).catch(function (error) {
         console.log(error);
       });
+  },getSavedLeather: function () {
+    return axios.get("/api/leather/leatherkit")
+      .then(function (results) {
+        console.log("axios results", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
   }
   
 

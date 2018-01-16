@@ -4,24 +4,26 @@ const requesting = require('request');
 // Defining methods for the booksController
 module.exports = {
   findAll: function(req, res) {
-    console.log("Im in find all");
+    // console.log("Im in find all");
     // console.log("Find all querys");
     // console.log(req.query.searchType);
     // console.log(req.query.searchItem);
     // var searchType = req.query.searchType;
     // var searchItem = req.query.searchItem.toUpperCase();
-    // //Donot search for searchType but for the value 
-    // AutoEntry.find({[searchType]:searchItem})
-    // .exec(function(err, doc) {
-    //   if (err) {
-    //     console.log(err);
-    //   }
-    //   else {
-    //     console.log("Find all sent back docs",doc);
-    //     res.send(doc);
-    //   }
-    // });
+    //Donot search for searchType but for the value 
+    // find({[searchType]:searchItem})
+   
+    AutoEntry.find({ leatherColor: { $ne: "none" } }).sort({ date: -1 })
+    .exec(function(err, doc) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        res.send(doc);
+      }
+    });
   },
+
   findById: function(req, res) {
     console.log("Im in find by ID");
     // AutoEntry.findById(req.params.id)
@@ -34,12 +36,14 @@ module.exports = {
 
   },
   update: function(req, res) {
-    console.log("update id",req.params.id);
-    console.log("update body",req.body.theStates);
-    console.log("update id",req.params.id);
-    AutoEntry.findOneAndUpdate({ _id: req.params.id }, req.body.theStates)
+    // console.log("update id",req.params.id);
+    // console.log("update body", req.body.theNewColor.leathercolor);
+    var changes = req.body.newChanges
+    console.log(changes);
+    console.log("we made it to update");
+    AutoEntry.findOneAndUpdate({ _id: req.params.id }, {$set:changes},{upsert:true})
       .then((dbModel) => {
-        console.log("the model", dbModel );
+        console.log("the model is", dbModel );
         res.send(dbModel)})
       .catch(err => res.status(422).json(err));
   },

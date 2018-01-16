@@ -20,6 +20,19 @@ export default {
       }).catch(function (error) {
         console.log(error);
       });
+  },
+  //updates the color of leather for leather page
+  updateLeather: function (id,newChanges) {
+    // console.log("update date helper",id,newChanges);
+    return axios.put("/api/leather/leatherkit/"+ id, {
+      newChanges
+    })
+      .then(function (results) {
+        console.log("results after new color", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
   }
   // Deletes the book with the given id
   // deleteBook: function(id) {

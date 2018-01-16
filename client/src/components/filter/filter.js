@@ -37,6 +37,7 @@ class Filter extends React.Component {
            <option value="make">Make</option>
            <option value="model">Model</option>
            <option value="year">Year</option>
+           <option value="location">Location</option>
           </select>
         </label>
         <label>

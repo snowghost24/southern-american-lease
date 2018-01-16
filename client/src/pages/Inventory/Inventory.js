@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import helpers from "../../utils/helpers";
 import Filter from "../../components/filter/filter";
 // Create the Main component
-class Saved extends Component {
+class Inventory extends Component {
   state = {
     savedArticles: []
   }
@@ -127,4 +127,4 @@ class Saved extends Component {
 };
 
 // Export the module back to the route
-export default Saved;
+export default Inventory;

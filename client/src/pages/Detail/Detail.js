@@ -137,12 +137,13 @@ class AutoDetailsForm extends React.Component {
             Current Location:
           <select type="string" name="location" value={this.state.location} onChange={this.handleInputChange} >
               <option value="pending">Pending</option>
-              <option value="Auction">Auction</option>
               <option value="Watson">Watson</option>
               <option value="High Standards">High Standards</option>
-              <option value="Go">GO</option>
               <option value="Southern Leather">Southern Leather</option>
-              <option value="Distinction Detail">Joes</option>
+              <option value="Distinction Detail">Distinct Detials</option>
+              <option value="WashBay">WashBay</option>
+              <option value="Go">GO</option>
+              <option value="Auction">Auction</option>
               <option value="body shop">Body Shop</option>
               <option value="delivered">Delivered to buyer</option>
               <option value="other">Other</option>
