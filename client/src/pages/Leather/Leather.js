@@ -290,7 +290,12 @@ class Leather extends Component {
             </span>
             <p>Date Entered: {vehicle.date}</p>
             <h4>Install Kit: <strong>{vehicle.leatherColor}</strong></h4>
-            <h4>Vehicle Location: <strong>{vehicle.location}</strong></h4>
+            <h4>Vehicle Location: <strong>{vehicle.location}
+            </strong></h4>
+           
+              {vehicle.transitLink != ""? ( <h4>Coming: <a href={vehicle.transitLink} rel="noopener noreferrer" target="_blank">See Intransit Location </a></h4>):(<p></p>) }
+
+
               {/* if note is empty do not show anything */}
             {vehicle.leatherNote != "" ? (<h4>Vehicle Note: <strong><span className="notes">{vehicle.leatherNote}</span></strong></h4>)  :( <p></p>) }
            

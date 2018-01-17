@@ -34,6 +34,7 @@ const AutoEntrySchema = new Schema({
   liftNote:String,
   leatherNote:String,
   detailNote:String,
+  transitLink:String,
 
   date: { type: Date, default: Date.now }
 

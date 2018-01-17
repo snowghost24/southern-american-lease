@@ -36,7 +36,8 @@ class AutoDetailsForm extends React.Component {
       detailNote: "",
       leatherStatus: "",
       liftStatus: "",
-      detailStatus: ""
+      detailStatus: "",
+      transitLink:''
 
     };
 
@@ -76,6 +77,7 @@ class AutoDetailsForm extends React.Component {
       leatherStatus: props.sentDownStates.vehicle.leatherStatus,
       liftStatus: props.sentDownStates.vehicle.liftStatus,
       detailStatus: props.sentDownStates.vehicle.detailStatus,
+      transitLink: props.sentDownStates.vehicle.transitLink,
     })
     console.log("received states ->", props.sentDownStates.vehicle);
 
@@ -149,6 +151,18 @@ class AutoDetailsForm extends React.Component {
               <option value="other">Other</option>
             </select>
           </label>
+
+          <label>
+            Transit Link:
+          <Input
+              name="transitLink"
+              type="string"
+              value={this.state.transitLink}
+              onChange={this.handleInputChange} />
+          </label>
+
+
+
           <br />
 
           <hr />
@@ -451,6 +465,9 @@ class Detail extends Component {
               <p><strong>Key Features:</strong>{this.state.vehicle.keyfeatures}</p>
               <p><strong>Lift Details:</strong>{this.state.vehicle.liftdetails}</p>
               <p><strong>Fuel Type:</strong>{this.state.vehicle.fuelType}</p>
+              
+              {/* <a href="http://www.carshipio.com/shipper/orderview/MTU0MjggLSAyMzIxMjk=" rel="noopener noreferrer" target="_blank">See Intransit Location </a> */}
+              <a href={this.state.vehicle.transitLink} rel="noopener noreferrer" target="_blank">See Intransit Location </a>
             </Col >
             
           </Col>

@@ -10,7 +10,9 @@ class Filter extends React.Component {
     searchText:'',
     searchLocation:'pending',
     searchedFrom:'',
-    leatherStatus:''
+    leatherStatus:'',
+    releasedStatus:''
+    
   };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -32,6 +34,9 @@ class Filter extends React.Component {
     this.setState({leatherStatus: e.target.value})
   }
   
+  handleReleaseChange = (e)=>{
+    this.setState({releasedStatus: e.target.value})
+  }
 
   componentDidMount = ()=>{
     if (this.props.workFrom){
@@ -52,10 +57,13 @@ class Filter extends React.Component {
 
       searchItem = this.state.leatherStatus;
       searchType = 'leatherStatus';
-    } else {
+    } else if (this.state.value == "released" ){
        searchType = this.state.value;
-       searchItem = this.state.searchText;
-    }
+       searchItem = this.state.releasedStatus;
+    } else {
+      searchType = this.state.value;
+      searchItem = this.state.searchText;
+   }
     
     console.log("im submitting", searchType,searchItem);
     event.preventDefault();
@@ -84,6 +92,18 @@ class Filter extends React.Component {
         </select>
       </label>
       );
+    }else if (this.state.value == 'released'){
+      return (
+      <label>
+      Released Status:
+    <select className="form-control" type="string" name="searchText" value={this.state.releasedStatus} onChange={this.handleReleaseChange} >
+        <option value="pending released">Pending Release</option>
+        <option value="relased">Released</option>
+        <option value="released intransit">Released Intransit</option>
+        <option value="arrived">Arrived</option>
+      </select>
+    </label>
+      )
     } else {
       return (
         <label>
@@ -116,6 +136,8 @@ class Filter extends React.Component {
       theStateValue = "location"
     }else if(this.state.value == "jobStatus" ){
       theStateValue = "jobStatus"
+    }else if(this.state.value == "released" ){
+      theStateValue = "released"
     }else{
       theStateValue = "other"
     }
@@ -132,6 +154,7 @@ console.log("from filter",this.state);
            <option value="model">Model</option>
            <option value="year">Year</option>
            <option value="location">Location</option>
+           <option value="released">Released Status</option>
            <option value="jobStatus">Job Status</option>
           </select>
         </label>
