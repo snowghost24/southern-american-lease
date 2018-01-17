@@ -63,7 +63,7 @@ const helpers = {
       });
   },
   getFilteredSaved: function (searchType, searchItem) {
-    var searchTypeFormatted = searchType.toLowerCase().trim();
+    var searchTypeFormatted = searchType.trim();
     var searchItemFormatted = searchItem.trim()
     return axios.get("/api/booking/books", {
       params: {

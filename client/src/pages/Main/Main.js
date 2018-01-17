@@ -46,8 +46,8 @@ class Main extends Component {
 
           {/* Jumbotron */}
           <div className="jumbotron">
-            <h2 className="text-center"><strong>Southern American Lease Group</strong></h2>
-            <h3 className="text-center">Vehicles to Inventory</h3>
+            <h2 className="text-center"><strong>CANAM AUTO</strong></h2>
+            <h3 className="text-center">Vehicle Inventory</h3>
           </div>
 
 
