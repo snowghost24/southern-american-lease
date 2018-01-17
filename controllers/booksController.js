@@ -6,11 +6,12 @@ module.exports = {
   findAll: function(req, res) {
     console.log("Find all querys");
     console.log(req.query.searchType);
-    console.log(req.query.searchItem);
+    console.log("pending wont pass",req.query.searchItem);
     var searchType = req.query.searchType;
-    var searchItem = req.query.searchItem.toUpperCase();
+    var searchItem = req.query.searchItem
+    // var searchItem = req.query.searchItem.toUpperCase();
     //Donot search for searchType but for the value 
-    AutoEntry.find({[searchType]:searchItem})
+    AutoEntry.find({[searchType]:searchItem}).collation( { locale: 'en', strength: 2 } )
     .exec(function(err, doc) {
       if (err) {
         console.log(err);
