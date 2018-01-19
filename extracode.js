@@ -372,3 +372,125 @@ class Detail extends Component {
 }
 
 export default Detail;
+
+
+
+// class FileInput extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.handleSubmit = this.handleSubmit.bind(
+//       this
+//     );
+//   }
+
+//   handleSubmit(event) {
+//   var theVin = this.props.sentDownStates.vehicle.vin
+//   // console.log(URL.createObjectURL(this.fileInput.files[0]))  
+//   var theFile = this.fileInput.files[0]
+//   console.log(theFile);
+//     API.sendFile(theVin, theFile)
+//     // .then((res) => {
+//     //   console.log("file send", res);
+//     //   // console.log("sent the file", res.data);
+//     // }).catch(err => console.log(err));
+
+    
+    
+
+//   }
+
+//   render() {
+//     return (
+//       <form
+//         onSubmit={this.handleSubmit} enctype="multipart/form-data">
+//         <label>
+//           Upload Vin Image:
+//           <input
+//             type="file"
+//             ref={input => {
+//               this.fileInput = input;
+            
+//             }}
+//           />
+//         </label>
+//         <br />
+//         <button type="submit">
+//           Submit
+//         </button>
+//       </form>
+//     );
+//   }
+// }
+
+
+// <Dropzone 
+// onDrop={this.handleDrop} 
+// multiple 
+// accept="image/*" 
+// style={styles.dropzone}
+// >
+// <p>Drop your files or click here to upload</p>
+// </Dropzone>
+
+
+// handleDrop = files => {
+//   // Push all the axios request promise into a single array
+//   const uploaders = files.map(file => {
+//     // Initial FormData
+//     const formData = new FormData();
+//     formData.append("file", file);
+//     formData.append("tags", `codeinfuse, medium, gist`);
+//     formData.append("upload_preset", "dcv191fk7"); // Replace the preset name with your own
+//     formData.append("api_key", "918296179275747"); // Replace API key with your own Cloudinary key
+//     formData.append("timestamp", (Date.now() / 1000) | 0);
+//     var vin = this.state.vehicle.vin
+
+
+//     console.log(formData);
+//     API.sendFile(vin,formData);
+   
+//     return axios.post("	https://api.cloudinary.com/v1_1/dcv191fk7", formData, {
+//       headers:{
+  
+//   'X-Requested-With': 'XMLHttpRequest'
+// },
+//        { "X-Requested-With": "XMLHttpRequest" ,'Access-Control-Allow-Origin': '*'},
+//     }).then(response => {
+//       const data = response.data;
+//       const fileURL = data.secure_url 
+// // You should store this URL for future references in your app
+//       console.log(data);
+//    })
+//   });
+
+//   // Once all the files are uploaded 
+//   axios.all(uploaders).then(() => {
+//     alert("up loaded");
+//     // ... perform after upload is successful operation
+//   });
+// }
+
+
+
+
+
+export default class ContactForm extends React.Component {
+
+  render() {
+    <Dropzone
+      multiple={false}
+      accept="image/*"
+      onDrop={this.onImageDrop.bind(this)}>
+      <p>Drop an image or click to select a file to upload.</p>
+    </Dropzone>
+  }
+
+}
+// When using the React ES5 class syntax (React.createClass), all methods are "autobound" to the class instance. The code in this post uses the ES6 class syntax (extends React.Component), which does not provide autobinding. That's why we use .bind(this) in the onDrop prop. (If you aren't familiar with .bind, you can read about it here.
+
+
+
+
+
+const CLOUDINARY_UPLOAD_PRESET = 'pxp1u3go';
+const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dcv191fk7/upload';

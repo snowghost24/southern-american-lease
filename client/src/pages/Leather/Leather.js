@@ -1,20 +1,20 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
-import Jumbotron from "../../components/Jumbotron";
+// import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
 import { Input, TextArea, FormBtn } from "../../components/Form";
 import ToggleButton from 'react-toggle-button'
 import helpers from "../../utils/helpers";
 import Filter from "../../components/filter/filter";
 import "./Leather.css";
+
 class LeatherStatus extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       leatherStatus: '',
       location:'',     
-     
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -33,7 +33,7 @@ class LeatherStatus extends React.Component {
 
   alsoChangeLocation(value){
     console.log("Im in change location");
-    if (value == "Processing"){
+    if (value === "Processing"){
       this.setState({
         location:"Southern Leather"
       })
@@ -61,13 +61,12 @@ class LeatherStatus extends React.Component {
   componentDidMount = () => {
     var theStatus = this.props.theVehicle.location;
     var theLocation = this.props.theVehicle.location;
-    var theNote = this.props.theVehicle.leatherNote
+    // var theNote = this.props.theVehicle.leatherNote
     console.log(theLocation,theStatus);
     this.setState({
       leatherStatus:theStatus,
       location:theLocation
     });
-
   }
 
 
@@ -267,8 +266,32 @@ class Leather extends Component {
       //calls and sends the index value to the create New array function above
       //creates a varible called the check composed of the value and index
       var theCheck = "value"+index;
-      this.createNewState(index,theCheck)
+      this.createNewState(index,theCheck);
+      var linkTrigger;
+      var noteTrigger
 
+      if (vehicle.transitLink === ""  ){
+        linkTrigger = 'Not Active'
+      } else if(vehicle.transitLink === undefined ) {
+        linkTrigger = 'Not Active'
+      } else if (vehicle.transitLink === null) {
+        linkTrigger = 'Not Active'
+      } else {
+        linkTrigger = 'Active'
+      }
+
+      if (vehicle.leatherNote === ""  ){
+        noteTrigger = 'Not Active'
+      } else if(vehicle.leatherNote === undefined ) {
+        noteTrigger = 'Not Active'
+      } else if (vehicle.leatherNote === null) {
+        noteTrigger = 'Not Active'
+      } else {
+        noteTrigger = 'Active'
+      }
+
+      
+      console.log("this is transit link",vehicle.transitLink,"link trigger is",linkTrigger)
       return (
         <div key={index}>
           <li className="list-group-item">
@@ -293,11 +316,11 @@ class Leather extends Component {
             <h4>Vehicle Location: <strong>{vehicle.location}
             </strong></h4>
            
-              {vehicle.transitLink != ""? ( <h4>Coming: <a href={vehicle.transitLink} rel="noopener noreferrer" target="_blank">See Intransit Location </a></h4>):(<p></p>) }
+              {linkTrigger === "Active" ? ( <h4>Transport: <a href={vehicle.transitLink} rel="noopener noreferrer" target="_blank">See Intransit Location </a></h4>):(<p></p>) }
 
 
               {/* if note is empty do not show anything */}
-            {vehicle.leatherNote != "" ? (<h4>Vehicle Note: <strong><span className="notes">{vehicle.leatherNote}</span></strong></h4>)  :( <p></p>) }
+            {noteTrigger === "Active" ? (<h4>Vehicle Note: <strong><span className="notes">{vehicle.leatherNote}</span></strong></h4>)  :( <p></p>) }
            
             <h4>Install Status: <span className={vehicle.leatherStatus}><strong>{vehicle.leatherStatus}</strong></span></h4>
 
@@ -351,6 +374,7 @@ class Leather extends Component {
   }
   // Our render method. Utilizing a few helper methods to keep this logic clean
   render() {
+
     // If we have no articles, we will return this.renderEmpty() which in turn returns some HTML
     if (!this.state.savedVehicles) {
       return this.renderEmpty();

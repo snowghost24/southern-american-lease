@@ -1,17 +1,97 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
-import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
-import { Input, TextArea, FormBtn } from "../../components/Form";
+import { Input, TextArea } from "../../components/Form";
+
 // import helpers from "../../utils/helpers";
+
+// import Dropzone from 'react-dropzone'
+//------------------------------------------------
+import { CloudinaryContext, Image, Transformation, Video } from 'cloudinary-react';
+import { equals } from 'cloudinary-react/Utils';
+import cloudinary from 'cloudinary-core';
+
+//------------------------------------------------
+import axios from 'axios'
+import Dropzone from "react-dropzone";
+import request from 'superagent';
+
+const cloudinaryCore = new cloudinary.Cloudinary({cloud_name: 'demo'});
+//-------------------------------------------------
+
+
+ class FileUploader extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        uploadedFileCloudinaryUrl: ''
+      };}
+  
+      
+      onImageDrop(files) {
+        this.setState({
+          uploadedFile: files[0]
+        });
+    
+        this.handleImageUpload(files[0]);
+      }
+
+
+      handleImageUpload(file) {
+        let upload = request.post(CLOUDINARY_UPLOAD_URL)
+                            .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+                            .field('file', file)
+                            .field('tags', "VIN") 
+                            .field('created_at', Date.now())
+                            .field('width', 120)
+                            .field('height', 80)
+                            .field('public_id',this.props.sentDownStates.vehicle.vin)
+        upload.end((err, response) => {
+          if (err) {
+            console.error(err);
+          }
+    
+          if (response.body.secure_url !== '') {
+            this.setState({
+              uploadedFileCloudinaryUrl: response.body.secure_url
+            });
+          }
+        });
+      }
+    
+
+
+  render() {
+    return(
+    <div>
+    <div className="FileUpload">
+    <Dropzone
+      multiple={false}
+      accept="image/*"
+      onDrop={this.onImageDrop.bind(this)}>
+      <p>Drop an image or click to select a file to upload.</p>
+    </Dropzone>
+    </div>
+
+    <div>
+      {this.state.uploadedFileCloudinaryUrl === '' ? null :
+      <div>
+        <p>{this.state.uploadedFile.name}</p>
+        <img src={this.state.uploadedFileCloudinaryUrl} />
+      </div>}
+    </div>
+  </div>
+    )
+  }}
+
 
 class AutoDetailsForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      released: "pending released",
-      doors: "4",
+      released: "",
+      doors: "",
       price: "",
       textAreaValue: "",
       leatherColor: '',
@@ -23,10 +103,11 @@ class AutoDetailsForm extends React.Component {
       keyfeatures: "",
       liftdetails: "",
       detail: "",
-      bodywork: "not required",
-      dentwork: "not required",
-      bedliner: "not required",
-      fuelType: "Gasoline",
+      bodywork: "",
+      dentwork: "",
+      bedliner: "",
+      graphics:'',
+      fuelType: "",
       series: "",
       color: "",
       bodyCabType: "",
@@ -37,7 +118,11 @@ class AutoDetailsForm extends React.Component {
       leatherStatus: "",
       liftStatus: "",
       detailStatus: "",
-      transitLink:''
+      transitLink:'',
+      leatherHide:'',
+      liftHide:'',
+      detailHide:'',
+      vinImage:''
 
     };
 
@@ -78,9 +163,13 @@ class AutoDetailsForm extends React.Component {
       liftStatus: props.sentDownStates.vehicle.liftStatus,
       detailStatus: props.sentDownStates.vehicle.detailStatus,
       transitLink: props.sentDownStates.vehicle.transitLink,
+      graphics: props.sentDownStates.vehicle.graphics,
+      leatherHide:props.sentDownStates.vehicle.leatherHide,
+      liftHide:props.sentDownStates.vehicle.liftHide,
+      detailHide:props.sentDownStates.vehicle.detailHide,
+      vinImage:props.sentDownStates.vehicle.vinImage
     })
-    console.log("received states ->", props.sentDownStates.vehicle);
-
+    console.log("CWRP in details states ->", props.sentDownStates.vehicle);
   }
 
   handleInputChange(event) {
@@ -95,49 +184,56 @@ class AutoDetailsForm extends React.Component {
 
   //alters states based on other states
   alterState() {
-    if (this.state.leatherColor == "none") {this.setState({leatherStatus: "na"})} else {this.setState({leatherStatus: "Pending"})};
-    if (this.state.liftrange == "none") {this.setState({liftStatus: "na"})} else {this.setState({liftStatus: "Pending"})};
-    if (this.state.detail == "none") {this.setState({detailStatus: "na"})} else {this.setState({detailStatus: "Pending"})};
+    if (this.state.leatherColor === "none") {this.setState({leatherStatus: "na"})} else {this.setState({leatherStatus: "Pending"})};
+    if (this.state.liftrange === "none") {this.setState({liftStatus: "na"})} else {this.setState({liftStatus: "Pending"})};
+    if (this.state.detail === "none") {this.setState({detailStatus: "na"})} else {this.setState({detailStatus: "Pending"})};
     if (this.state.relased !== "arrived") this.setState({location: "pending"});
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log("the state of form",
-      this.state
-    );
-    console.log(this.props.id)
+    // console.log("the state of form on submit",this.state);
 
-
-    API.dataEntryUpdateHelper(this.props.id, this.state)
+    if (this.state.released === "arrived" && this.state.location === "pending" ){
+      return alert('vehicle has arrived please update its location')
+    } else {
+      API.dataEntryUpdateHelper(this.props.id, this.state)
       .then((res) => {
         console.log("API.dataEntryUpdateHelper  res data from API", res.data);
-       
         this.props.loadVehicle()
         this.alterState();
       }).catch(err => console.log(err));
   }
+    }
+
+
+
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     return (
+
+
       <fieldset disabled={this.props.editForm}>
         <form onSubmit={this.handleSubmit}>
-
+          <Row>
+            <Col size="md-3">
           <label>
             Released Status:
-          <select type="string" name="released" value={this.state.released} onChange={this.handleInputChange} onBlur={this.alterState}>
+          <select  type="string" name="released" value={this.state.released} onChange={this.handleInputChange} onBlur={this.alterState}>
+              <option value="">Select option</option>
               <option value="pending released">Pending Release</option>
               <option value="relased">Released</option>
               <option value="released intransit">Released Intransit</option>
               <option value="arrived">Arrived</option>
             </select>
           </label>
-
-
+          </Col>
+          <Col size="md-3">
           <label>
             Current Location:
           <select type="string" name="location" value={this.state.location} onChange={this.handleInputChange} >
+              <option value="">Select option</option>
               <option value="pending">Pending</option>
               <option value="Watson">Watson</option>
               <option value="High Standards">High Standards</option>
@@ -151,7 +247,8 @@ class AutoDetailsForm extends React.Component {
               <option value="other">Other</option>
             </select>
           </label>
-
+          </Col>
+          <Col size="md-3">
           <label>
             Transit Link:
           <Input
@@ -160,31 +257,47 @@ class AutoDetailsForm extends React.Component {
               value={this.state.transitLink}
               onChange={this.handleInputChange} />
           </label>
-
-
-
-          <br />
-
-          <hr />
+          </Col>
+          <Col size="md-3">
+          <label>
+            VIN Image Link:
+          <Input
+              name="vinImage"
+              type="string"
+              value={this.state.vinImage}
+              onChange={this.handleInputChange} />
+          </label>
+          </Col>
+        </Row>
+        <Row>
+       
+          <Col size="md-3">
           <label>
             Doors:
+            <br />
           <select type="number" name="doors" value={this.state.doors} onChange={this.handleInputChange}>
-              <option value="4" >4</option>
+          <option value="">Select option</option>
+              <option value="4">4</option>
               <option value="2">2</option>
               <option value="other">Other</option>
             </select>
           </label>
-
+          </Col>
+          
+          <Col size="md-3">
           <label>
             Fuel Type:
+            <br />
           <select type="string" name="fuelType" value={this.state.fuelType} onChange={this.handleInputChange}>
+          <option value="">Select option</option>
               <option value="Gasoline">Gas</option>
               <option value="Diesel">Diesel</option>
               <option value="Hybrid">Hybrid</option>
               <option value="Electric">Electric</option>
             </select>
           </label>
-
+          </Col>
+          </Row>
           <br />
           <label>
             Color:
@@ -267,6 +380,7 @@ class AutoDetailsForm extends React.Component {
               <label>
                 Install Leather:
           <select type="string" name="leatherColor" value={this.state.leatherColor} onChange={this.handleInputChange} onBlur={this.alterState}>
+                  <option value="">Select option</option>
                   <option value="black">Black</option>
                   <option value="black stone stone">Black/Stone/Stone</option>
                   <option value="licore">Licore</option>
@@ -286,6 +400,7 @@ class AutoDetailsForm extends React.Component {
               <label>
                 Leather Status:
           <select type="string" name="leatherStatus" value={this.state.leatherStatus} onChange={this.handleInputChange} >
+          <option value="">Select option</option>
           <option value="Pending">Pending</option>
                   <option value="Processing">Processing</option>
                   <option value="Complete">Complete</option>
@@ -303,6 +418,7 @@ class AutoDetailsForm extends React.Component {
               <label>
                 Lift Kit Range:
           <select type="string" name="liftrange" value={this.state.liftrange} onChange={this.handleInputChange} onBlur={this.alterState}>
+                  <option value="">Select option</option>
                   <option value="7000-6500">7000 - 6500</option>
                   <option value="6000-5500">6500 - 6000</option>
                   <option value="6000-5500">6000 - 5500</option>
@@ -317,8 +433,10 @@ class AutoDetailsForm extends React.Component {
               <br />
               <label>
                 Lift Status:
-          <select type="string" name="liftStatus" value={this.state.liftStatus} onChange={this.handleInputChange}>
-          <option value="Pending">Pending</option>
+          <select type="string" name="liftStatus" 
+          value={this.state.liftStatus} onChange={this.handleInputChange}>
+                  <option value="">Select option</option>
+                  <option value="Pending">Pending</option>
                   <option value="Processing">Processing</option>
                   <option value="Complete">Complete</option>
                   <option value="na">na</option>
@@ -334,6 +452,7 @@ class AutoDetailsForm extends React.Component {
               <label>
                 Detail:
           <select type="string" name="detail" value={this.state.detail} onChange={this.handleInputChange} onBlur={this.alterState}>
+                  <option value="">Select option</option>
                   <option value="full detail">Full Detail</option>
                   <option value="washandvac">Wash and Vac</option>
                   <option value="spruce">Spruce</option>
@@ -345,6 +464,7 @@ class AutoDetailsForm extends React.Component {
               <label>
                 Detail Status:
           <select type="string" name="detailStatus" value={this.state.detailStatus} onChange={this.handleInputChange}>
+                  <option value="">Select option</option>
                   <option value="Pending">Pending</option>
                   <option value="Processing">Processing</option>
                   <option value="Complete">Complete</option>
@@ -364,6 +484,7 @@ class AutoDetailsForm extends React.Component {
               <label>
                 Body Work:
           <select type="string" name="bodywork" value={this.state.bodywork} onChange={this.handleInputChange}>
+                  <option value="">Select option</option>
                   <option value="not required">Not Required</option>
                   <option value="required">Required</option>
                 </select>
@@ -373,6 +494,7 @@ class AutoDetailsForm extends React.Component {
               <label>
                 Dent Work:
           <select type="string" name="dentwork" value={this.state.dentwork} onChange={this.handleInputChange}>
+                  <option value="">Select option</option>
                   <option value="not required">Not Required</option>
                   <option value="required">Required</option>
                 </select>
@@ -382,17 +504,24 @@ class AutoDetailsForm extends React.Component {
               <label>
                 BedLiner:
           <select type="string" name="bedliner" value={this.state.bedliner} onChange={this.handleInputChange}>
+                  <option value="">Select option</option>
                   <option value="not required">Not Required</option>
                   <option value="required">Required</option>
                 </select>
               </label>
             </Col>
             <Col size="md-3">
-
+            <label>
+           Graphics:
+          <select type="string" name="graphics" value={this.state.graphics} onChange={this.handleInputChange}>
+                  <option value="">Select option</option>
+                  <option value="not required">Not Required</option>
+                  <option value="required">Required</option>
+                </select>
+              </label>
             </Col>
           </Row>
-          <Input type="submit" value="Submit" />
-
+          <Input  className="btn btn-danger btn-lg btn-block" type="submit" value="Submit" />
         </form>
       </fieldset >
     );
@@ -405,8 +534,14 @@ class AutoDetailsForm extends React.Component {
 class Detail extends Component {
   state = {
     vehicle: {},
-    editForm: true
+    editForm: true,
+    name: "",
+    file: null
   };
+
+
+
+
 
   handleEditFormChange(event) {
     const target = event.target;
@@ -422,9 +557,9 @@ class Detail extends Component {
     this.loadVehicle()
   }
 
- //goes to the db and grabs info of the paramater papamater and makes dbrequest
+ //goes to the db and grabs info of the paramater and makes dbrequest
   loadVehicle = () => {
-    API.getBook(this.props.match.params.id)
+    API.getVehicle(this.props.match.params.id)
       .then((res) => {
         console.log("API.get books res data from detail", res.data);
         //edit form is the check that enables and disables the form fields
@@ -435,21 +570,31 @@ class Detail extends Component {
       }).catch(err => console.log(err));
   };
 
+//---------------------------------------------------------
+// onDrop = async files => {
+//   this.setState({ file: files[0] });
+// };
+
+
+
+
+
+
+
 
   render() {
+    console.log("state from detail",this.state.vehicle);
     return (
       <Container fluid>
         <Row>
           <Col size="md-12">
             <h3>Vehicle Information</h3><hr />
-        
             <Col size="md-4">
               <p><strong>Location:</strong> {this.state.vehicle.location}</p>
               <p><strong>VIN:</strong> {this.state.vehicle.vin}</p>
               <p><strong>Make:</strong>{this.state.vehicle.make}</p>
               <p><strong>Model:</strong>{this.state.vehicle.model}</p>
               <p><strong>Year:</strong>{this.state.vehicle.year}</p>
-              
             </Col >
             
             <Col size="md-4">
@@ -466,10 +611,11 @@ class Detail extends Component {
               <p><strong>Lift Details:</strong>{this.state.vehicle.liftdetails}</p>
               <p><strong>Fuel Type:</strong>{this.state.vehicle.fuelType}</p>
               
-              {/* <a href="http://www.carshipio.com/shipper/orderview/MTU0MjggLSAyMzIxMjk=" rel="noopener noreferrer" target="_blank">See Intransit Location </a> */}
               <a href={this.state.vehicle.transitLink} rel="noopener noreferrer" target="_blank">See Intransit Location </a>
+              <br />
+
+              <a href={this.state.vehicle.vinImage} rel="noopener noreferrer" target="_blank">See VIN image </a>
             </Col >
-            
           </Col>
         </Row>
 
@@ -482,24 +628,26 @@ class Detail extends Component {
           </Col>
           <Col size="md-4">
             <h4>Lift Kit Installation</h4>
-            <p><strong>Leather Kit:</strong> {this.state.vehicle.liftrange}</p>
+            <p><strong>Lift Kit:</strong> {this.state.vehicle.liftrange}</p>
             <p><strong>Status:</strong> <span className={this.state.vehicle.liftStatus}>{this.state.vehicle.liftStatus}</span></p>
           </Col>
           <Col size="md-4">
             <h4>Cleaning Detail</h4>
-            <p><strong>Leather Kit:</strong> {this.state.vehicle.detail}</p>
+            <p><strong>Detail:</strong> {this.state.vehicle.detail}</p>
             <p ><strong>Status:</strong> <span className={this.state.vehicle.detailStatus}>{this.state.vehicle.detailStatus}</span></p>
           </Col>
         </Row>
 
         <h4>Additional Work</h4>     
         <Row>
-          <Col size="md-4">
+          <Col size="md-3">
             <p><strong>Body Work:</strong> {this.state.vehicle.bodywork}</p>   </Col>
-          <Col size="md-4">
+          <Col size="md-3">
             <p><strong>Dent Work:</strong> {this.state.vehicle.dentwork}</p>   </Col>
-          <Col size="md-4">
+          <Col size="md-3">
             <p><strong>BedLiner:</strong> {this.state.vehicle.bedliner}</p>   </Col>
+            <Col size="md-3">
+            <p><strong>Graphics:</strong> {this.state.vehicle.graphics}</p>   </Col>
         </Row>
 
         <form>
@@ -513,24 +661,28 @@ class Detail extends Component {
           </label>
         </form>
         <Row>
-        <Col size="md-10">
-          {/* <Col size="md-10 md-offset-1"> */}
+          <Col size="md-10">
+            {/* <Col size="md-10 md-offset-1"> */}
             <hr />
             <h1>Edit Vehicle Data</h1>
-            {/* <h3>Vehicle Info</h3> */}
+
             <AutoDetailsForm loadVehicle={this.loadVehicle.bind(this)} id={this.props.match.params.id} sentDownStates={this.state} editForm={this.state.editForm} />
+            {/* This is the image upload form */}
+
+            
+            <FileUploader sentDownStates={this.state} />
+            {/* <FileInput sentDownStates={this.state} /> */}
           </Col>
-{/* 
-          <Col size="md-10 md-offset-1">
-          </Col> */}
         </Row>
+
+
         <Row>
           <Col size="md-2">
             <Link to="/">← Back to Inventory</Link>
           </Col>
           <Col size="md-2">
-          <Link to={"/sell/" + this.state.vehicle._id}>Sell Vehicles →</Link>
-          
+            {/* This link is to sell vehicle page */}
+            <Link to={"/sell/" + this.state.vehicle._id}>Sell Vehicles →</Link>
           </Col>
         </Row>
       </Container>

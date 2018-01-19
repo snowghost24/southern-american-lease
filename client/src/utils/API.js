@@ -6,16 +6,22 @@ export default {
   //   return axios.get("/api/booking/books");
   // },
   // Gets the book with the given id
-  getBook: function(id) {
-    return axios.get("/api/booking/books/" + id);
+  getVehicle: function(id) {
+    return axios.get("/api/booking/books/" + id)
+    .then(function (results) {
+      // console.log("API getVehicle results", results);
+      return results;
+    }).catch(function (error) {
+      console.log(error);
+    });;
   },
   dataEntryUpdateHelper: function (id,theStates) {
-    console.log("update date helper",id,theStates);
+    // console.log("update date helper",id,theStates);
     return axios.put("/api/booking/books/"+ id, {
         theStates
     })
       .then(function (results) {
-        console.log("data update results", results);
+        // console.log("data update results", results);
         return results;
       }).catch(function (error) {
         console.log(error);
@@ -28,12 +34,33 @@ export default {
       newChanges
     })
       .then(function (results) {
+        // console.log("results after new color", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
+  },  sendFile: function (vin,theFile) {
+
+    console.log("im in send file");
+    return axios.post("/file/filesend/"+ vin, {
+
+      theFile
+    })
+      .then(function (results) {
         console.log("results after new color", results);
         return results;
       }).catch(function (error) {
         console.log(error);
       });
   }
+
+
+
+
+
+
+
+
   // Deletes the book with the given id
   // deleteBook: function(id) {
   //   return axios.delete("/api/booking/books/" + id);

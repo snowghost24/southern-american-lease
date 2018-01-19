@@ -35,6 +35,11 @@ const AutoEntrySchema = new Schema({
   leatherNote:String,
   detailNote:String,
   transitLink:String,
+  graphics:String,
+  leatherHide:Boolean,
+  liftHide:Boolean,
+  detailHide:Boolean,
+  vinImage:String,
 
   date: { type: Date, default: Date.now }
 

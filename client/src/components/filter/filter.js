@@ -8,7 +8,7 @@ class Filter extends React.Component {
     this.state = {
     value: 'lastsix', 
     searchText:'',
-    searchLocation:'pending',
+    searchLocation:'',
     searchedFrom:'',
     leatherStatus:'',
     releasedStatus:''
@@ -49,15 +49,15 @@ class Filter extends React.Component {
   handleSubmit(event) {
     var searchItem;
     var searchType ;
-    if (this.state.value == "location" ){
+    if (this.state.value === "location" ){
       searchItem = this.state.searchLocation;
       searchType = this.state.value;
     }
-    else if (this.state.value == "jobStatus" && this.state.searchedFrom == 'leather' ){
+    else if (this.state.value === "jobStatus" && this.state.searchedFrom === 'leather' ){
 
       searchItem = this.state.leatherStatus;
       searchType = 'leatherStatus';
-    } else if (this.state.value == "released" ){
+    } else if (this.state.value === "released" ){
        searchType = this.state.value;
        searchItem = this.state.releasedStatus;
     } else {
@@ -65,19 +65,20 @@ class Filter extends React.Component {
       searchItem = this.state.searchText;
    }
     
-    console.log("im submitting", searchType,searchItem);
+    // console.log("im submitting", searchType,searchItem);
     event.preventDefault();
     // console.log(this.state.searchText);
     this.props.filteredSearch(searchType,searchItem)
   }
 
   selectOne = () => {
-    if (this.state.value == 'location'){
+    if (this.state.value === 'location'){
       return (
         <label>
         Current Location:
         <br/>
       <select className="form-control" type="string" name="searchText" value={this.state.searchLocation} onChange={this.handleLocation} >
+          <option value="">Select Option</option>
           <option value="pending">Pending</option>
           <option value="Watson">Watson</option>
           <option value="High Standards">High Standards</option>
@@ -92,11 +93,12 @@ class Filter extends React.Component {
         </select>
       </label>
       );
-    }else if (this.state.value == 'released'){
+    }else if (this.state.value === 'released'){
       return (
       <label>
       Released Status:
     <select className="form-control" type="string" name="searchText" value={this.state.releasedStatus} onChange={this.handleReleaseChange} >
+        <option value="">Select Option</option>
         <option value="pending released">Pending Release</option>
         <option value="relased">Released</option>
         <option value="released intransit">Released Intransit</option>
@@ -109,6 +111,7 @@ class Filter extends React.Component {
         <label>
         Leather Status:
     <select className="form-control" type="string" name="leatherStatus" value={this.state.leatherStatus} onChange={this.handleStatusChange} >
+    <option value="">Select Option</option>
           <option value="Pending">Pending</option>
           <option value="Processing">Processing</option>
           <option value="Complete">Complete</option>
@@ -130,25 +133,25 @@ class Filter extends React.Component {
 
 
   render() {
-    var displayedField;
     var theStateValue;
-    if (this.state.value == "location" ){
+    if (this.state.value === "location" ){
       theStateValue = "location"
-    }else if(this.state.value == "jobStatus" ){
+    }else if(this.state.value === "jobStatus" ){
       theStateValue = "jobStatus"
-    }else if(this.state.value == "released" ){
+    }else if(this.state.value === "released" ){
       theStateValue = "released"
     }else{
       theStateValue = "other"
     }
-console.log("from filter",this.state);
+// console.log("from filter",this.state);
 
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
           SEARCH BY:
           <select  className="form-control" value={this.state.value} onChange={this.handleChange}>
-          <option value="last_six">Last six</option>
+          <option value="">Select Option</option>
+          <option value="lastsix">Last six</option>
           <option value="vin">VIN</option>
            <option value="make">Make</option>
            <option value="model">Model</option>
@@ -159,7 +162,7 @@ console.log("from filter",this.state);
           </select>
         </label>
 
-        {theStateValue == 'other'  ?
+        {theStateValue === 'other'  ?
          this.searchInput() :this.selectOne()  }
      <label>
         <input className="form-control" type="submit" value="Submit"/>
