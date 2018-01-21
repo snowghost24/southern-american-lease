@@ -1,6 +1,7 @@
 // Include React as a dependency
 import React, { Component } from 'react'
 import { Link } from "react-router-dom";
+import API from "../../utils/API";
 
 // Include the Helper (for the saved recall)
 import helpers from "../../utils/helpers";
@@ -16,30 +17,34 @@ class Inventory extends Component {
     helpers.getSaved()
     .then((articleData) => {
       this.setState({ savedArticles: articleData.data });
-      console.log("saved results", articleData.data);
+      // console.log("saved results", articleData.data);
     });
   }
 
   // This code handles the deleting saved articles from our database
   handleClick = (item) => {
-    console.log(item);
-    // Delete the list!
+    //deletes vin from image from cloudinary
+    var theVin = item.vin;
+    var theFile = "there is no file"
+    API.deleteFileCloud(theVin, theFile).then(res => console.log(res)).catch(err => console.log(err));
+
+    // deletes the vehicle from db
     helpers.deleteSaved(item.vin)
-    .then(() => {
-      // Get the revised list!
-      helpers.getSaved()
-      .then((articleData) => {
-        this.setState({ savedArticles: articleData.data });
-        console.log("saved results", articleData.data);
+      .then(() => {
+        // Get the revised list!
+        helpers.getSaved()
+          .then((articleData) => {
+            this.setState({ savedArticles: articleData.data });
+            // console.log("saved results", articleData.data);
+          });
       });
-    });
   }
 
   handleFilteredSearch =(searchType,searchItem)=>{  
     helpers.getFilteredSaved(searchType, searchItem)
     .then((articleData) => {
       this.setState({ savedArticles: articleData.data });
-      console.log("saved results", articleData.data);
+      // console.log("saved results", articleData.data);
     });
   }
   // A helper method for rendering the HTML when we have no saved articles

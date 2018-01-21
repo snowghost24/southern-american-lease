@@ -39,12 +39,10 @@ export default {
       }).catch(function (error) {
         console.log(error);
       });
-  },  sendFile: function (vin,theFile) {
-
-    console.log("im in send file");
+  }, deleteFileCloud: function (vin,formData) {
+    console.log("im in send file", vin);
     return axios.post("/file/filesend/"+ vin, {
-
-      theFile
+      formData
     })
       .then(function (results) {
         console.log("results after new color", results);
@@ -52,7 +50,37 @@ export default {
       }).catch(function (error) {
         console.log(error);
       });
+  }, saveVinUrl: function (vin, vinUrl) {
+    console.log("im in send file", vin, vinUrl);
+    return axios.post("/file/filesend/", {
+   
+        theVin: vin,
+        theUrl: vinUrl
+   
+    })
+      .then(function (results) {
+        console.log("saved vin url results->", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
   }
+  // , deleteImgDb: function (vin, deleteItem) {
+  //   console.log("im in send file", vin, deleteItem);
+  //   return axios.delete("/file/filesend/", {
+   
+  //       theVin: vin,
+  //       deleteItem: deleteItem
+   
+  //   })
+  //     .then(function (results) {
+  //       console.log("saved vin url results->", results);
+  //       return results;
+  //     }).catch(function (error) {
+  //       console.log(error);
+  //     });
+  // }
+  
 
 
 

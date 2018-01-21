@@ -326,11 +326,9 @@ class Detail extends Component {
               <p>Year: {this.state.vehicle.year}</p>
               <p>Body: {this.state.vehicle.bodyCabType}</p>
               <p>Body Class: {this.state.vehicle.bodyClass}</p>
-              <p>
-                Drive Train:{this.state.vehicle.drivetrain}</p>
+              <p>Drive Train:{this.state.vehicle.drivetrain}</p>
               <p> Fuel Type: {this.state.vehicle.fuelType}</p>
               <p> Released: {this.state.vehicle.released}</p>
-    
             </article>
             </Jumbotron>
        

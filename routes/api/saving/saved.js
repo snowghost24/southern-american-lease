@@ -11,26 +11,26 @@ router.route("/")
           console.log(err);
         }
         else {
-          console.log("Im sending back docs",doc);
+          // console.log("Im sending back docs",doc);
           res.send(doc);
         }
       });
   })
   .post(function(req, res) {
     var newAutoEntry = new AutoEntry(req.body);
-    console.log("Entry Data", req.body);
+    // console.log("Entry Data", req.body);
     newAutoEntry.save(function(err, doc) {
       if (err) {
         //note sure whey the error had to be inside error
         if (err.name === 'MongoError' && err.code === 11000) {
         
-          console.log("this is a duplicate entry");
+          // console.log("this is a duplicate entry");
           res.send("duplicate vehicle entry");
         } 
         console.log(err);
       }
       else {
-        console.log("this is the doc",doc);
+        // console.log("this is the doc",doc);
         res.send(doc);
       }
     });
@@ -38,7 +38,7 @@ router.route("/")
   })
   .delete(function(req, res) {
     var vin = req.param("vin");
-    console.log("im deleting", vin);
+    console.log("im deleting", vin);-
     AutoEntry.find({ vin:vin }).remove().exec(function(err) {
       if (err) {
         // console.log(err);
