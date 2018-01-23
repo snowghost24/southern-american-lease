@@ -9,6 +9,7 @@ import Main from "./pages/Main";
 import Search from "./pages/Search";
 import Inventory from "./pages/Inventory";
 import Leather from "./pages/Leather";
+import PdfCreate from "./pages/PdfCreate";
 
 const App = () =>
   <Router>
@@ -21,6 +22,7 @@ const App = () =>
         <Route exact path={`${process.env.PUBLIC_URL}/leather`} component={Leather} />
         <Route exact path={`${process.env.PUBLIC_URL}/lift`} component={Leather} />
         <Route exact path={`${process.env.PUBLIC_URL}/detail`} component={Leather} />
+        <Route exact path={`${process.env.PUBLIC_URL}/pdf`} component={PdfCreate} />
         <Route exact path="/saved" component={Inventory} />
         <Route exact path="/books" component={Books} />
         <Route exact path="/books/:id" component={Detail} />

@@ -2,12 +2,12 @@ import React, { Component } from "react";
 // import { Link } from "react-router-dom";
 // import { Col, Row, Container } from "../../components/Grid";
 import API from "../../utils/API";
-import helpers from "../../utils/helpers";
+// import helpers from "../../utils/helpers";
 // import { Input, TextArea } from "../../components/Form";
 
 import Dropzone from "react-dropzone";
 // import cloudinary from 'cloudinary-core';
-import axios from 'axios'
+// import axios from 'axios'
 import request from 'superagent';
 // import FileUploader from "../../components/FileUploader/FileUploader";
 const CLOUDINARY_UPLOAD_PRESET = 'cq14akzn';
@@ -21,7 +21,6 @@ class FileUploader extends React.Component {
      this.state = {
        uploadedFileCloudinaryUrl: ''
      };
-     this.deleteVinImage = this.deleteVinImage.bind(this);
    }
      
   onImageDrop(files) {
@@ -31,8 +30,6 @@ class FileUploader extends React.Component {
     this.handleImageUpload(files[0]);
   }
   
-  
-
   handleImageUpload(file) {
     let upload = request.post(CLOUDINARY_UPLOAD_URL)
       .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
@@ -49,26 +46,15 @@ class FileUploader extends React.Component {
       if (response.body.secure_url !== '') {
         var theVin = this.props.sentDownStates.vehicle.vin;
         var theUrl = response.body.secure_url;
-        var vin = "vin"
+        // save img url in db
         API.saveVinUrl(theVin, theUrl)
           .then((res) => {
-            helpers.getFilteredSaved(vin, theVin).then((res) => {
               this.setState({
-                uploadedFileCloudinaryUrl: res.data["0"].vinImage
+                uploadedFileCloudinaryUrl: res.data.vinImage
               })
-            }).catch(err => console.log(err));
           }).catch(err => console.log(err));
       }
     });
-  }
-
-  // deletes vin from cloudinary
-  deleteVinImage() {
-    var theVin = this.props.sentDownStates.vehicle.vin;
-    var theItem = "vinImage"
-    API.deleteFileCloud(theVin, theItem);
-  
-   
   }
 
 
@@ -88,11 +74,11 @@ class FileUploader extends React.Component {
    <div>
      {this.state.uploadedFileCloudinaryUrl === '' ? null :
      <div>
-       <p>{this.state.uploadedFile.name}</p>
-       <img src={this.state.uploadedFileCloudinaryUrl} />
+       {this.props.loadVehicle()}
+       {/* <p>{this.state.uploadedFile.name}</p> */}
+       {/* <img alt="vin number" src={this.state.uploadedFileCloudinaryUrl} /> */}
      </div>}
    </div>
-   <button onClick={this.deleteVinImage}>Delete Image</button>
  </div>
    )
  }}

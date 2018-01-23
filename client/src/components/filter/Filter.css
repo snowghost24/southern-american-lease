@@ -145,3 +145,7 @@ input:focus {
   padding-left: 3px;
   padding-right: 3px;
 }
+
+.vinImage{
+  border-color: red;
+}

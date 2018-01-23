@@ -40,6 +40,7 @@ const AutoEntrySchema = new Schema({
   liftHide:Boolean,
   detailHide:Boolean,
   vinImage:String,
+  vinConfirmed:Boolean,
 
   date: { type: Date, default: Date.now }
 

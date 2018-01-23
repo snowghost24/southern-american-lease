@@ -6,7 +6,7 @@ import { Input, TextArea } from "../../components/Form";
 // import axios from 'axios'
 import FileUploader from "../../components/FileUploader/FileUploader";
 import AutoDetailsForm from "../../components/AutoDetailsForm/AutoDetailsForm";
-
+import "./details.css";
 class Detail extends Component {
   state = {
     vehicle: {},
@@ -14,6 +14,8 @@ class Detail extends Component {
     name: "",
     file: null
   };
+
+  
 
   handleEditFormChange(event) {
     const target = event.target;
@@ -29,6 +31,7 @@ class Detail extends Component {
     this.loadVehicle()
   }
 
+
  //goes to the db and grabs info of the paramater and makes dbrequest
   loadVehicle = () => {
     API.getVehicle(this.props.match.params.id)
@@ -37,7 +40,9 @@ class Detail extends Component {
         //edit form is the check that enables and disables the form fields
         this.setState({
           vehicle: res.data,
-          editForm: true
+          editForm: true,
+          showVinImage:false,
+          uploadedFileCloudinaryUrl: ''
         })
       }).catch(err => console.log(err));
   };
@@ -46,6 +51,76 @@ class Detail extends Component {
 // onDrop = async files => {
 //   this.setState({ file: files[0] });
 // };
+
+vinImageMatch(){
+  if(this.state.vehicle.vinConfirmed === false){
+    return (
+      <div>
+        <p>Upload an image of the vin</p>
+      </div>
+    )
+  } else{
+    return (
+      <div>
+        <p>VIN and Image are a confirmed match</p>
+      </div>
+    )
+  }
+
+
+}
+
+checkVinImgExists(){
+  if(this.state.vehicle.vinImage==="" || this.state.vehicle.vinImage=== undefined){
+    console.log("empty");
+return(
+  <FileUploader sentDownStates={this.state} checkVinImgExists={this.checkVinImgExists.bind(this)
+  } loadVehicle ={this.loadVehicle.bind(this)
+  }  /> 
+)
+  }else {
+    console.log("not empty");
+    return (
+      <div><p>VIN Has been entered.</p>
+      {this.vinImageMatch()}
+
+      <button className="btn btn-danger"onClick={this.deleteVinImage.bind(this)}>Delete VIN image</button>
+      {this.state.showVinImage ? (
+        <div>
+      <button className="btn btn-info" onClick={this.hideVinImage.bind(this)}>Hide Vin Image</button>
+      <br/>
+      <img className="vinImage"alt="vin number" src={this.state.vehicle.vinImage} />
+      </div>
+      ):(<button className="btn btn-info" onClick={this.showVinImage.bind(this)}>Show Vin Image</button>)}
+      </div>
+    )
+  }
+}
+
+showVinImage (){
+  this.setState({
+    showVinImage:true
+  })
+}
+
+hideVinImage (){
+  this.setState({
+    showVinImage:false
+  })
+}
+
+
+
+
+
+deleteVinImage() {
+  var theVin = this.state.vehicle.vin;
+  var theItem = "vinImage"
+  API.deleteFileCloud(theVin, theItem); 
+  this.loadVehicle()
+}
+
+
 
   render() {
     console.log("state from detail",this.state.vehicle);
@@ -134,8 +209,11 @@ class Detail extends Component {
             <AutoDetailsForm loadVehicle={this.loadVehicle.bind(this)} id={this.props.match.params.id} sentDownStates={this.state} editForm={this.state.editForm} />
             {/* This is the image upload form */}
 
+            {this.checkVinImgExists()}
+
             
-            <FileUploader sentDownStates={this.state}  />
+
+            {/* <FileUploader sentDownStates={this.state}  /> */}
             {/* <FileInput sentDownStates={this.state} /> */}
           </Col>
         </Row>

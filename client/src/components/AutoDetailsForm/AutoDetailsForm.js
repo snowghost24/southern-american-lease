@@ -40,7 +40,8 @@ class AutoDetailsForm extends React.Component {
        leatherHide:'',
        liftHide:'',
        detailHide:'',
-       vinImage:''
+       vinImage:'',
+       vinConfirmed:''
  
      };
  
@@ -85,7 +86,8 @@ class AutoDetailsForm extends React.Component {
        leatherHide:props.sentDownStates.vehicle.leatherHide,
        liftHide:props.sentDownStates.vehicle.liftHide,
        detailHide:props.sentDownStates.vehicle.detailHide,
-       vinImage:props.sentDownStates.vehicle.vinImage
+       vinImage:props.sentDownStates.vehicle.vinImage,
+       vinConfirmed:props.sentDownStates.vehicle.vinConfirmed
      })
      console.log("CWRP in details states ->", props.sentDownStates.vehicle);
    }

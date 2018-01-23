@@ -52,41 +52,94 @@ app.listen(PORT, function() {
 });
 
 
-cloudinary.config({ 
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET
-});
+// var path = require('path');
+// var pdfMakePrinter = require('pdfmake/src/printer');
+// var rootDir = path.resolve(path.dirname('.'));
+// // var pdfMake = require('pdfmake')
+
+// // app.use(express.static(path.join(__dirname, 'public')));
+// // app.use(bodyParser.json({ limit: '50mb' }));
+// // app.use(bodyParser.urlencoded({ extended: false }));
 
 
-var cloudinaryStorage = require('multer-storage-cloudinary');
-var multer = require('multer');
- 
- 
-// var storage = cloudinaryStorage({
-//   cloudinary: cloudinary,
-//   folder: 'folder-name',
-//   allowedFormats: ['jpg', 'png'],
-//   filename: function (req, file, cb) {
-//     cb(undefined, 'my-file-name');
-//   }
+
+//   var fontDescriptors = {
+//     Roboto: {
+//       normal: path.join(__dirname, '..', 'examples', '/fonts/Roboto-Regular.ttf'),
+//       bold: path.join(__dirname, '..', 'examples', '/fonts/Roboto-Medium.ttf'),
+//       italics: path.join(__dirname, '..', 'examples', '/fonts/Roboto-Italic.ttf'),
+//       bolditalics: path.join(__dirname, '..', 'examples', '/fonts/Roboto-MediumItalic.ttf')
+//     }
+//   };
+
+//   var printer = new pdfMakePrinter(fontDescriptors);
+
+//   var doc = printer.createPdfKitDocument(pdfDoc);
+
+
+
+// var docDefinition = {
+// 	content: [
+// 		'First paragraph',
+// 		'Another paragraph, this time a little bit longer to make sure, this line will be divided into at least two lines'
+// 	]
+// };
+
+// var now = new Date();
+// var pdfDoc = printer.createPdfKitDocument(docDefinition);
+// pdfDoc.pipe(fs.createWriteStream('absolute.pdf'));
+// pdfDoc.end();
+// console.log(new Date() - now);
+
+
+// var fonts = {
+// 	Roboto: {
+// 		normal: 'fonts/Roboto-Regular.ttf',
+// 		bold: 'fonts/Roboto-Medium.ttf',
+// 		italics: 'fonts/Roboto-Italic.ttf',
+// 		bolditalics: 'fonts/Roboto-MediumItalic.ttf'
+// 	}
+// };
+
+// var PdfPrinter = require('pdfmake/src/printer');
+// var printer = new PdfPrinter(fonts);
+// var fs = require('fs');
+
+// var docDefinition = {
+// 	content: [
+// 		'First paragraph',
+// 		'Another paragraph, this time a little bit longer to make sure, this line will be divided into at least two lines'
+// 	]
+// };
+
+// var pdfDoc = printer.createPdfKitDocument(docDefinition);
+// pdfDoc.pipe(fs.createWriteStream('pdfs/basics.pdf'));
+// pdfDoc.end();
+  
+
+    // // var pdfDoc = pdfmake.createPdfKitDocument(docDefinition);
+    // pdfDoc.pipe(fs.createWriteStream('tables.pdf'));
+    // pdfDoc.end();
+
+// cloudinary.config({ 
+//   cloud_name: process.env.CLOUD_NAME,
+//   api_key: process.env.API_KEY,
+//   api_secret: process.env.API_SECRET
 // });
+
+
  
-// var parser = multer({ storage: storage });
+/* xlsx.js (C) 2013-present  SheetJS -- http://sheetjs.com */
+// name the file _cors js
 
 
-// Any non API GET routes will be directed to our React App and handled by React Router
-// app.get("*", function(req, res) {
-//   if ( process.env.NODE_ENV === 'production' ) {
-//     res.sendFile(__dirname + "/client/build/index.html");
-//   } else {
-//     res.sendFile(__dirname + "/client/public/index.html");
-//   }
-// });
+// var cors = function(req, res) { res.header('Access-Control-Allow-Origin', '*'); };
+// cors.mw = function(req, res, next) { cors(req, res); next(); };
+// module.exports = cors;
 
 
+  // CLOUD_NAME = dcv191fk7 
+  // API_KEY = 918296179275747 
+  // API_SECRET = eN2PJpKj7OM3iuKElHF0mYYeITk
 
-
-
-
-
+  // AIzaSyDisOMGFuPeebJLZXHPxwnhI3bSMr1sDWM

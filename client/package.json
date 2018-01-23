@@ -9,6 +9,7 @@
     "react-addons-create-fragment": "^15.6.2",
     "react-dom": "^15.6.1",
     "react-dropzone": "^4.2.5",
+    "react-pdf": "^2.5.2",
     "react-scripts": "1.0.14",
     "react-select": "^1.2.0",
     "react-toggle-button": "^2.2.0"
