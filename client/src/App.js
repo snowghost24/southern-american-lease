@@ -10,7 +10,7 @@ import Search from "./pages/Search";
 import Inventory from "./pages/Inventory";
 import Leather from "./pages/Leather";
 import PdfCreate from "./pages/PdfCreate";
-
+import JsPDF from "./components/JsPDF";
 const App = () =>
   <Router>
     <div>
@@ -23,10 +23,12 @@ const App = () =>
         <Route exact path={`${process.env.PUBLIC_URL}/lift`} component={Leather} />
         <Route exact path={`${process.env.PUBLIC_URL}/detail`} component={Leather} />
         <Route exact path={`${process.env.PUBLIC_URL}/pdf`} component={PdfCreate} />
+        <Route exact path={`${process.env.PUBLIC_URL}/JsPDF`} component={JsPDF} />
+
         <Route exact path="/saved" component={Inventory} />
         <Route exact path="/books" component={Books} />
         <Route exact path="/books/:id" component={Detail} />
-        <Route component={NoMatch} />
+        {/* <Route component={NoMatch} /> */}
       </Switch>
       </Main>
     </div>

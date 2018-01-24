@@ -1,6 +1,12 @@
 // Include React as a dependency
 import React, { Component } from 'react'
 import "./Filter.css";
+var pdfMake = require('pdfmake/build/pdfmake.js')
+var pdfFonts = require('pdfmake/build/vfs_fonts.js');
+pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+var docDefinition = { content: 'This is an sample PDF printed with pdfMake' };
+
+
 
 class Filter extends React.Component {
   constructor(props) {
@@ -131,6 +137,16 @@ class Filter extends React.Component {
   }
 
 
+  openPDF(event){
+    event.preventDefault()
+    pdfMake.createPdf(docDefinition).open({}, window)
+
+    return false;
+      }
+
+      consolee(){
+console.log(" it workds");
+      }
 
   render() {
     var theStateValue;
@@ -146,6 +162,7 @@ class Filter extends React.Component {
 // console.log("from filter",this.state);
 
     return (
+      <div>
       <form onSubmit={this.handleSubmit}>
         <label>
           SEARCH BY:
@@ -168,6 +185,9 @@ class Filter extends React.Component {
         <input className="form-control" type="submit" value="Submit"/>
      </label>
       </form>
+      <button className="btn btn-danger"onClick={this.openPDF}>Print Results</button>
+      <a href="/JsPDF" target='_blank' onClick={this.consolee}> Click to Open PDF</a>
+      </div> 
     );
   }
 }

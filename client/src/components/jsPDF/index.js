@@ -1,1 +1,1 @@
-export { default } from "./jsPDF";
+export { default } from "./JsPDF";
