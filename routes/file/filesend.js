@@ -12,7 +12,7 @@ router.route("/").post(function (req, res) {
 //---------------------------------------------------------------
 const vision = require('@google-cloud/vision');
 const client = new vision.ImageAnnotatorClient({
-  keyFilename:"/Users/Snowghost/Documents/southern_lease3/visioncredentials.json"
+  keyFilename:"/Users/Snowghost/Documents/southern_lease3/vinkey.json"
 });
 //Check if vin in url matches vin on car
 const fileName = req.body.theUrl;
@@ -29,9 +29,8 @@ const fileName = req.body.theUrl;
         } else {
         
         }
-      }
+      });
 
-      );
       if (foundCheck === true){
 
         var changes = { vinImage: req.body.theUrl, vinConfirmed:true }
@@ -42,21 +41,17 @@ const fileName = req.body.theUrl;
           })
           .catch(err => res.status(422).json(err));
 
-
       }else{
-        var changes = { vinImage: req.body.theUrl }
+
+        var changes = { vinImage: req.body.theUrl, vinConfirmed:false }
         AutoEntry.findOneAndUpdate({ vin: req.body.theVin }, { $set: changes }, { upsert: true , new: true })
           .then((dbModel) => {
             console.log("the model is", dbModel);
             res.send(dbModel)
           })
           .catch(err => res.status(422).json(err));
-
-
-
+          
       }
-
-
     })
     .catch(err => {
       console.error('ERROR:', err);

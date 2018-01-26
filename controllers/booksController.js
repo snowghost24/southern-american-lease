@@ -4,9 +4,9 @@ const requesting = require('request');
 // Defining methods for the booksController
 module.exports = {
   findAll: function(req, res) {
-    console.log("Find all querys");
-    console.log(req.query.searchType);
-    console.log("pending wont pass",req.query.searchItem);
+    // console.log("Find all querys");
+    // console.log(req.query.searchType);
+    // console.log("pending wont pass",req.query.searchItem);
     var searchType = req.query.searchType;
     var searchItem = req.query.searchItem
     // var searchItem = req.query.searchItem.toUpperCase();
@@ -72,36 +72,6 @@ resultValues.push({trim:trim});
 resultValues.push({driveType:driveType});  
 resultValues.push({doors:doors}); 
 resultValues.push({fuelType:fuelType}); 
-
-
-// if (series != ""){
-// resultValues.push({series:series});
-// }
-
-// if ( bodyCabType!= ""){
-// resultValues.push({bodyCabType:bodyCabType});
-// }
-
-// if ( bodyClass!= ""){
-// resultValues.push({bodyClass:bodyClass});
-// }
-
-// if ( trim != ""){
-// resultValues.push({trim:trim});
-// }
-
-// if ( driveType != ""){
-// resultValues.push({driveType:driveType});
-// }
-
-// if ( doors != ""){
-// resultValues.push({doors:doors});
-// }
-
-// if ( fuelType != ""){
-// resultValues.push({fuelType:fuelType});
-// }
-
 console.log(resultValues);
 //sends the response back to the client
 next(res.send(resultValues))

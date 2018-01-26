@@ -2,22 +2,20 @@
 import React, { Component } from 'react'
 import { Link } from "react-router-dom";
 import API from "../../utils/API";
-
-// Include the Helper (for the saved recall)
 import helpers from "../../utils/helpers";
 import Filter from "../../components/filter/filter";
+
 // Create the Main component
 class Inventory extends Component {
   state = {
     savedArticles: []
   }
 
-  // When this component mounts, get all saved articles from our db
+  // On mount get all saved articles from our db
   componentDidMount() {
     helpers.getSaved()
     .then((articleData) => {
       this.setState({ savedArticles: articleData.data });
-      // console.log("saved results", articleData.data);
     });
   }
 
@@ -107,7 +105,7 @@ class Inventory extends Component {
                   <strong>
                     <i className="fa fa-download" aria-hidden="true"></i> Vehicle Inventory</strong>
                 </h1>
-                <Filter filteredSearch={this.handleFilteredSearch} />
+                <Filter filteredSearch={this.handleFilteredSearch} inventoryState={this.state}/>
               </div>
               <div className="panel-body">
                 <ul className="list-group">

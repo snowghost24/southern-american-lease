@@ -48,9 +48,6 @@ class Detail extends Component {
   };
 
 //---------------------------------------------------------
-// onDrop = async files => {
-//   this.setState({ file: files[0] });
-// };
 
 vinImageMatch(){
   if(this.state.vehicle.vinConfirmed === false){
@@ -66,9 +63,8 @@ vinImageMatch(){
       </div>
     )
   }
-
-
 }
+
 
 checkVinImgExists(){
   if(this.state.vehicle.vinImage==="" || this.state.vehicle.vinImage=== undefined){
@@ -83,7 +79,6 @@ return(
     return (
       <div><p>VIN Has been entered.</p>
       {this.vinImageMatch()}
-
       <button className="btn btn-danger"onClick={this.deleteVinImage.bind(this)}>Delete VIN image</button>
       {this.state.showVinImage ? (
         <div>
@@ -109,18 +104,12 @@ hideVinImage (){
   })
 }
 
-
-
-
-
 deleteVinImage() {
   var theVin = this.state.vehicle.vin;
   var theItem = "vinImage"
   API.deleteFileCloud(theVin, theItem); 
   this.loadVehicle()
 }
-
-
 
   render() {
     console.log("state from detail",this.state.vehicle);
@@ -210,11 +199,6 @@ deleteVinImage() {
             {/* This is the image upload form */}
 
             {this.checkVinImgExists()}
-
-            
-
-            {/* <FileUploader sentDownStates={this.state}  /> */}
-            {/* <FileInput sentDownStates={this.state} /> */}
           </Col>
         </Row>
 

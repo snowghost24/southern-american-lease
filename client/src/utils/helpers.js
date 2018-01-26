@@ -1,6 +1,5 @@
 // Include the Axios library for HTTP requests
 import axios from "axios";
-
 // Helper Functions
 const helpers = {
   // retrieves vehicle data from NHTSA
@@ -13,11 +12,9 @@ const helpers = {
       }).catch(function (error) {
         console.log(error);
       });
-  }
-  ,
+  },
 
   // This will run our query.
- 
   enterVehicleDataHelper: function (entryData) {
     console.log(entryData);
     var newArticle = { 
@@ -38,25 +35,23 @@ const helpers = {
     return axios.post("/api/saving/saved", newArticle)
       .then(function (response) {
         console.log(response);
-
         if (response.data === "duplicate vehicle entry") {
           return response
         } else {
           console.log("axios results", response.data._id);
           return response.data._id;
         }
-
       }).catch(function (error) {
         console.log(error);
       });
   }
-  //---------------------------------------------------------------------------------
+  //--------------------------------------------------------
   ,
   // This will return all saved vehicles in database 
   getSaved: function () {
     return axios.get("/api/saving/saved")
       .then(function (results) {
-        console.log("axios results", results);
+        console.log("axios results from get saved", results);
         return results;
       }).catch(function (error) {
         console.log(error);
@@ -72,7 +67,7 @@ const helpers = {
       }
     })
       .then(function (results) {
-        console.log("axios results", results);
+        console.log("axios results from get filtered", results);
         return results;
       }).catch(function (error) {
         console.log(error);
@@ -84,8 +79,6 @@ const helpers = {
       params: {
         "vin": vin
       },
-     
-
     })
       .then(function (results) {
         console.log("axios results", results);
@@ -102,8 +95,6 @@ const helpers = {
         console.log(error);
       });
   }
-  
-
 };
 
 

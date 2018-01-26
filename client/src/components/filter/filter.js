@@ -6,8 +6,6 @@ var pdfFonts = require('pdfmake/build/vfs_fonts.js');
 pdfMake.vfs = pdfFonts.pdfMake.vfs; 
 var docDefinition = { content: 'This is an sample PDF printed with pdfMake' };
 
-
-
 class Filter extends React.Component {
   constructor(props) {
     super(props);
@@ -17,8 +15,7 @@ class Filter extends React.Component {
     searchLocation:'',
     searchedFrom:'',
     leatherStatus:'',
-    releasedStatus:''
-    
+    releasedStatus:'' 
   };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -70,7 +67,6 @@ class Filter extends React.Component {
       searchType = this.state.value;
       searchItem = this.state.searchText;
    }
-    
     // console.log("im submitting", searchType,searchItem);
     event.preventDefault();
     // console.log(this.state.searchText);
@@ -127,8 +123,6 @@ class Filter extends React.Component {
     }
   }
 
-  
-
   searchInput = () => {
     return (
         <label>
@@ -145,7 +139,12 @@ class Filter extends React.Component {
       }
 
       consolee(){
-console.log(" it workds");
+        if (this.props.inventoryState){
+          console.log("Inventory", this.props.inventoryState);
+        } else if (this.props.savedVehicles){
+          console.log("Leather", this.props.savedVehicles);
+        }
+
       }
 
   render() {
@@ -186,9 +185,12 @@ console.log(" it workds");
      </label>
       </form>
       <button className="btn btn-danger"onClick={this.openPDF}>Print Results</button>
-      <a href="/JsPDF" target='_blank' onClick={this.consolee}> Click to Open PDF</a>
+      <a href="/JsPDF" target='_blank' onClick={this.
+      consolee.bind(this)}> Click to Open PDF</a>
       </div> 
     );
   }
 }
 export default Filter;
+
+
