@@ -1,5 +1,5 @@
 const router = require("express").Router();
-var AutoEntry = require("../../../models/book");
+var AutoEntry = require("../../../models/auto");
 const requesting = require('request');
 
 //This is where api/savings/saved routes are handled

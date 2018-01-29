@@ -15,8 +15,6 @@ class Detail extends Component {
     file: null
   };
 
-  
-
   handleEditFormChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -31,8 +29,7 @@ class Detail extends Component {
     this.loadVehicle()
   }
 
-
- //goes to the db and grabs info of the paramater and makes dbrequest
+  //goes to the db and grabs info of the paramater and makes dbrequest
   loadVehicle = () => {
     API.getVehicle(this.props.match.params.id)
       .then((res) => {
@@ -41,78 +38,84 @@ class Detail extends Component {
         this.setState({
           vehicle: res.data,
           editForm: true,
-          showVinImage:false,
+          showVinImage: false,
           uploadedFileCloudinaryUrl: ''
         })
       }).catch(err => console.log(err));
   };
 
-//---------------------------------------------------------
+  //---------------------------------------------------------
 
-vinImageMatch(){
-  if(this.state.vehicle.vinConfirmed === false){
-    return (
-      <div>
-        <p>Upload an image of the vin</p>
-      </div>
-    )
-  } else{
-    return (
-      <div>
-        <p>VIN and Image are a confirmed match</p>
-      </div>
-    )
-  }
-}
-
-
-checkVinImgExists(){
-  if(this.state.vehicle.vinImage==="" || this.state.vehicle.vinImage=== undefined){
-    console.log("empty");
-return(
-  <FileUploader sentDownStates={this.state} checkVinImgExists={this.checkVinImgExists.bind(this)
-  } loadVehicle ={this.loadVehicle.bind(this)
-  }  /> 
-)
-  }else {
-    console.log("not empty");
-    return (
-      <div><p>VIN Has been entered.</p>
-      {this.vinImageMatch()}
-      <button className="btn btn-danger"onClick={this.deleteVinImage.bind(this)}>Delete VIN image</button>
-      {this.state.showVinImage ? (
+  vinImageMatch() {
+    if (this.state.vehicle.vinConfirmed === false && this.state.vehicle.vinImage === "") {
+      return (
         <div>
-      <button className="btn btn-info" onClick={this.hideVinImage.bind(this)}>Hide Vin Image</button>
-      <br/>
-      <img className="vinImage"alt="vin number" src={this.state.vehicle.vinImage} />
-      </div>
-      ):(<button className="btn btn-info" onClick={this.showVinImage.bind(this)}>Show Vin Image</button>)}
-      </div>
-    )
+          <p>Please Upload VIN image </p>
+        </div>
+      )
+    } else if (this.state.vehicle.vinConfirmed === false && this.state.vehicle.vinImage != "") {
+      return (
+        <div>
+          <p>AI CANNOT confirm match VIN and image </p>
+        </div>
+      )
+    } else if (this.state.vehicle.vinConfirmed === true) {
+      return (
+        <div>
+          <p>VIN and Image are a confirmed match</p>
+        </div>
+      )
+    }
   }
-}
 
-showVinImage (){
-  this.setState({
-    showVinImage:true
-  })
-}
 
-hideVinImage (){
-  this.setState({
-    showVinImage:false
-  })
-}
+  checkVinImgExists() {
+    if (this.state.vehicle.vinImage === "" || this.state.vehicle.vinImage === undefined) {
+      console.log("empty");
+      return (
+        <FileUploader sentDownStates={this.state} checkVinImgExists={this.checkVinImgExists.bind(this)
+        } loadVehicle={this.loadVehicle.bind(this)
+        } />
+      )
+    } else {
+      console.log("not empty");
+      return (
+        <div><p>VIN Has been entered.</p>
+          {this.vinImageMatch()}
+          <button className="btn btn-danger" onClick={this.deleteVinImage.bind(this)}>Delete VIN image</button>
+          {this.state.showVinImage ? (
+            <div>
+              <button className="btn btn-info" onClick={this.hideVinImage.bind(this)}>Hide Vin Image</button>
+              <br />
+              <img className="vinImage" alt="vin number" src={this.state.vehicle.vinImage} />
+            </div>
+          ) : (<button className="btn btn-info" onClick={this.showVinImage.bind(this)}>Show Vin Image</button>)}
+        </div>
+      )
+    }
+  }
 
-deleteVinImage() {
-  var theVin = this.state.vehicle.vin;
-  var theItem = "vinImage"
-  API.deleteFileCloud(theVin, theItem); 
-  this.loadVehicle()
-}
+  showVinImage() {
+    this.setState({
+      showVinImage: true
+    })
+  }
+
+  hideVinImage() {
+    this.setState({
+      showVinImage: false
+    })
+  }
+
+  deleteVinImage() {
+    var theVin = this.state.vehicle.vin;
+    var theItem = "vinImage"
+    API.deleteFileCloud(theVin, theItem);
+    this.loadVehicle()
+  }
 
   render() {
-    console.log("state from detail",this.state.vehicle);
+    console.log("state from detail", this.state.vehicle);
     return (
       <Container fluid>
         <Row>
@@ -125,7 +128,7 @@ deleteVinImage() {
               <p><strong>Model:</strong>{this.state.vehicle.model}</p>
               <p><strong>Year:</strong>{this.state.vehicle.year}</p>
             </Col >
-            
+
             <Col size="md-4">
               <p><strong>Trim:</strong> {this.state.vehicle.trim}</p>
               <p><strong>Miles:</strong>{this.state.vehicle.miles}</p>
@@ -139,7 +142,7 @@ deleteVinImage() {
               <p><strong>Key Features:</strong>{this.state.vehicle.keyfeatures}</p>
               <p><strong>Lift Details:</strong>{this.state.vehicle.liftdetails}</p>
               <p><strong>Fuel Type:</strong>{this.state.vehicle.fuelType}</p>
-              
+
               <a href={this.state.vehicle.transitLink} rel="noopener noreferrer" target="_blank">See Intransit Location </a>
               <br />
 
@@ -149,7 +152,7 @@ deleteVinImage() {
         </Row>
 
         <Row>
-        <h3>Vehicle Jobs Status</h3>
+          <h3>Vehicle Jobs Status</h3>
           <Col size="md-4">
             <h4>Leather Kit Installation</h4>
             <p><strong>Leather Kit:</strong> {this.state.vehicle.leatherColor}</p>
@@ -167,7 +170,7 @@ deleteVinImage() {
           </Col>
         </Row>
 
-        <h4>Additional Work</h4>     
+        <h4>Additional Work</h4>
         <Row>
           <Col size="md-3">
             <p><strong>Body Work:</strong> {this.state.vehicle.bodywork}</p>   </Col>
@@ -175,7 +178,7 @@ deleteVinImage() {
             <p><strong>Dent Work:</strong> {this.state.vehicle.dentwork}</p>   </Col>
           <Col size="md-3">
             <p><strong>BedLiner:</strong> {this.state.vehicle.bedliner}</p>   </Col>
-            <Col size="md-3">
+          <Col size="md-3">
             <p><strong>Graphics:</strong> {this.state.vehicle.graphics}</p>   </Col>
         </Row>
 

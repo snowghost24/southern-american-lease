@@ -1,4 +1,4 @@
-const  AutoEntry = require("../models/book");
+const  AutoEntry = require("../models/auto");
 const requesting = require('request');
 
 // Defining methods for the booksController
