@@ -47,15 +47,26 @@ class Inventory extends Component {
   }
   
   getDate(date){
-    var year = date.slice(0,4);
-    var month = date.slice(5,7);
-    var day = date.slice(8,10);
-    var then = new Date(year,month,day);
-    var now  = new Date(); 
-var daysIn = Math.round((then - now) / (1000 * 60 * 60 * 24));  
-return daysIn
-  }
+    var start =new Date(date).getTime();
+// console.log(start);
+var now = Date.now();
+// console.log(now);
+var elapsedTime = now - start;
+var days = Math.floor(elapsedTime / 8.64e+7);
+return days
+// console.log("starting timer...");
+// // expected output: starting timer...
 
+// setTimeout(function() {
+//   var millis = Date.now() - start;
+
+//   console.log("seconds elapsed = " + Math.floor(millis/1000));
+//   // expected output : seconds elapsed = 2
+// }, 2000);
+    // var countUpFrom = new Date(date).getHours()
+    // console.log(date);
+    // console.log(countUpFrom);
+  }
 
   // A helper method for rendering the HTML when we have no saved articles
   renderEmpty = () => {
