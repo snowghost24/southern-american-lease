@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Document, Page } from 'react-pdf';
+import axios from "axios";
 var pdfMake = require('pdfmake/build/pdfmake.js')
 var pdfFonts = require('pdfmake/build/vfs_fonts.js');
 pdfMake.vfs = pdfFonts.pdfMake.vfs; 
@@ -7,16 +8,23 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 //Use this if ou want to cr
 var docDefinition = { content: 'This is an sample PDF printed with pdfMake' };
 
+
 class JsPDF extends Component {
-  state = {
-    numPages: null,
-    pageNumber: 1,
-    data1:"",
+  constructor(props) {
+    super(props);
+    this.state = {
+      numPages: null,
+      pageNumber: 1,
+      data1:""
+    }
+   
   }
+
+
 
   componentDidMount(){
     //  var win = window.open('', '_blank')
-     pdfMake.createPdf(docDefinition).open({}, window)
+    //  pdfMake.createPdf(docDefinition).open({}, window)
 
 // const pdfDocGenerator = pdfMake.createPdf(docDefinition);
 // pdfDocGenerator.getBlob((blob) => {

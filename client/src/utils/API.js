@@ -53,10 +53,8 @@ export default {
   }, saveVinUrl: function (vin, vinUrl) {
     console.log("im in send file", vin, vinUrl);
     return axios.post("/file/filesend/", {
-   
         theVin: vin,
         theUrl: vinUrl
-   
     })
       .then(function (results) {
         console.log("saved vin url results->", results);
@@ -64,7 +62,23 @@ export default {
       }).catch(function (error) {
         console.log(error);
       });
-  }
+  }, printInventory: function (printData, ) {
+    console.log("Thisis what im printing", printData, );
+    return axios.post("print/inventory/", {
+        printData:printData
+    })
+      .then(function (results) {
+        console.log("printing data results", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+
+
+
+
+
   // , deleteImgDb: function (vin, deleteItem) {
   //   console.log("im in send file", vin, deleteItem);
   //   return axios.delete("/file/filesend/", {

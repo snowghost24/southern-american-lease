@@ -1,10 +1,12 @@
 // Include React as a dependency
 import React, { Component } from 'react'
 import "./Filter.css";
+import axios from "axios"
+import JsPDF from "../JsPDF";
 var pdfMake = require('pdfmake/build/pdfmake.js')
-var pdfFonts = require('pdfmake/build/vfs_fonts.js');
+var pdfFonts = require('pdfmake/build/vfs_fonts.js')
 pdfMake.vfs = pdfFonts.pdfMake.vfs; 
-var docDefinition = { content: 'This is an sample PDF printed with pdfMake' };
+
 
 class Filter extends React.Component {
   constructor(props) {
@@ -131,16 +133,90 @@ class Filter extends React.Component {
   }
 
 
-  openPDF(event){
-    event.preventDefault()
-    pdfMake.createPdf(docDefinition).open({}, window)
+  
 
-    return false;
-      }
-
-      consolee(){
+      openPDF(){
         if (this.props.inventoryState){
-          console.log("Inventory", this.props.inventoryState);
+         var pdfData = [];
+
+          var options=this.props.inventoryState.savedArticles;
+          function Person(vin, make, model, year) {
+            this.vin = vin;
+            this.make = make;
+            this.model = model;
+            this.year = year;
+        }
+          
+          console.log("the lenght is",options.length);
+          for (var i = 0; i < options.length; i += 1){
+            var newObj = new Person(options[i].vin, options[i].make, options[i].model, options[i].year)
+            pdfData.push(newObj); 
+          }
+      
+        
+        function buildTableBody(data) {
+            var body = [];
+            var columns = ['vin', 'make','model','year'];
+            body.push(columns);
+            data.forEach(function(row) {
+                var dataRow = [];
+                columns.forEach(function(column) {
+                    dataRow.push(row[column].toString());
+                    console.log(dataRow);
+                })
+                body.push(dataRow);
+            });
+            return body;
+        }
+          
+        buildTableBody(pdfData)
+
+        
+        var dd = {
+          pageOrientation: 'landscape',
+            content: [
+              {text: 'Vehicle Invertory', margin: [0, 20, 0, 8], style:'header'},
+              {
+                style: 'tableExample',
+                table: {
+                  headerRows: 1,
+                  body:buildTableBody(pdfData)
+                },
+                layout: {
+                  fillColor: function(row, col, node) { return row > 0 && row % 2 ? '#CCCCCC' : null; }
+                }
+              }
+               
+             
+            ],  styles: {
+                  header: {
+                    fontSize: 18,
+                    bold: true,
+                    margin: [0, 0, 0, 10]
+                  },
+                  subheader: {
+                    fontSize: 16,
+                    bold: true,
+                    margin: [0, 10, 0, 5]
+                  },
+                  tableExample: {
+                    margin: [0, 5, 0, 15]
+                  },
+                  tableHeader: {
+                    bold: true,
+                    fontSize: 13,
+                    color: 'black'
+                  }
+                },            
+        }
+
+
+
+
+      //  pdfMake.createPdf(dd).download();
+
+       pdfMake.createPdf(dd).open({}, window);
+
         } else if (this.props.savedVehicles){
           console.log("Leather", this.props.savedVehicles);
         }
@@ -184,9 +260,12 @@ class Filter extends React.Component {
         <input className="form-control" type="submit" value="Submit"/>
      </label>
       </form>
-      <button className="btn btn-danger"onClick={this.openPDF}>Print Results</button>
-      <a href="/JsPDF" target='_blank' onClick={this.
-      consolee.bind(this)}> Click to Open PDF</a>
+      <button className="btn btn-danger"onClick={this.openPDF.bind(this)}>Download to Print Results</button>
+      {/* <a href="/JsPDF" target='_blank' onClick={this.
+      consolee.bind(this)}> Click to Open PDF</a> */}
+      <div>
+     
+      </div>
       </div> 
     );
   }

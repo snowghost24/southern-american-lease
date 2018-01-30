@@ -70,7 +70,6 @@ class Inventory extends Component {
                 <em>{article.make }&nbsp;&nbsp;&nbsp;</em>
                 <em>{article.model}&nbsp;&nbsp;&nbsp;</em>
                 <em>{article.year}&nbsp;&nbsp;&nbsp;</em>
-               
               </span>
               <span>
               <em>{article.vin}</em>
