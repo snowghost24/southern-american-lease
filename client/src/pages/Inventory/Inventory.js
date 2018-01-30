@@ -45,6 +45,18 @@ class Inventory extends Component {
       // console.log("saved results", articleData.data);
     });
   }
+  
+  getDate(date){
+    var year = date.slice(0,4);
+    var month = date.slice(5,7);
+    var day = date.slice(8,10);
+    var then = new Date(year,month,day);
+    var now  = new Date(); 
+var daysIn = Math.round((then - now) / (1000 * 60 * 60 * 24));  
+return daysIn
+  }
+
+
   // A helper method for rendering the HTML when we have no saved articles
   renderEmpty = () => {
     return (
@@ -85,7 +97,7 @@ class Inventory extends Component {
                 <button className="btn btn-primary" onClick={() => this.handleClick(article)}>Delete</button>
               </span>
             </h3>
-            <p>Date Entered: {article.date}</p>
+            <p>Days Since Entered: {this.getDate(article.date)}</p>
           </li>
         </div>
       );
