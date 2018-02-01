@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import "./Filter.css";
 import axios from "axios"
 import JsPDF from "../JsPDF";
+import Modal from 'react-modal';
 var pdfMake = require('pdfmake/build/pdfmake.js')
 var pdfFonts = require('pdfmake/build/vfs_fonts.js')
 pdfMake.vfs = pdfFonts.pdfMake.vfs; 
@@ -17,7 +18,8 @@ class Filter extends React.Component {
     searchLocation:'',
     searchedFrom:'',
     leatherStatus:'',
-    releasedStatus:'' 
+    releasedStatus:'',
+    isActive: false 
   };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -50,6 +52,33 @@ class Filter extends React.Component {
       });
     }
   }
+
+// showing hidden items per page
+
+showHiddenLeather(){
+  console.log("ready");
+
+}
+
+toggleModal = () => {
+  this.setState({
+   isActive: !this.state.isActive
+  })
+
+ }
+
+  renderShowHide(){
+    if (this.state.searchedFrom === 'leather'){
+      return   <button className="btn btn-info" onClick={() => this.toggleModal()}>Add Note</button>
+      
+      // <button className="btn btn-info"onClick={this.showHiddenLeather.bind(this)}>Find Hidden Vehicle</button>
+    }
+  }
+
+
+
+ 
+
 
   handleSubmit(event) {
     var searchItem;
@@ -191,8 +220,6 @@ class Filter extends React.Component {
               fillColor: function (row, col, node) { return row > 0 && row % 2 ? '#CCCCCC' : null; }
             }
           }
-
-
         ], styles: {
           header: {
             fontSize: 18,
@@ -262,11 +289,35 @@ class Filter extends React.Component {
      </label>
       </form>
       <button className="btn btn-danger"onClick={this.openPDF.bind(this)}>Download to Print Results</button>
+      {this.renderShowHide()}
+
+
       {/* <a href="/JsPDF" target='_blank' onClick={this.
       consolee.bind(this)}> Click to Open PDF</a> */}
       <div>
      
       </div>
+
+      <Modal className="modal-dialog" role="document" isOpen={this.state.isActive} ariaHideApp={false}>
+       <div className="modal-content">
+        <div className="modal-header">
+         <h1 className="modal-title" id="exampleModalLabel">Notes For Article</h1>
+         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+         </button>
+        </div>
+        <div className="modal-body">
+         <p>Enter Note Here</p>
+         <div id="addNote">
+          <input ref="newText" type="text" />
+         </div>
+        </div>
+        <div className="modal-footer">
+         {/* <button type="button" className="btn btn-primary" onClick={() => this.noteBook(book._id)} >Save changes</button> */}
+         <button type="button" onClick={() => this.toggleModal()} className="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+       </div>
+      </Modal>
       </div> 
     );
   }

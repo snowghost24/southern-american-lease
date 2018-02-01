@@ -17,6 +17,7 @@ class Inventory extends Component {
       .then((articleData) => {
         this.setState({ savedArticles: articleData.data });
       });
+      console.log("the location",this.props.location);
   }
 
   // This code handles the deleting saved articles from our database
@@ -115,7 +116,7 @@ class Inventory extends Component {
                   <strong>
                     <i className="fa fa-download" aria-hidden="true"></i> Vehicle Inventory</strong>
                 </h1>
-                <Filter filteredSearch={this.handleFilteredSearch} inventoryState={this.state} />
+                <Filter filteredSearch={this.handleFilteredSearch} inventoryState={this.state}  thePath={this.props.location.pathname}/>
               </div>
               <div className="panel-body">
                 <ul className="list-group">
