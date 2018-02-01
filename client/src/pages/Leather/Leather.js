@@ -19,6 +19,7 @@ class LeatherStatus extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.alsoChangeLocation = this.alsoChangeLocation.bind(this);
+    this.hideVehicleDisplay =  this.hideVehicleDisplay.bind(this)
   }
 
   handleChange(event) {
@@ -69,12 +70,24 @@ class LeatherStatus extends React.Component {
     });
   }
 
+  hideVehicleDisplay (){
+    // console.log(this.props.theVehicle._id);
+    // var id = this.props.theVehicle._id;
+    API.hideVehicleHandler(this.props.theVehicle._id)
+    .then((res) => {
+      console.log("the results are", res);
+      this.props.theReload()
+    }).catch(err => console.log(err));
+  }
+
 
   render() {
     return (
-      <form  onSubmit={this.handleSubmit}>
       <Row>
-        <Col size="md-12 md-offset-3">
+     <Col size="md-1 md-offset-1">
+     </Col>
+        
+        <form  onSubmit={this.handleSubmit}>
         <Col size="md-3">
                <label>
                  Leather Status:
@@ -106,13 +119,20 @@ class LeatherStatus extends React.Component {
           </label>
           </Col>
               
-        <Col size="md-3">
+        <Col size="md-2">
         <input className="btn btn-danger" type="submit" value="Submit" />
         </Col>
-          </Col>
+
+
+      </form>
+      <Col size="md-2">
+        <input className="btn btn-primary" type="button" value="Hide" onClick={this.hideVehicleDisplay} />
+        </Col>
+       
          
-          </Row>
-    </form>
+         
+    
+    </Row>
     );
   }
 }

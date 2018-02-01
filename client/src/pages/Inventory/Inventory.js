@@ -14,9 +14,9 @@ class Inventory extends Component {
   // On mount get all saved articles from our db
   componentDidMount() {
     helpers.getSaved()
-    .then((articleData) => {
-      this.setState({ savedArticles: articleData.data });
-    });
+      .then((articleData) => {
+        this.setState({ savedArticles: articleData.data });
+      });
   }
 
   // This code handles the deleting saved articles from our database
@@ -38,34 +38,22 @@ class Inventory extends Component {
       });
   }
 
-  handleFilteredSearch =(searchType,searchItem)=>{  
+  handleFilteredSearch = (searchType, searchItem) => {
     helpers.getFilteredSaved(searchType, searchItem)
-    .then((articleData) => {
-      this.setState({ savedArticles: articleData.data });
-      // console.log("saved results", articleData.data);
-    });
+      .then((articleData) => {
+        this.setState({ savedArticles: articleData.data });
+        // console.log("saved results", articleData.data);
+      });
   }
-  
-  getDate(date){
-    var start =new Date(date).getTime();
-// console.log(start);
-var now = Date.now();
-// console.log(now);
-var elapsedTime = now - start;
-var days = Math.floor(elapsedTime / 8.64e+7);
-return days
-// console.log("starting timer...");
-// // expected output: starting timer...
 
-// setTimeout(function() {
-//   var millis = Date.now() - start;
-
-//   console.log("seconds elapsed = " + Math.floor(millis/1000));
-//   // expected output : seconds elapsed = 2
-// }, 2000);
-    // var countUpFrom = new Date(date).getHours()
-    // console.log(date);
-    // console.log(countUpFrom);
+  getDate(date) {
+    //
+    var dayEntered = new Date(date).getTime();
+    //method returns the number of milliseconds elapsed since January 1 1970
+    var now = Date.now();
+    var elapsedTime = now - dayEntered;
+    var days = Math.floor(elapsedTime / 8.64e+7);
+    return days
   }
 
   // A helper method for rendering the HTML when we have no saved articles
@@ -90,19 +78,19 @@ return days
           <li className="list-group-item">
             <h3>
               <span>
-                <em>{article.make }&nbsp;&nbsp;&nbsp;</em>
+                <em>{article.make}&nbsp;&nbsp;&nbsp;</em>
                 <em>{article.model}&nbsp;&nbsp;&nbsp;</em>
                 <em>{article.year}&nbsp;&nbsp;&nbsp;</em>
               </span>
               <span>
-              <em>{article.vin}</em>
-              </span>   
-                         <span className="btn-group pull-right">
+                <em>{article.vin}</em>
+              </span>
+              <span className="btn-group pull-right">
                 <a href={article.url} rel="noopener noreferrer" target="_blank">
-                <Link to={"/books/" + article._id}>
-                 <button className="btn btn-default ">View Vehicle</button>
-                    </Link>
-                  
+                  <Link to={"/books/" + article._id}>
+                    <button className="btn btn-default ">View Vehicle</button>
+                  </Link>
+
                 </a>
                 {/* pass the pressed item () => this.handleClick(article) */}
                 <button className="btn btn-primary" onClick={() => this.handleClick(article)}>Delete</button>
@@ -127,7 +115,7 @@ return days
                   <strong>
                     <i className="fa fa-download" aria-hidden="true"></i> Vehicle Inventory</strong>
                 </h1>
-                <Filter filteredSearch={this.handleFilteredSearch} inventoryState={this.state}/>
+                <Filter filteredSearch={this.handleFilteredSearch} inventoryState={this.state} />
               </div>
               <div className="panel-body">
                 <ul className="list-group">

@@ -13,7 +13,7 @@ module.exports = {
     //Donot search for searchType but for the value 
     // find({[searchType]:searchItem})
    
-    AutoEntry.find({ leatherColor: { $ne: "none" } }).sort({ date: -1 })
+    AutoEntry.find({ leatherColor: { $ne: "none",  }, detailHide:false }).sort({ date: -1 })
     .exec(function(err, doc) {
       if (err) {
         console.log(err);
@@ -41,18 +41,24 @@ module.exports = {
     var changes = req.body.newChanges
     console.log(changes);
     console.log("we made it to update");
-    AutoEntry.findOneAndUpdate({ _id: req.params.id }, {$set:changes},{upsert:true})
+    AutoEntry.findOneAndUpdate({ _id: req.params.id, detailHide:false }, {$set:changes},{upsert:true})
       .then((dbModel) => {
         console.log("the model is", dbModel );
         res.send(dbModel)})
       .catch(err => res.status(422).json(err));
   },
   remove: function(req, res) {
-    db.Book
-      .findById({ _id: req.params.id })
-      .then(dbModel => dbModel.remove())
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+    var changes = {detailHide:true}
+    AutoEntry.findOneAndUpdate({ _id: req.params.id }, {$set:changes},{upsert:true})
+    .then((dbModel) => {
+      console.log("the model is", dbModel );
+      res.send(dbModel)})
+    .catch(err => res.status(422).json(err));
+
+    // AutoEntry.findById({ _id: req.params.id })
+    //   .then(dbModel => dbModel.remove())
+    //   .then(dbModel => res.json(dbModel))
+    //   .catch(err => res.status(422).json(err));
   }
 };
 

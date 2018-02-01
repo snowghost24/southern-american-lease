@@ -62,7 +62,7 @@ export default {
       }).catch(function (error) {
         console.log(error);
       });
-  }, printInventory: function (printData, ) {
+  }, printInventory: function (printData ) {
     console.log("Thisis what im printing", printData, );
     return axios.post("print/inventory/", {
         printData:printData
@@ -73,7 +73,19 @@ export default {
       }).catch(function (error) {
         console.log(error);
       });
-    }
+    },hideVehicleHandler:function (id) {
+      //Hides vehicles from Leather
+      // console.log(object);
+      return axios.delete("/api/leather/leatherkit/"+ id, {
+        id:id
+      })
+        .then(function (results) {
+          console.log("printing data results", results);
+          return results;
+        }).catch(function (error) {
+          console.log(error);
+        });
+      }
 
 
 
