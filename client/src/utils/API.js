@@ -85,8 +85,19 @@ export default {
         }).catch(function (error) {
           console.log(error);
         });
-      }
-
+      },bringBackLeatherHandler:function (vin) {
+        //Hides vehicles from Leather
+        // console.log(object);
+        return axios.post("/api/leather/leatherkit", {
+          vin:vin
+        })
+          // .then(function (results) {
+          //   console.log("printing data results", results);
+          //   return results;
+          // }).catch(function (error) {
+          //   console.log(error);
+          // });
+        }
 
 
 

@@ -30,9 +30,36 @@ module.exports = {
     //   .then(dbModel => res.json(dbModel))
     //   .catch(err => res.status(422).json(err));
   },
+  // create: function(req, res, next) {
+  create: function(req, res) {
+    var vin = req.body.vin.length;
 
-  create: function(req, res,next) {
 
+    if (vin === 6){
+      var changes = {detailHide:false}
+ AutoEntry.findOneAndUpdate({ lastsix:req.body.vin }, {$set:changes})
+    .then((dbModel) => {
+      console.log("the model is", dbModel );
+      res.send(dbModel)})
+    .catch(err => res.status(422).json(err));
+
+
+    } else if (vin > 6) {
+      console.log("Im here");
+      var changes = {detailHide:false}
+      AutoEntry.findOneAndUpdate({ vin:req.body.vin }, {$set:changes})
+         .then((dbModel) => {
+           console.log("the model is", dbModel );
+           res.send(dbModel)})
+         .catch(err => res.status(422).json(err));
+
+
+    }
+    // AutoEntry.findOneAndUpdate({ vin: req.params.id, detailHide:false }, {$set:changes},{upsert:true})
+    // .then((dbModel) => {
+    //   console.log("the model is", dbModel );
+    //   res.send(dbModel)})
+    // .catch(err => res.status(422).json(err));
 
   },
   update: function(req, res) {

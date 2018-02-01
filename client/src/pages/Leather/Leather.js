@@ -379,7 +379,7 @@ class Leather extends Component {
                   <strong>
                     <i className="fa fa-download" aria-hidden="true"></i> Leather Inventory</strong>
                 </h1>
-                <Filter filteredSearch={this.handleFilteredSearch} workFrom={this.state.workFrom} savedVehicles={this.state.savedVehicles}/>
+                <Filter filteredSearch={this.handleFilteredSearch} workFrom={this.state.workFrom} savedVehicles={this.state.savedVehicles} theReload={this.reloadComponent.bind(this)}/>
               </div>
               <div className="panel-body">
                 <ul className="list-group">

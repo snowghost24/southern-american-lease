@@ -4,6 +4,9 @@ import "./Filter.css";
 import axios from "axios"
 import JsPDF from "../JsPDF";
 import Modal from 'react-modal';
+import API from "../../utils/API";
+import { Input } from "../../components/Form";
+
 var pdfMake = require('pdfmake/build/pdfmake.js')
 var pdfFonts = require('pdfmake/build/vfs_fonts.js')
 pdfMake.vfs = pdfFonts.pdfMake.vfs; 
@@ -54,31 +57,6 @@ class Filter extends React.Component {
   }
 
 // showing hidden items per page
-
-showHiddenLeather(){
-  console.log("ready");
-
-}
-
-toggleModal = () => {
-  this.setState({
-   isActive: !this.state.isActive
-  })
-
- }
-
-  renderShowHide(){
-    if (this.state.searchedFrom === 'leather'){
-      return   <button className="btn btn-info" onClick={() => this.toggleModal()}>Add Note</button>
-      
-      // <button className="btn btn-info"onClick={this.showHiddenLeather.bind(this)}>Find Hidden Vehicle</button>
-    }
-  }
-
-
-
- 
-
 
   handleSubmit(event) {
     var searchItem;
@@ -162,12 +140,9 @@ toggleModal = () => {
   }
 
 
-  
-
   openPDF() {
     if (this.props.inventoryState) {
       var pdfData = [];
-
       var options = this.props.inventoryState.savedArticles;
       function Person(vin, make, model, year, days) {
         this.vin = vin;
@@ -190,7 +165,6 @@ toggleModal = () => {
         pdfData.push(newObj);
       }
 
-
       function buildTableBody(data) {
         var body = [];
         var columns = ['vin', 'make', 'model', 'year', 'days'];
@@ -205,6 +179,7 @@ toggleModal = () => {
         });
         return body;
       }
+
       buildTableBody(pdfData)
       var dd = {
         pageOrientation: 'landscape',
@@ -241,15 +216,41 @@ toggleModal = () => {
           }
         },
       }
-      //  pdfMake.createPdf(dd).download();
 
       pdfMake.createPdf(dd).open({}, window);
     } else if (this.props.savedVehicles) {
       //set printing options for leather
       console.log("Leather", this.props.savedVehicles);
     }
-
   }
+  
+  toggleModal = () => {
+    this.setState({
+     isActive: !this.state.isActive
+    })
+  }
+  
+    renderShowHide(){
+      if (this.state.searchedFrom === 'leather'){
+        return   <button className="btn btn-info" onClick={() => this.toggleModal()}>Hidden Vehicles</button>
+      }
+    }
+  
+    // console.log("from filter",this.state);
+bringBackLeather=()=>{
+  var bringBackVin = this.refs.newText.value;
+// console.log(bringBackVin);
+
+console.log(this.props.leatherProps);
+  API.bringBackLeatherHandler(bringBackVin)
+   .then(res => {
+     if (res.data.leatherHide === false){
+       this.props.theReload()
+     }
+    console.log(res);
+   })
+   .catch(err => console.log(err));
+ };
 
   render() {
     var theStateValue;
@@ -262,7 +263,6 @@ toggleModal = () => {
     }else{
       theStateValue = "other"
     }
-// console.log("from filter",this.state);
 
     return (
       <div>
@@ -301,19 +301,20 @@ toggleModal = () => {
       <Modal className="modal-dialog" role="document" isOpen={this.state.isActive} ariaHideApp={false}>
        <div className="modal-content">
         <div className="modal-header">
-         <h1 className="modal-title" id="exampleModalLabel">Notes For Article</h1>
-         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+         <h3 className="modal-title" id="exampleModalLabel">Use form to bring back a vehicle</h3>
+         {/* <button type="button" className="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
-         </button>
+         </button> */}
         </div>
         <div className="modal-body">
-         <p>Enter Note Here</p>
+         <p>Enter full VIN or Last six of Vehicle </p>
          <div id="addNote">
-          <input ref="newText" type="text" />
+          <input className="form-control" ref="newText" type="text" />
          </div>
         </div>
         <div className="modal-footer">
-         {/* <button type="button" className="btn btn-primary" onClick={() => this.noteBook(book._id)} >Save changes</button> */}
+         <button type="button" className="btn btn-primary" onClick={() => this.bringBackLeather()} >Bring It Back</button>
+
          <button type="button" onClick={() => this.toggleModal()} className="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
        </div>

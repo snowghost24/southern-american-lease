@@ -37,7 +37,7 @@ class Inventory extends Component {
             // console.log("saved results", articleData.data);
           });
       });
-  }
+    }
 
   handleFilteredSearch = (searchType, searchItem) => {
     helpers.getFilteredSaved(searchType, searchItem)
