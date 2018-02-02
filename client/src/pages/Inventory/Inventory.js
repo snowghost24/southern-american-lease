@@ -9,7 +9,8 @@ import Filter from "../../components/filter/filter";
 class Inventory extends Component {
   state = {
     savedArticles: [],
-    isCreating:false
+    isCreating:false,
+    forMarketing:[]
   }
 
   
@@ -21,6 +22,7 @@ class Inventory extends Component {
       });
       console.log("the location",this.props.location);
   }
+
 
   // This code handles the deleting saved articles from our database
   handleClick = (item) => {
@@ -71,20 +73,25 @@ class Inventory extends Component {
     );
   }
 
-  renderMarketing = () => {
-    return (
-      <form className="form-control">
-      <label>
-        Add to Markerting:
-        <input 
-          name="isGoing"
-          type="checkbox"
-          checked={this.state.isGoing}
-          onChange={this.handleInputChange} />
-      </label>
-    </form>
-    );
+  myFunction = () => {
+    console.log(this.state.forMarketing);
   }
+  handleInputChange(vehicle) {
+    if (this.state.forMarketing.indexOf(vehicle) === -1) {
+      // console.log(this.state.forMarketing.indexOf(vehicle))
+      var newStateArray = this.state.forMarketing.slice();
+      newStateArray.push(vehicle);
+      this.setState({forMarketing: newStateArray }, this.myFunction)
+    } else if (this.state.forMarketing.indexOf(vehicle) !== -1) {
+      var newStateArray = this.state.forMarketing.slice();
+      newStateArray.pop(vehicle);
+      this.setState({forMarketing: newStateArray }, this.myFunction)    }
+  }
+
+
+
+
+
 
 
   // A helper method for mapping through our articles and outputting some HTML
@@ -112,7 +119,16 @@ class Inventory extends Component {
                 </a>
                 {/* pass the pressed item () => this.handleClick(article) */}
                 <button className="btn btn-primary" onClick={() => this.handleClick(article)}>Delete</button>
-                  {this.state.isCreating ? this.renderMarketing() :null}
+                  {this.state.isCreating ? ( <form className="form-control">
+      <label>
+        Add to Markerting:
+        <input 
+          name="isGoing"
+          type="checkbox"
+          checked={this.state.isGoing}
+          onChange={() => this.handleInputChange(article._id)} />
+      </label>
+    </form>) :null}
               </span>
             </h3>
             <p>Days Since Entered: {this.getDate(article.date)}</p>
