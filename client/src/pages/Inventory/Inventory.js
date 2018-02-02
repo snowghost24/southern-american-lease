@@ -8,9 +8,11 @@ import Filter from "../../components/filter/filter";
 // Create the Main component
 class Inventory extends Component {
   state = {
-    savedArticles: []
+    savedArticles: [],
+    isCreating:false
   }
 
+  
   // On mount get all saved articles from our db
   componentDidMount() {
     helpers.getSaved()
@@ -48,7 +50,6 @@ class Inventory extends Component {
   }
 
   getDate(date) {
-    //
     var dayEntered = new Date(date).getTime();
     //method returns the number of milliseconds elapsed since January 1 1970
     var now = Date.now();
@@ -69,6 +70,22 @@ class Inventory extends Component {
       </li>
     );
   }
+
+  renderMarketing = () => {
+    return (
+      <form className="form-control">
+      <label>
+        Add to Markerting:
+        <input 
+          name="isGoing"
+          type="checkbox"
+          checked={this.state.isGoing}
+          onChange={this.handleInputChange} />
+      </label>
+    </form>
+    );
+  }
+
 
   // A helper method for mapping through our articles and outputting some HTML
   renderArticles = () => {
@@ -95,6 +112,7 @@ class Inventory extends Component {
                 </a>
                 {/* pass the pressed item () => this.handleClick(article) */}
                 <button className="btn btn-primary" onClick={() => this.handleClick(article)}>Delete</button>
+                  {this.state.isCreating ? this.renderMarketing() :null}
               </span>
             </h3>
             <p>Days Since Entered: {this.getDate(article.date)}</p>
@@ -104,6 +122,25 @@ class Inventory extends Component {
     });
   }
 
+
+  handleCreateClick = () => {
+    if (this.state.isCreating){
+      console.log("changed to false");
+        this.setState({
+      isCreating: false
+    })
+    }else{
+      console.log("changed to true");
+        this.setState({
+      isCreating: true
+    })
+    }
+
+    // this.setState({
+    //   isCreating: !this.state.isCreating
+    // })
+    console.log(this.state.isCreating);
+  }
   // A helper method for rendering a container and all of our artiles inside
   renderContainer = () => {
     return (
@@ -116,7 +153,8 @@ class Inventory extends Component {
                   <strong>
                     <i className="fa fa-download" aria-hidden="true"></i> Vehicle Inventory</strong>
                 </h1>
-                <Filter filteredSearch={this.handleFilteredSearch} inventoryState={this.state}  thePath={this.props.location.pathname}/>
+                {/* thePath={this.props.location.pathname */}
+                <Filter handleCreateClick={this.handleCreateClick.bind(this)} isCreating={this.state.isCreating} filteredSearch={this.handleFilteredSearch} inventoryState={this.state}  />
               </div>
               <div className="panel-body">
                 <ul className="list-group">
@@ -129,6 +167,11 @@ class Inventory extends Component {
       </div>
     );
   }
+
+
+
+
+
   // Our render method. Utilizing a few helper methods to keep this logic clean
   render() {
     // If we have no articles, we will return this.renderEmpty() which in turn returns some HTML

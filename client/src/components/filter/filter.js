@@ -11,6 +11,21 @@ var pdfMake = require('pdfmake/build/pdfmake.js')
 var pdfFonts = require('pdfmake/build/vfs_fonts.js')
 pdfMake.vfs = pdfFonts.pdfMake.vfs; 
 
+function CreateButton(props) {
+  return (
+    <button className="btn btn-info" onClick={props.onClick}>
+     Create Marketing Invertory
+    </button>
+  );
+}
+
+function  SendInventoryButton(props) {
+  return (
+    <button className="btn btn-info" onClick={props.onClick}>
+      Send Inventory
+    </button>
+  );
+}
 
 class Filter extends React.Component {
   constructor(props) {
@@ -24,9 +39,13 @@ class Filter extends React.Component {
     releasedStatus:'',
     isActive: false 
   };
+  // this.handleCreateClick = this.handleCreateClick.bind(this);
+  // this.handleSendClick = this.handleSendClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+
 
   typeChange = (e)=>{
     this.setState({searchText: e.target.value})
@@ -252,6 +271,17 @@ console.log(this.props.leatherProps);
    .catch(err => console.log(err));
  };
 
+//  handleCreateClick() {
+//   this.setState({isCreating: true});
+// }
+
+// handleSendClick() {
+//   this.setState({isCreating: false});
+// }
+
+
+
+
   render() {
     var theStateValue;
     if (this.state.value === "location" ){
@@ -262,6 +292,16 @@ console.log(this.props.leatherProps);
       theStateValue = "released"
     }else{
       theStateValue = "other"
+    }
+
+
+    // const isCreating = this.props.isCreating;
+
+    let button = null;
+    if (this.props.isCreating) {
+      button = <SendInventoryButton  onClick={this.props.handleCreateClick} />;
+    } else {
+      button = <CreateButton onClick={this.props.handleCreateClick} />;
     }
 
     return (
@@ -289,7 +329,12 @@ console.log(this.props.leatherProps);
      </label>
       </form>
       <button className="btn btn-danger"onClick={this.openPDF.bind(this)}>Download to Print Results</button>
+      {/* renders hidden button */}
       {this.renderShowHide()}
+    
+       <div >
+        {button}
+      </div>
 
 
       {/* <a href="/JsPDF" target='_blank' onClick={this.
