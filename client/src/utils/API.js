@@ -91,13 +91,25 @@ export default {
         return axios.post("/api/leather/leatherkit", {
           vin:vin
         })
-          // .then(function (results) {
-          //   console.log("printing data results", results);
-          //   return results;
-          // }).catch(function (error) {
-          //   console.log(error);
-          // });
-        }
+          .then(function (results) {
+            console.log("printing data results", results);
+            return results;
+          }).catch(function (error) {
+            console.log(error);
+          });
+        },  addToCartHelper: function (vehicleId) {
+         // Use req.query.... to grab values
+          return axios.get("/cart/addtocart/", {
+            params: {
+              addingToCart: vehicleId,
+            }
+          })
+            .then(function (results) {
+              return results;
+            }).catch(function (error) {
+              console.log(error);
+            });
+        },
 
 
 
@@ -108,7 +120,6 @@ export default {
    
   //       theVin: vin,
   //       deleteItem: deleteItem
-   
   //   })
   //     .then(function (results) {
   //       console.log("saved vin url results->", results);
@@ -117,14 +128,6 @@ export default {
   //       console.log(error);
   //     });
   // }
-  
-
-
-
-
-
-
-
 
   // Deletes the book with the given id
   // deleteBook: function(id) {

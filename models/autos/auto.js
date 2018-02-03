@@ -40,7 +40,8 @@ const AutoEntrySchema = new Schema({
   liftHide:Boolean,
   detailHide:{type:Boolean,default:false},
   vinImage:String,
-  vinConfirmed:{type:Boolean,default:false},
+  vinConfirmed:{type:Boolean,default:false}, 
+  inMarketCart:{type:Boolean,default:false},
 
   date: { type: Date, default: Date.now }
 

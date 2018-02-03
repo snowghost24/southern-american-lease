@@ -6,6 +6,8 @@ import JsPDF from "../JsPDF";
 import Modal from 'react-modal';
 import API from "../../utils/API";
 import { Input } from "../../components/Form";
+import { Link } from "react-router-dom";
+
 
 var pdfMake = require('pdfmake/build/pdfmake.js')
 var pdfFonts = require('pdfmake/build/vfs_fonts.js')
@@ -13,19 +15,37 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 function CreateButton(props) {
   return (
+
     <button className="btn btn-info" onClick={props.onClick}>
      Create Marketing Invertory
     </button>
+
   );
 }
 
-function  SendInventoryButton(props) {
+function  CloseInventoryButton(props) {
   return (
+    <div>
     <button className="btn btn-info" onClick={props.onClick}>
-      Send Inventory
+      Close Marketing Inventory
     </button>
+  
+    </div>
   );
 }
+
+
+function SendInventoryButton(props) {
+  return (
+    <button className="btn btn-danger" onClick={props.onClick}>
+    Compose Emails
+    </button>
+
+  );
+}
+// function (params) {
+  
+// }
 
 class Filter extends React.Component {
   constructor(props) {
@@ -299,7 +319,12 @@ console.log(this.props.leatherProps);
 
     let button = null;
     if (this.props.isCreating) {
-      button = <SendInventoryButton  onClick={this.props.handleCreateClick} />;
+      button = <div><CloseInventoryButton  onClick={this.props.handleCreateClick} />
+      <SendInventoryButton  onClick={this.props.toggleModalInventory} />
+      </div>;
+      // button = <SendInventoryButton  onClick={this.props.handleSendInventory} />;
+      
+
     } else {
       button = <CreateButton onClick={this.props.handleCreateClick} />;
     }

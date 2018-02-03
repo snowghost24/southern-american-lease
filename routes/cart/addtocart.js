@@ -1,22 +1,37 @@
 const router = require("express").Router();
 const  AutoEntry = require("../../models/autos/auto");
-const cloudinary = require('cloudinary');
-const vision = require('@google-cloud/vision');
-//retrieves credentials stored in a json file
-const client = new vision.ImageAnnotatorClient({
-  keyFilename:"/Users/Snowghost/Documents/southern_lease3/vinkey.json"
-});
+
 
 // brings back all updated values
 // {new: true}
 // updates value if they dont exist
 // { upsert: true }
+router.route("/").get(function (req, res) {
 
-//1. Receives the image url and passes to the google vision api for inspection
-//2. Vision inspects img, if text matches vin assign true to found check
-//3. if there is a match assign vinConfirmed to true in db and set vinImg to URL
-//4. else vinConfirmed is false and store the url in the DB
-// Matches with "/api/file/filesend/:id"
+
+  AutoEntry.findById(req.query.addingToCart)
+    .then(dbModel => {
+      if (!dbModel.inMarketCart) {
+        var changes = { inMarketCart: true }
+        AutoEntry.findOneAndUpdate({ _id: req.query.addingToCart }, { $set: changes }, { upsert: true, new: true })
+          .then((dbModel) => {
+            console.log("confirmed true model", dbModel);
+            res.send(dbModel)
+          })
+          .catch(err => res.status(422).json(err));
+      } else {
+        var changes = { inMarketCart:false }
+        AutoEntry.findOneAndUpdate({ _id: req.query.addingToCart }, { $set: changes }, { upsert: true, new: true })
+          .then((dbModel) => {
+            console.log("confirmed true model", dbModel);
+            res.send(dbModel)
+          })
+          .catch(err => res.status(422).json(err));
+      }
+    })
+    .catch(err => res.status(422).json(err));
+})
+
 router.route("/").post(function (req, res) {
   const fileName = req.body.theUrl;
   var foundCheck = false;

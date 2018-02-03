@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import API from "../../utils/API";
 import helpers from "../../utils/helpers";
 import Filter from "../../components/filter/filter";
-
+import Modal from 'react-modal';
 // Create the Main component
 class Inventory extends Component {
   state = {
     savedArticles: [],
     isCreating:false,
-    forMarketing:[]
+    isActive:false
   }
 
   
@@ -23,6 +23,13 @@ class Inventory extends Component {
       console.log("the location",this.props.location);
   }
 
+  // componentDidUpdate(){
+  //   helpers.getSaved()
+  //   .then((articleData) => {
+  //     this.setState({ savedArticles: articleData.data });
+  //   });
+  //   console.log("the location",this.props.location);
+  // }
 
   // This code handles the deleting saved articles from our database
   handleClick = (item) => {
@@ -48,7 +55,7 @@ class Inventory extends Component {
       .then((articleData) => {
         this.setState({ savedArticles: articleData.data });
         // console.log("saved results", articleData.data);
-      });
+      })
   }
 
   getDate(date) {
@@ -75,21 +82,51 @@ class Inventory extends Component {
 
   myFunction = () => {
     console.log(this.state.forMarketing);
-  }
-  handleInputChange(vehicle) {
-    if (this.state.forMarketing.indexOf(vehicle) === -1) {
-      // console.log(this.state.forMarketing.indexOf(vehicle))
-      var newStateArray = this.state.forMarketing.slice();
-      newStateArray.push(vehicle);
-      this.setState({forMarketing: newStateArray }, this.myFunction)
-    } else if (this.state.forMarketing.indexOf(vehicle) !== -1) {
-      var newStateArray = this.state.forMarketing.slice();
-      newStateArray.pop(vehicle);
-      this.setState({forMarketing: newStateArray }, this.myFunction)    }
+    // console.log("the state is",this.state);
   }
 
+  myOtherFunction = () => {
+    console.log("the state is",this.state);
+    // console.log("the state is",this.state);
+  }
+  handleInputChange(event,theId, index) {
+    // var theItem = this.state.savedArticles[index].inMarketCart;
 
+    // console.log(index);
+    // console.log(event.target.name);
+    // const target = event.target;
+    // const value = target.type === 'checkbox' ? target.checked : target.value;
+    // console.log("The value is",value);
+    // const name = target.name;
 
+    // this.setState({
+    //   [name]: true
+    // }, this.myOtherFunction );
+
+    API.addToCartHelper(theId)
+    .then(
+      () => {
+        // Get the revised list!
+        helpers.getSaved()
+          .then((articleData) => {
+            this.setState({ savedArticles: articleData.data });
+            // console.log("saved results", articleData.data);
+          });
+      }
+      // res =>{console.log("from add cart helper",res,this.state)} 
+    )
+    .catch(err => console.log(err));
+
+    // if (this.state.forMarketing.indexOf(vehicle) === -1) {
+    //   // console.log(this.state.forMarketing.indexOf(vehicle))
+    //   var newStateArray = this.state.forMarketing.slice();
+    //   newStateArray.push(vehicle);
+    //   this.setState({forMarketing: newStateArray }, this.myFunction)
+    // } else if (this.state.forMarketing.indexOf(vehicle) !== -1) {
+    //   var newStateArray = this.state.forMarketing.slice();
+    //   newStateArray.pop(vehicle);
+    //   this.setState({forMarketing: newStateArray }, this.myFunction)    }
+  }
 
 
 
@@ -123,10 +160,14 @@ class Inventory extends Component {
       <label>
         Add to Markerting:
         <input 
-          name="isGoing"
+          // name="isGoing"
+          name={article._id}
           type="checkbox"
-          checked={this.state.isGoing}
-          onChange={() => this.handleInputChange(article._id)} />
+          // checked={article.inMarketCart
+          // }
+         
+           checked={article.inMarketCart}
+          onChange={(e) => this.handleInputChange(e,article._id,index)} />
       </label>
     </form>) :null}
               </span>
@@ -157,6 +198,33 @@ class Inventory extends Component {
     // })
     console.log(this.state.isCreating);
   }
+
+
+  handleSendInventory(){
+    prompt(" Who do you want to send to")
+  }
+
+  toggleModalInventory = () => {
+    this.setState({
+     isActive: !this.state.isActive
+    })
+  }
+
+  sendInventoryEmail=()=>{
+    console.log("sending Inventory");
+  //   var bringBackVin = this.refs.newText.value;
+  // // console.log(bringBackVin);
+  
+  // console.log(this.props.leatherProps);
+  //   API.bringBackLeatherHandler(bringBackVin)
+  //    .then(res => {
+  //      if (res.data.leatherHide === false){
+  //        this.props.theReload()
+  //      }
+  //     console.log(res);
+    //  })
+    //  .catch(err => console.log(err));
+   };
   // A helper method for rendering a container and all of our artiles inside
   renderContainer = () => {
     return (
@@ -170,7 +238,8 @@ class Inventory extends Component {
                     <i className="fa fa-download" aria-hidden="true"></i> Vehicle Inventory</strong>
                 </h1>
                 {/* thePath={this.props.location.pathname */}
-                <Filter handleCreateClick={this.handleCreateClick.bind(this)} isCreating={this.state.isCreating} filteredSearch={this.handleFilteredSearch} inventoryState={this.state}  />
+                <Filter handleCreateClick={this.handleCreateClick.bind(this)} isCreating={this.state.isCreating} filteredSearch={this.handleFilteredSearch} inventoryState={this.state} handleSendInventory={this. handleSendInventory.bind(this)} toggleModalInventory={this.toggleModalInventory.bind(this)} />
+
               </div>
               <div className="panel-body">
                 <ul className="list-group">
@@ -179,6 +248,65 @@ class Inventory extends Component {
               </div>
             </div>
           </div>
+        </div>
+        <div>
+        <Modal className="modal-dialog" role="document" isOpen={this.state.isActive} ariaHideApp={false}>
+       <div className="modal-content">
+        <div className="modal-header">
+         <h3 className="modal-title" id="exampleModalLabel">Select Inventory Recipients</h3>
+         {/* <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+         </button> */}
+        </div>
+        <div className="modal-body">
+         <p>Choose Recepients </p>
+         {/* <label class="form-check-label">
+    <input class="form-check-input" type="checkbox" value=""/>
+    Option one is this and that&mdash;be sure to include why it's great
+  </label> */}
+  <div class="form-check">
+  <label class="form-check-label">
+    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked/>
+    Send To All Dealers
+  </label>
+</div>
+<div class="form-check">
+  <label class="form-check-label">
+    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2"/>
+   Select Dealers Individually
+  </label>
+</div>
+{/* <div class="form-check disabled">
+  <label class="form-check-label">
+    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" disabled/>
+    Option three is disabled
+  </label>
+</div> */}
+
+         <div id="addNote">
+          <input className="form-control" ref="newText" type="text" />
+
+          {/* <input className="form-control" ref="newText" type="text"  placeholder="Example input" /> */}
+          {/* <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input"/> */}
+         </div>
+         <div>
+         {/* <input className="form-control" ref="newText" type="text"  placeholder="Example input" /> */}
+         <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+     
+         
+      
+         
+        </div>
+        <div className="modal-footer">
+         <button type="button" className="btn btn-primary" onClick={() => this.sendInventoryEmail()} >Send Inventory</button>
+
+         <button type="button" onClick={() => this.toggleModalInventory()} className="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+       </div>
+      </Modal>
         </div>
       </div>
     );
