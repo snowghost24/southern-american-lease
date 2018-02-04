@@ -37,6 +37,7 @@ function  CloseInventoryButton(props) {
 
 function SendInventoryButton(props) {
   return (
+
     <button className="btn btn-danger" onClick={props.onClick}>
     Compose Emails
     </button>

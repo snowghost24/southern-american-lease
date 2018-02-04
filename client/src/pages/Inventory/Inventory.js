@@ -4,23 +4,26 @@ import { Link } from "react-router-dom";
 import API from "../../utils/API";
 import helpers from "../../utils/helpers";
 import Filter from "../../components/filter/filter";
+import Constributors from "../../components/Constributors/Constributors";
+// import MultiSelect from "../../components/multiSelect/";
 import Modal from 'react-modal';
 // Create the Main component
 class Inventory extends Component {
   state = {
     savedArticles: [],
-    isCreating:false,
-    isActive:false
+    isCreating: false,
+    isActive: false,
+    selectedOption: 'option1',
   }
 
-  
+
   // On mount get all saved articles from our db
   componentDidMount() {
     helpers.getSaved()
       .then((articleData) => {
         this.setState({ savedArticles: articleData.data });
       });
-      console.log("the location",this.props.location);
+    console.log("the location", this.props.location);
   }
 
   // componentDidUpdate(){
@@ -48,7 +51,7 @@ class Inventory extends Component {
             // console.log("saved results", articleData.data);
           });
       });
-    }
+  }
 
   handleFilteredSearch = (searchType, searchItem) => {
     helpers.getFilteredSaved(searchType, searchItem)
@@ -86,10 +89,10 @@ class Inventory extends Component {
   }
 
   myOtherFunction = () => {
-    console.log("the state is",this.state);
+    console.log("the state is", this.state);
     // console.log("the state is",this.state);
   }
-  handleInputChange(event,theId, index) {
+  handleInputChange(event, theId, index) {
     // var theItem = this.state.savedArticles[index].inMarketCart;
 
     // console.log(index);
@@ -104,18 +107,18 @@ class Inventory extends Component {
     // }, this.myOtherFunction );
 
     API.addToCartHelper(theId)
-    .then(
-      () => {
-        // Get the revised list!
-        helpers.getSaved()
-          .then((articleData) => {
-            this.setState({ savedArticles: articleData.data });
-            // console.log("saved results", articleData.data);
-          });
-      }
-      // res =>{console.log("from add cart helper",res,this.state)} 
-    )
-    .catch(err => console.log(err));
+      .then(
+        () => {
+          // Get the revised list!
+          helpers.getSaved()
+            .then((articleData) => {
+              this.setState({ savedArticles: articleData.data });
+              // console.log("saved results", articleData.data);
+            });
+        }
+        // res =>{console.log("from add cart helper",res,this.state)} 
+      )
+      .catch(err => console.log(err));
 
     // if (this.state.forMarketing.indexOf(vehicle) === -1) {
     //   // console.log(this.state.forMarketing.indexOf(vehicle))
@@ -140,6 +143,7 @@ class Inventory extends Component {
           <li className="list-group-item">
             <h3>
               <span>
+
                 <em>{article.make}&nbsp;&nbsp;&nbsp;</em>
                 <em>{article.model}&nbsp;&nbsp;&nbsp;</em>
                 <em>{article.year}&nbsp;&nbsp;&nbsp;</em>
@@ -156,20 +160,16 @@ class Inventory extends Component {
                 </a>
                 {/* pass the pressed item () => this.handleClick(article) */}
                 <button className="btn btn-primary" onClick={() => this.handleClick(article)}>Delete</button>
-                  {this.state.isCreating ? ( <form className="form-control">
-      <label>
-        Add to Markerting:
-        <input 
-          // name="isGoing"
-          name={article._id}
-          type="checkbox"
-          // checked={article.inMarketCart
-          // }
-         
-           checked={article.inMarketCart}
-          onChange={(e) => this.handleInputChange(e,article._id,index)} />
-      </label>
-    </form>) :null}
+                {this.state.isCreating ? (<form className="form-control">
+                  <label>
+                    Add to Markerting:
+                    <input
+                      name={article._id}
+                      type="checkbox"
+                      checked={article.inMarketCart}
+                      onChange={(e) => this.handleInputChange(e, article._id, index)} />
+                  </label>
+                </form>) : null}
               </span>
             </h3>
             <p>Days Since Entered: {this.getDate(article.date)}</p>
@@ -181,50 +181,49 @@ class Inventory extends Component {
 
 
   handleCreateClick = () => {
-    if (this.state.isCreating){
+    if (this.state.isCreating) {
       console.log("changed to false");
-        this.setState({
-      isCreating: false
-    })
-    }else{
+      this.setState({
+        isCreating: false
+      })
+    } else {
       console.log("changed to true");
-        this.setState({
-      isCreating: true
-    })
+      this.setState({
+        isCreating: true
+      })
     }
-
-    // this.setState({
-    //   isCreating: !this.state.isCreating
-    // })
-    console.log(this.state.isCreating);
   }
 
 
-  handleSendInventory(){
+  handleSendInventory() {
     prompt(" Who do you want to send to")
   }
 
   toggleModalInventory = () => {
     this.setState({
-     isActive: !this.state.isActive
+      isActive: !this.state.isActive
     })
   }
 
-  sendInventoryEmail=()=>{
+  sendInventoryEmail = () => {
     console.log("sending Inventory");
-  //   var bringBackVin = this.refs.newText.value;
-  // // console.log(bringBackVin);
-  
-  // console.log(this.props.leatherProps);
-  //   API.bringBackLeatherHandler(bringBackVin)
-  //    .then(res => {
-  //      if (res.data.leatherHide === false){
-  //        this.props.theReload()
-  //      }
-  //     console.log(res);
-    //  })
-    //  .catch(err => console.log(err));
-   };
+  }
+
+  handleOptionChange(changeEvent) {
+    this.setState({
+      selectedOption: changeEvent.target.value
+    })
+  }
+
+  SelectDealers() {
+    return (
+      <div>
+        <Constributors />
+
+      </div>
+    )
+  }
+
   // A helper method for rendering a container and all of our artiles inside
   renderContainer = () => {
     return (
@@ -238,7 +237,7 @@ class Inventory extends Component {
                     <i className="fa fa-download" aria-hidden="true"></i> Vehicle Inventory</strong>
                 </h1>
                 {/* thePath={this.props.location.pathname */}
-                <Filter handleCreateClick={this.handleCreateClick.bind(this)} isCreating={this.state.isCreating} filteredSearch={this.handleFilteredSearch} inventoryState={this.state} handleSendInventory={this. handleSendInventory.bind(this)} toggleModalInventory={this.toggleModalInventory.bind(this)} />
+                <Filter handleCreateClick={this.handleCreateClick.bind(this)} isCreating={this.state.isCreating} filteredSearch={this.handleFilteredSearch} inventoryState={this.state} handleSendInventory={this.handleSendInventory.bind(this)} toggleModalInventory={this.toggleModalInventory.bind(this)} />
 
               </div>
               <div className="panel-body">
@@ -250,63 +249,43 @@ class Inventory extends Component {
           </div>
         </div>
         <div>
-        <Modal className="modal-dialog" role="document" isOpen={this.state.isActive} ariaHideApp={false}>
-       <div className="modal-content">
-        <div className="modal-header">
-         <h3 className="modal-title" id="exampleModalLabel">Select Inventory Recipients</h3>
-         {/* <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+          <Modal className="modal-dialog" role="document" isOpen={this.state.isActive} ariaHideApp={false}>
+            <div className="modal-content">
+              <div className="modal-header">
+                <h3 className="modal-title" id="exampleModalLabel">Select Inventory Recipients</h3>
+                {/* <button type="button" className="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
          </button> */}
-        </div>
-        <div className="modal-body">
-         <p>Choose Recepients </p>
-         {/* <label class="form-check-label">
-    <input class="form-check-input" type="checkbox" value=""/>
-    Option one is this and that&mdash;be sure to include why it's great
-  </label> */}
-  <div class="form-check">
-  <label class="form-check-label">
-    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked/>
-    Send To All Dealers
-  </label>
-</div>
-<div class="form-check">
-  <label class="form-check-label">
-    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2"/>
-   Select Dealers Individually
-  </label>
-</div>
-{/* <div class="form-check disabled">
-  <label class="form-check-label">
-    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" disabled/>
-    Option three is disabled
-  </label>
-</div> */}
+              </div>
+              <div className="modal-body">
+                <p>Choose Recepients </p>
+                <form>
+                  <div className="radio">
+                    <label>
+                      <input type="radio" value="option1"
+                        checked={this.state.selectedOption === 'option1'}
+                        onChange={this.handleOptionChange.bind(this)} />
+                      Send to all dealers
+                    </label>
+                  </div>
+                  <div className="radio">
+                    <label>
+                      <input type="radio" value="option2"
+                        checked={this.state.selectedOption === 'option2'}
+                        onChange={this.handleOptionChange.bind(this)} />
+                      Choose dealers individually
+                    </label>
+                  </div>
+                </form>
+                {this.state.selectedOption === 'option2' ? this.SelectDealers() : null}
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-primary" onClick={() => this.sendInventoryEmail()} >Send Inventory</button>
 
-         <div id="addNote">
-          <input className="form-control" ref="newText" type="text" />
-
-          {/* <input className="form-control" ref="newText" type="text"  placeholder="Example input" /> */}
-          {/* <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input"/> */}
-         </div>
-         <div>
-         {/* <input className="form-control" ref="newText" type="text"  placeholder="Example input" /> */}
-         <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
-    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-  </div>
-     
-         
-      
-         
-        </div>
-        <div className="modal-footer">
-         <button type="button" className="btn btn-primary" onClick={() => this.sendInventoryEmail()} >Send Inventory</button>
-
-         <button type="button" onClick={() => this.toggleModalInventory()} className="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-       </div>
-      </Modal>
+                <button type="button" onClick={() => this.toggleModalInventory()} className="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </Modal>
         </div>
       </div>
     );
