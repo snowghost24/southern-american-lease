@@ -3,12 +3,13 @@ const Schema = mongoose.Schema;
 
 const DealerEntrySchema = new Schema({
   email: { type: String, unique : true, required: true },
-  phone: { type: String, required: true },
+  tel: { type: String },
   name: { type: String, required: true },
-  business:String
+  dealership:String,
+  url:String,
 });
 
-const AutoEntry = mongoose.model("dealerEntry", DealerEntrySchema);
+const DealerEntry = mongoose.model("dealerEntry", DealerEntrySchema);
 
-module.exports = dealerEntry;
+module.exports = DealerEntry;
 // exports.default= dealerEntry;

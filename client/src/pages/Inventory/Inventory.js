@@ -9,24 +9,15 @@ import Constributors from "../../components/Constributors/Constributors";
 import Modal from 'react-modal';
 // Create the Main component
 
-const FLAVOURS = [
-  { label: 'Jose Guzman', value: 'jguzman24680@gmail.com' },
-  { label: 'Vanilla', value: 'vanilla' },
-  { label: 'Strawberry', value: 'strawberry' },
-  { label: 'Caramel', value: 'caramel' },
-  { label: 'Cookies and Cream', value: 'cookiescream' },
-  { label: 'Peppermint', value: 'peppermint' },
-];
+// values are set When component mounts
+
 
 function Contact(label, value) {
   this.label = label;
   this.value = value;
 }
 
-// for (var i = 0; i < options.length; i += 1) {
-//   var newObj = new Contact(options[i].vin, options[i].make)
-//   FLAVOURS.push(newObj);
-// }
+
 
 
 class Inventory extends Component {
@@ -35,7 +26,9 @@ class Inventory extends Component {
     isCreating: false,
     isActive: false,
     selectedOption: 'option1',
-    addDealerActive:false
+    addDealerActive:false,
+    savedDealers:[],
+    selectedContacts:[]
   }
 
 
@@ -46,6 +39,23 @@ class Inventory extends Component {
         this.setState({ savedArticles: articleData.data });
       });
     console.log("the location", this.props.location);
+    this.getDealers()
+
+  console.log("dealer data is", this.props.location);
+  }
+
+  getDealers(){
+    helpers.getSavedDealers()
+    .then((dealerData) => {
+      var newArray = []
+      console.log(dealerData.data[0].name);
+      for (var i = 0; i < dealerData.data.length; i += 1) {
+        var newObj = new Contact(dealerData.data[i].name, dealerData.data[i].email)
+        newArray.push(newObj);
+      }
+      this.setState({ savedDealers: newArray});
+    })
+    ;
   }
 
   // This code handles the deleting saved articles from our database
@@ -98,7 +108,7 @@ class Inventory extends Component {
   }
 
   myFunction = () => {
-    console.log(this.state.forMarketing);
+    console.log(this.state);
     // console.log("the state is",this.state);
   }
 
@@ -119,17 +129,17 @@ class Inventory extends Component {
         }
       )
       .catch(err => console.log(err));
-
-    // if (this.state.forMarketing.indexOf(vehicle) === -1) {
-    //   // console.log(this.state.forMarketing.indexOf(vehicle))
-    //   var newStateArray = this.state.forMarketing.slice();
-    //   newStateArray.push(vehicle);
-    //   this.setState({forMarketing: newStateArray }, this.myFunction)
-    // } else if (this.state.forMarketing.indexOf(vehicle) !== -1) {
-    //   var newStateArray = this.state.forMarketing.slice();
-    //   newStateArray.pop(vehicle);
-    //   this.setState({forMarketing: newStateArray }, this.myFunction)    }
-  }
+    }
+  //   if (this.state.forMarketing.indexOf(vehicle) === -1) {
+  //     // console.log(this.state.forMarketing.indexOf(vehicle))
+  //     var newStateArray = this.state.forMarketing.slice();
+  //     newStateArray.push(vehicle);
+  //     this.setState({forMarketing: newStateArray }, this.myFunction)
+  //   } else if (this.state.forMarketing.indexOf(vehicle) !== -1) {
+  //     var newStateArray = this.state.forMarketing.slice();
+  //     newStateArray.pop(vehicle);
+  //     this.setState({forMarketing: newStateArray }, this.myFunction)    }
+  // }
 
 
   // A helper method for mapping through our articles and outputting some HTML
@@ -202,8 +212,9 @@ class Inventory extends Component {
     })
   }
 
+  //composes email to send iventory
   sendInventoryEmail = () => {
-    console.log("sending Inventory");
+    helpers.sendInventoryEmailHelper(this.state.selectedContacts)
   }
 
   handleOptionChange(changeEvent) {
@@ -216,35 +227,62 @@ class Inventory extends Component {
   SelectDealers() {
     return (
       <div>
-        <Constributors FLAVOURS={FLAVOURS} handleRetrievedContacts={this.handleRetrievedContacts.bind(this)} />
+        <Constributors FLAVOURS={this.state.savedDealers} handleRetrievedContacts={this.handleRetrievedContacts.bind(this)} />
       </div>
     )
   }
-
+// retrieves selected contacts from contributors component
   handleRetrievedContacts(retrievedContacts) {
-    console.log("Im hit", retrievedContacts);
+    var newStateArray = retrievedContacts.split(",")
+    this.setState({selectedContacts: newStateArray }, this.myFunction)
   }
-  addDealerDB() {
-    var name = this.refs.name.value;
-    var email = this.refs.email.value;
-    var dealership = this.refs.dealership.value;
-    var tel = this.refs.tel.value;
-    var url = this.refs.url.value;
-    console.log(name, email, tel, url, dealership);
+  addDealerDB(event) {
+    event.preventDefault();
+    var name = this.state.name;
+    var email = this.state.email;
+    var dealership = this.state.dealership;
+    var tel = this.state.tel;
+    var url = this.state.url;
+
+    var dealerEntryData = {name,email,dealership,tel,url}
+    helpers.enterDealerHelper(dealerEntryData)
+    .then(res=>{
+      this.setState({name:"",email:"",dealership:"",tel:"",url:""}, ()=>{console.log(this.state);})
+
+      this.getDealers();
+      console.log(res)
+    
+    })
+    .catch(err=>console.log(err));
+    }
+
+  
+
+  //sets state for adddealer form
+  handleDealerChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value
+    });
+    // this.setState({value: event.target.value});
   }
+
 
 renderDealerForm(){
   return (
-<form>
+<form onSubmit={this.addDealerDB.bind(this)}>
+<hr/>
                   <div className="form-group row">
                     <label className="col-2 col-form-label">Full Name
   <div className="col-10">
-                        <input className="form-control" ref="name" type="text" />
+                        <input className="form-control" name="name" type="text" required="required" value={this.state.value} onChange={this.handleDealerChange.bind(this)}/>
                       </div>
                     </label>
                     <label className="col-2 col-form-label">Dealership
   <div className="col-10">
-                        <input className="form-control" ref="dealership" type="text" />
+                        <input className="form-control" name="dealership" type="text" value={this.state.value} onChange={this.handleDealerChange.bind(this)}/>
                       </div>
                     </label>
                   </div>
@@ -254,23 +292,23 @@ renderDealerForm(){
                   <div className="form-group row">
                     <label className="col-2 col-form-label">  Email
   <div className="col-10">
-                        <input className="form-control" ref="email" type="email" />
+                        <input className="form-control" name="email" type="email" required="required" value={this.state.value} onChange={this.handleDealerChange.bind(this)}/>
                       </div>
                     </label>
                     <label className="col-2 col-form-label"> Telephone
   <div className="col-10">
-                        <input className="form-control" ref="tel" type="tel" />
+                        <input className="form-control" name="tel" type="tel" value={this.state.value} onChange={this.handleDealerChange.bind(this)} data-fv-numeric="true" data-fv-numeric-message="Please enter valid phone numbers"/>
                       </div>
                     </label>
                   </div>
                   <div className="form-group row">
                     <label className="col-2 col-form-label">  URL
   <div className="col-10">
-                        <input className="form-control" ref="url" type="url" />
+                        <input className="form-control" name="url" type="url" placeholder="https://getbootstrap.com" value={this.state.value} onChange={this.handleDealerChange.bind(this)}/>
                       </div>
                     </label>
                   </div>
-                  <button className="btn btn-danger" type="button" onClick={() => this.addDealerDB()}>Add Dealer</button>
+                  <input type="submit" className="btn btn-danger" value="Add Dealer" />
                 </form>
   )
 }

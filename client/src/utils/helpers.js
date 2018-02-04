@@ -94,8 +94,44 @@ const helpers = {
       }).catch(function (error) {
         console.log(error);
       });
-  }
-};
+  },  enterDealerHelper: function (dealerEntry) {
+    // console.log(dealerData);
+    var newDealer = dealerEntry;
+    console.log('dealer entry data', newDealer)
+    return axios.post("/dealers/dealer/", newDealer)
+      .then(function (response) {
+        console.log(response);
+        if (response.data === "duplicate dealer entry") {
+          return response
+        } else {
+          console.log("dealer entry results", response.data._id);
+          return response.data._id;
+        }
+      }).catch(function (error) {
+        console.log(error);
+      });
+  } , getSavedDealers: function () {
+    return axios.get("/dealers/dealer/")
+      .then(function (results) {
+        console.log("axios results from get saved", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
+  },   sendInventoryEmailHelper: function (emailRecipients) {
+    return axios.put("/dealers/dealer/", {
+     
+        emailRecipients
+     
+    })
+      .then(function (results) {
+        console.log("axios results from get filtered", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
+  },
+}
 
 
 // We export the helpers function
