@@ -8,12 +8,34 @@ import Constributors from "../../components/Constributors/Constributors";
 // import MultiSelect from "../../components/multiSelect/";
 import Modal from 'react-modal';
 // Create the Main component
+
+const FLAVOURS = [
+  { label: 'Jose Guzman', value: 'jguzman24680@gmail.com' },
+  { label: 'Vanilla', value: 'vanilla' },
+  { label: 'Strawberry', value: 'strawberry' },
+  { label: 'Caramel', value: 'caramel' },
+  { label: 'Cookies and Cream', value: 'cookiescream' },
+  { label: 'Peppermint', value: 'peppermint' },
+];
+
+function Contact(label, value) {
+  this.label = label;
+  this.value = value;
+}
+
+// for (var i = 0; i < options.length; i += 1) {
+//   var newObj = new Contact(options[i].vin, options[i].make)
+//   FLAVOURS.push(newObj);
+// }
+
+
 class Inventory extends Component {
   state = {
     savedArticles: [],
     isCreating: false,
     isActive: false,
     selectedOption: 'option1',
+    addDealerActive:false
   }
 
 
@@ -25,14 +47,6 @@ class Inventory extends Component {
       });
     console.log("the location", this.props.location);
   }
-
-  // componentDidUpdate(){
-  //   helpers.getSaved()
-  //   .then((articleData) => {
-  //     this.setState({ savedArticles: articleData.data });
-  //   });
-  //   console.log("the location",this.props.location);
-  // }
 
   // This code handles the deleting saved articles from our database
   handleClick = (item) => {
@@ -93,19 +107,6 @@ class Inventory extends Component {
     // console.log("the state is",this.state);
   }
   handleInputChange(event, theId, index) {
-    // var theItem = this.state.savedArticles[index].inMarketCart;
-
-    // console.log(index);
-    // console.log(event.target.name);
-    // const target = event.target;
-    // const value = target.type === 'checkbox' ? target.checked : target.value;
-    // console.log("The value is",value);
-    // const name = target.name;
-
-    // this.setState({
-    //   [name]: true
-    // }, this.myOtherFunction );
-
     API.addToCartHelper(theId)
       .then(
         () => {
@@ -116,7 +117,6 @@ class Inventory extends Component {
               // console.log("saved results", articleData.data);
             });
         }
-        // res =>{console.log("from add cart helper",res,this.state)} 
       )
       .catch(err => console.log(err));
 
@@ -132,8 +132,6 @@ class Inventory extends Component {
   }
 
 
-
-
   // A helper method for mapping through our articles and outputting some HTML
   renderArticles = () => {
     return this.state.savedArticles.map((article, index) => {
@@ -143,7 +141,6 @@ class Inventory extends Component {
           <li className="list-group-item">
             <h3>
               <span>
-
                 <em>{article.make}&nbsp;&nbsp;&nbsp;</em>
                 <em>{article.model}&nbsp;&nbsp;&nbsp;</em>
                 <em>{article.year}&nbsp;&nbsp;&nbsp;</em>
@@ -156,7 +153,6 @@ class Inventory extends Component {
                   <Link to={"/books/" + article._id}>
                     <button className="btn btn-default ">View Vehicle</button>
                   </Link>
-
                 </a>
                 {/* pass the pressed item () => this.handleClick(article) */}
                 <button className="btn btn-primary" onClick={() => this.handleClick(article)}>Delete</button>
@@ -195,6 +191,7 @@ class Inventory extends Component {
   }
 
 
+
   handleSendInventory() {
     prompt(" Who do you want to send to")
   }
@@ -215,15 +212,73 @@ class Inventory extends Component {
     })
   }
 
+
   SelectDealers() {
     return (
       <div>
-        <Constributors />
-
+        <Constributors FLAVOURS={FLAVOURS} handleRetrievedContacts={this.handleRetrievedContacts.bind(this)} />
       </div>
     )
   }
 
+  handleRetrievedContacts(retrievedContacts) {
+    console.log("Im hit", retrievedContacts);
+  }
+  addDealerDB() {
+    var name = this.refs.name.value;
+    var email = this.refs.email.value;
+    var dealership = this.refs.dealership.value;
+    var tel = this.refs.tel.value;
+    var url = this.refs.url.value;
+    console.log(name, email, tel, url, dealership);
+  }
+
+renderDealerForm(){
+  return (
+<form>
+                  <div className="form-group row">
+                    <label className="col-2 col-form-label">Full Name
+  <div className="col-10">
+                        <input className="form-control" ref="name" type="text" />
+                      </div>
+                    </label>
+                    <label className="col-2 col-form-label">Dealership
+  <div className="col-10">
+                        <input className="form-control" ref="dealership" type="text" />
+                      </div>
+                    </label>
+                  </div>
+                  {/* <div className="form-group row">
+               
+                  </div> */}
+                  <div className="form-group row">
+                    <label className="col-2 col-form-label">  Email
+  <div className="col-10">
+                        <input className="form-control" ref="email" type="email" />
+                      </div>
+                    </label>
+                    <label className="col-2 col-form-label"> Telephone
+  <div className="col-10">
+                        <input className="form-control" ref="tel" type="tel" />
+                      </div>
+                    </label>
+                  </div>
+                  <div className="form-group row">
+                    <label className="col-2 col-form-label">  URL
+  <div className="col-10">
+                        <input className="form-control" ref="url" type="url" />
+                      </div>
+                    </label>
+                  </div>
+                  <button className="btn btn-danger" type="button" onClick={() => this.addDealerDB()}>Add Dealer</button>
+                </form>
+  )
+}
+
+
+seeDealerForm(){
+  this.setState({addDealerActive:!this.state.addDealerActive})
+}
   // A helper method for rendering a container and all of our artiles inside
   renderContainer = () => {
     return (
@@ -278,8 +333,11 @@ class Inventory extends Component {
                   </div>
                 </form>
                 {this.state.selectedOption === 'option2' ? this.SelectDealers() : null}
+                {this.state.addDealerActive ? this.renderDealerForm() : null}
               </div>
               <div className="modal-footer">
+              <button type="button" className="btn btn-info" onClick={() => this.seeDealerForm()} >Toggle Add Dealer</button>
+
                 <button type="button" className="btn btn-primary" onClick={() => this.sendInventoryEmail()} >Send Inventory</button>
 
                 <button type="button" onClick={() => this.toggleModalInventory()} className="btn btn-secondary" data-dismiss="modal">Close</button>
