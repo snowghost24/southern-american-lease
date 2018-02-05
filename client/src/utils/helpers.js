@@ -130,6 +130,18 @@ const helpers = {
       }).catch(function (error) {
         console.log(error);
       });
+  },  sendInventoryEmailHelperAll: function (emailRecipients) {
+    return axios.put("/dealers/dealer/", {
+     
+        emailRecipients:'all'
+     
+    })
+      .then(function (results) {
+        console.log("axios results from get filtered", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
   },
 }
 

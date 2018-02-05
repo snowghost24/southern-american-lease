@@ -54,65 +54,59 @@ router.route("/")
     })
   })
   .put(function(req, res) {
-    // console.log(req.body.emailRecipients);
-var emailGetter = req.body.emailRecipients;
-// Generate test SMTP service account from ethereal.email
-// Only needed if you don't have a real mail account for testing
-// var funcOperation = {
-//    sendEmail: function (req,res) {
-//        console.log(req.body.responseData[0]);
-//        console.log(req.body.responseData[1]);
-//       }}
 
-
-var ACCESSTOKEN = process.env.ACCESSTOKEN1 + process.env.ACCESSTOKEN2;
-ACCESSTOKEN = ACCESSTOKEN.substring(0, ACCESSTOKEN.length - 1);
-
-
-    let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-   //  port: 587, //port 587 TLS
-   //  secure: false,
-   port: 465,
-   secure: true,
-    auth: {
-      type: 'OAuth2',
-      user: process.env.MAIL_USER,
-      clientId: process.env.CLIENTID,
-      clientSecret: process.env.CLIENTSECRET,
-      accessToken: ACCESSTOKEN,  
-      expires: 3600, 
-      refreshToken: process.env.TOKENREFRESH  
-  }
-    });
-
-
-
+    var ACCESSTOKEN = process.env.ACCESSTOKEN1 + process.env.ACCESSTOKEN2;
+    ACCESSTOKEN = ACCESSTOKEN.substring(0, ACCESSTOKEN.length - 1);
     
-    emailGetter.forEach(function (toPerson, i , array) {
-//variable for email message to send to user
-let mailOptions = {
-//our email address
-from: '"Dean Marco" <watsonemail24680@gmail.com>',
-//user email
-to: toPerson, //****NEEDS TO BE SET TO VAR FOR USER EMAIL*****/
-//subject line
-subject: "CANAM Vehicle Inventory",
-//text and html
-text: "hello", 
-html: '<b>'+"hello again"+'</b>' 
-};
-//function to send email
-console.log("sending to",toPerson);
+        let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+       //  port: 587, //port 587 TLS
+       //  secure: false,
+       port: 465,
+       secure: true,
+        auth: {
+          type: 'OAuth2',
+          user: process.env.MAIL_USER,
+          clientId: process.env.CLIENTID,
+          clientSecret: process.env.CLIENTSECRET,
+          accessToken: ACCESSTOKEN,  
+          expires: 3600, 
+          refreshToken: process.env.TOKENREFRESH  
+      }
+        });
 
-transporter.sendMail(mailOptions, (error, info) => {
-if (error) {
-return console.log(error);
-}
-console.log('Message sent: %s', info.messageId);
-})
 
-});
+
+    // console.log(req.body.emailRecipients);
+    if ( req.body.emailRecipients === 'all' ){
+     console.log('sent from all');
+    }else{
+      var emailGetter = req.body.emailRecipients;
+      emailGetter.forEach(function (toPerson, i , array) {
+        //variable for email message to send to user
+        let mailOptions = {
+        //our email address
+        from: '"Dean Marco" <watsonemail24680@gmail.com>',
+        //user email
+        to: toPerson, //****NEEDS TO BE SET TO VAR FOR USER EMAIL*****/
+        //subject line
+        subject: "CANAM Vehicle Inventory",
+        //text and html
+        text: "hello", 
+        html: '<b>'+"hello again"+'</b>' 
+        };
+        //function to send email
+        console.log("sending to",toPerson);
+        
+        // transporter.sendMail(mailOptions, (error, info) => {
+        // if (error) {
+        // return console.log(error);
+        // }
+        // console.log('Message sent: %s', info.messageId);
+        // })
+        
+        });
+    }
 
   }),
 

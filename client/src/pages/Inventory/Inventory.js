@@ -7,6 +7,7 @@ import Filter from "../../components/filter/filter";
 import Constributors from "../../components/Constributors/Constributors";
 // import MultiSelect from "../../components/multiSelect/";
 import Modal from 'react-modal';
+import swal from 'sweetalert'
 // Create the Main component
 
 // values are set When component mounts
@@ -200,8 +201,6 @@ class Inventory extends Component {
     }
   }
 
-
-
   handleSendInventory() {
     prompt(" Who do you want to send to")
   }
@@ -214,7 +213,43 @@ class Inventory extends Component {
 
   //composes email to send iventory
   sendInventoryEmail = () => {
-    helpers.sendInventoryEmailHelper(this.state.selectedContacts)
+    if (this.state.selectedOption === 'option2'){
+      if (this.state.selectedContacts != ""){
+        helpers.sendInventoryEmailHelper(this.state.selectedContacts);
+        this.toggleModalInventory();
+        swal({
+          title: "Inventory Sent!",
+          text: "Click button to close!",
+          icon: "success",
+          button: "close!",
+        }); 
+      }else{
+        swal({
+          title: "Inventory NOT sent!",
+          text: "Please Select Recipients!",
+          icon: "warning",
+          button: "close!",
+        }); 
+      }
+     
+   }else{
+      helpers.sendInventoryEmailHelperAll()
+      this.toggleModalInventory()
+      // swal("Inventory was sent!")
+      // swal({
+      //   title: "Top result:",
+      //   text: name,
+      //   icon: imageURL,
+      // });
+      swal({
+        title: "Inventory Sent!",
+        text: "Clicked button to close!",
+        icon: "success",
+        button: "close!",
+      });
+
+    }
+    
   }
 
   handleOptionChange(changeEvent) {
@@ -243,15 +278,12 @@ class Inventory extends Component {
     var dealership = this.state.dealership;
     var tel = this.state.tel;
     var url = this.state.url;
-
     var dealerEntryData = {name,email,dealership,tel,url}
     helpers.enterDealerHelper(dealerEntryData)
     .then(res=>{
       this.setState({name:"",email:"",dealership:"",tel:"",url:""}, ()=>{console.log(this.state);})
-
       this.getDealers();
       console.log(res)
-    
     })
     .catch(err=>console.log(err));
     }
@@ -272,8 +304,8 @@ class Inventory extends Component {
 
 renderDealerForm(){
   return (
-<form onSubmit={this.addDealerDB.bind(this)}>
-<hr/>
+ <form onSubmit={this.addDealerDB.bind(this)}>
+ <hr/>
                   <div className="form-group row">
                     <label className="col-2 col-form-label">Full Name
   <div className="col-10">
@@ -375,9 +407,7 @@ seeDealerForm(){
               </div>
               <div className="modal-footer">
               <button type="button" className="btn btn-info" onClick={() => this.seeDealerForm()} >Toggle Add Dealer</button>
-
                 <button type="button" className="btn btn-primary" onClick={() => this.sendInventoryEmail()} >Send Inventory</button>
-
                 <button type="button" onClick={() => this.toggleModalInventory()} className="btn btn-secondary" data-dismiss="modal">Close</button>
               </div>
             </div>
@@ -386,10 +416,6 @@ seeDealerForm(){
       </div>
     );
   }
-
-
-
-
 
   // Our render method. Utilizing a few helper methods to keep this logic clean
   render() {
