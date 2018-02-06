@@ -109,7 +109,14 @@ export default {
             }).catch(function (error) {
               console.log(error);
             });
-        },
+        },getSavedInventoryHandler: function(id) {
+          return axios.get("/sales/inventory")
+          .then(function (results) {
+            return results;
+          }).catch(function (error) {
+            console.log(error);
+          });;
+        }
 
 
 

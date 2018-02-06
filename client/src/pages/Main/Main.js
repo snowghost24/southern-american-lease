@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 // Including the Link component from React Router to navigate within our application without full page reloads
 // https://github.com/ReactTraining/react-router/blob/master/docs/API.md#link
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 // Create the Main component
 class Main extends Component {
@@ -28,17 +28,17 @@ class Main extends Component {
                   <span className="icon-bar"></span>
                   <span className="icon-bar"></span>
                 </button>
-                <Link className="navbar-brand" to="/">Dean Marco</Link>
+                <NavLink className="navbar-brand" exact to="/">Dean Marco</NavLink>
               </div>
 
               <div className="collapse navbar-collapse navbar-ex1-collapse">
                 <ul className="nav navbar-nav navbar-right">
-                  {/* Using <Link> in place of <a> and "to" in place of "href" */}
-                  <li><Link to="/search">Add Vehicle</Link></li>
-                  <li><Link to="/saved">Inventory</Link></li>
-                  <li><Link to="/leather">Leather</Link></li>
-                  <li><Link to="/lift">Lift</Link></li>
-                  <li><Link to="/detail">Detail</Link></li>
+                  {/* Using <NavLink> in place of <a> and "to" in place of "href" */}
+                  <li><NavLink exact to="/">Add Vehicle</NavLink></li>
+                  <li><NavLink to="/saved">Inventory</NavLink></li>
+                  <li><NavLink to="/leather">Leather</NavLink></li>
+                  <li><NavLink to="/lift">Lift</NavLink></li>
+                  <li><NavLink to="/detail">Detail</NavLink></li>
                 </ul>
               </div>
             </div>

@@ -6,7 +6,9 @@ import { Input, TextArea } from "../../components/Form";
 // import axios from 'axios'
 import FileUploader from "../../components/FileUploader/FileUploader";
 import AutoDetailsForm from "../../components/AutoDetailsForm/AutoDetailsForm";
+// import Dropzone from "react-dropzone";
 import "./details.css";
+import DefaultUpload from '../../components/DefaultUpload/DefaultUpload';
 class Detail extends Component {
   state = {
     vehicle: {},
@@ -114,6 +116,30 @@ class Detail extends Component {
     this.loadVehicle()
   }
 
+  upLoadInventoryPhotos(){
+return(
+
+  <DefaultUpload />
+  // <div className="FileUpload">
+  // <Dropzone
+  //   multiple={false}
+  //   accept="image/*"
+  //   onDrop={this.onInventoryPhotoDrop.bind(this)}>
+  //   <p>Select of Drop VEHICLE Images</p>
+  // </Dropzone>
+  // </div>
+)
+  }
+
+  // onInventoryPhotoDrop(){
+
+  // }
+
+
+
+
+
+
   render() {
     console.log("state from detail", this.state.vehicle);
     return (
@@ -200,9 +226,16 @@ class Detail extends Component {
 
             <AutoDetailsForm loadVehicle={this.loadVehicle.bind(this)} id={this.props.match.params.id} sentDownStates={this.state} editForm={this.state.editForm} />
             {/* This is the image upload form */}
-
+            <Row>
+            <Col size="md-5">
             {this.checkVinImgExists()}
+            </Col>
+            <Col size="md-5">
+            {this.upLoadInventoryPhotos()}
+               </Col>
+            </Row>
           </Col>
+          
         </Row>
 
 

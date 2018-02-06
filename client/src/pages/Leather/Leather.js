@@ -59,6 +59,9 @@ class LeatherStatus extends React.Component {
     }).catch(err => console.log(err));
   }
 
+  componentDidUpdate(){
+    console.log("component updated");
+  }
   componentDidMount = () => {
     var theStatus = this.props.theVehicle.location;
     var theLocation = this.props.theVehicle.location;

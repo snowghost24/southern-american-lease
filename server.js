@@ -143,3 +143,134 @@ app.listen(PORT, function() {
   // API_SECRET = eN2PJpKj7OM3iuKElHF0mYYeITk
 
   // AIzaSyDisOMGFuPeebJLZXHPxwnhI3bSMr1sDWM
+
+//   const client = new vision.ImageAnnotatorClient({
+//   keyFilename:"/Users/Snowghost/Documents/southern_lease3/vinkey.json"
+// });
+  const Storage = require('@google-cloud/storage');
+const projectId = "vin-photos";
+  // Creates a client
+  const storage = new Storage({
+    keyFilename:"/Users/Snowghost/Documents/southern_lease3/vinkey.json",
+    
+  });
+  
+
+  /**
+   * TODO(developer): Uncomment the following line before running the sample.
+   */
+  // const bucketName = 'Name of a bucket, e.g. my-bucket';
+
+  //  const bucketName = 'Name of a bucket, e.g. my-bucket';
+  // const prefix = 'public/';
+  // const delimiter = '/';
+  const bucketName = 'canam-photos'
+ const filename = 'screen.png'
+  // Lists files in the bucket
+  // storage
+  //   .bucket(bucketName)
+  //   .getFiles()
+  //   .then(results => {
+  //     const files = results[0];
+
+  //     console.log('Files:');
+  //     files.forEach(file => {
+  //       console.log(file.name);
+  //     });
+  //   })
+  //   .catch(err => {
+  //     console.error('ERROR:', err);
+  //   });
+
+// var prefix = 'before_';
+// var delimiter = '_';
+  
+//   const options = {
+//     prefix: prefix,
+//     delimiter:delimiter
+//   };
+
+//   if (delimiter) {
+//     options.delimiter = delimiter;
+//   }
+
+//   storage
+//   .bucket(bucketName)
+//   .getFiles(options)
+//   .then(results => {
+//     const files = results[0];
+
+//     console.log('Files:');
+//     files.forEach(file => {
+//       console.log(file);
+//     });
+//   })
+//   .catch(err => {
+//     console.error('ERROR:', err);
+//   });
+// [END storage_list_files_with_prefix]
+// const options = {
+//   action: 'read',
+  
+// };
+
+// storage
+// .bucket(bucketName)
+// .file(filename)
+// .getSignedUrl(options)
+// .then(results => {
+//   const url = results[0];
+
+//   console.log(`The signed url for ${filename} is ${url}.`);
+// })
+// .catch(err => {
+//   console.error('ERROR:', err);
+// });
+
+
+// 'use strict';
+// const storage = require('@google-cloud/storage');
+// const fs = require('fs')
+
+// const gcs = storage({
+//   projectId: 'your-project-id',
+//   keyFilename: '/path/to/keyfile.json'
+// });
+
+// const bucketName = 'bucket-name-for-upload'
+// const bucket = gcs.bucket(bucketName);
+
+// function getPublicUrl(filename) {
+//   return 'https://storage.googleapis.com/' + bucketName + '/' + filename;
+// }
+
+// let ImgUpload = {};
+
+// ImgUpload.uploadToGcs = (req, res, next) => {
+//   if(!req.file) return next();
+
+//   // Can optionally add a path to the gcsname below by concatenating it before the filename
+//   const gcsname = req.file.originalname;
+//   const file = bucket.file(gcsname);
+
+//   const stream = file.createWriteStream({
+//     metadata: {
+//       contentType: req.file.mimetype
+//     }
+//   });
+
+//   stream.on('error', (err) => {
+//     req.file.cloudStorageError = err;
+//     next(err);
+//   });
+
+//   stream.on('finish', () => {
+//     req.file.cloudStorageObject = gcsname;
+//     req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
+//     next();
+//   });
+
+//   stream.end(req.file.buffer);
+// }
+
+// module.exports = ImgUpload;
