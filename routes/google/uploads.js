@@ -64,7 +64,29 @@ router.route("/").post(multer.single('file'), (req, res, next) => {
   blobStream.end(req.file.buffer);
 });
 
+router.route("/").get(function (req, res) {
+console.log("delete request",req.query);
+var filename = req.query.deleteName;
+var deleteLink =  req.query.deleteUrl;
+var theOriginalVin = req.query.theVin;
 
+storage
+    .bucket(bucketname)
+    .file(filename)
+    .delete()
+    .then(() => {
+      var changes = {photoArray:deleteLink}
+      AutoEntry.findOneAndUpdate({ vin:theOriginalVin }, { $pull: changes }, { upsert: true, new: true })
+      .then((dbModel) => {
+        console.log("confirmed true model", dbModel);
+        res.send(dbModel)
+      })
+      .catch(err => res.status(422).json(err));
+    })
+    .catch(err => {
+      console.error('ERROR:', err);
+    });
+})
 // makePublic(bucketname,req.file.originalname)
 // function makePublic(bucketname, filename) {
 
@@ -97,3 +119,7 @@ router.route("/").post(multer.single('file'), (req, res, next) => {
 
 
 module.exports = router;
+
+
+  
+  

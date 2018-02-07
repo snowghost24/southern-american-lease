@@ -118,13 +118,42 @@ class Detail extends Component {
 
   upLoadInventoryPhotos(){
 return(
-  <DefaultUpload theVehicleId={this.state.vehicle.vin}/>
+  <DefaultUpload theVehicleId={this.state.vehicle.vin} loadVehicle={this.loadVehicle}/>
 )
+  }
+
+  deletePhoto(theVin,linkToRemove) {
+    console.log(linkToRemove.slice(44));
+    var deleteName = linkToRemove.slice(44);
+    API.deletePhotosDbHandler(theVin,linkToRemove,deleteName)
+      .then((res) => {
+        this.loadVehicle()
+        console.log("delete photo detail", res.data);
+      }).catch(err => console.log(err));
+  }
+
+  managePhotoLInks(){
+    if (this.state.vehicle.photoArray !== undefined){
+      console.log("the photo array",this.state.vehicle.photoArray);
+      return this.state.vehicle.photoArray.map((thePhoto, index) => {
+        return (
+          <div  key={index} >
+            <a href={thePhoto} >{thePhoto}</a>
+
+            <button className="btn btn-dark" type='button' onClick={()=>{ this.deletePhoto(this.state.vehicle.vin,thePhoto)}}>
+            <span className="ex"> ✘</span>
+           
+            
+            </button>
+         </div>  
+        );
+      });
+    }
   }
 
   
   render() {
-    console.log("state from detail", this.state.vehicle);
+    console.log("state from detail second", this.state.vehicle);
     return (
       <Container fluid>
         <Row>
@@ -216,6 +245,9 @@ return(
             <Col size="md-5">
             {this.upLoadInventoryPhotos()}
                </Col>
+            </Row>
+            <Row>
+            {this.managePhotoLInks()}
             </Row>
           </Col>
           

@@ -19,12 +19,14 @@ export default class DefaultUpload extends React.Component {
         // Simple callbacks work too, of course
         this.callback = () => console.log('Hello!');
 
-        this.success = file => console.log('uploaded', swal({
-          title: "Upload Completed",
-          text: "Close and click remove file",
-          icon: "success",
-          button: "close!",
-        }));
+        this.success = file =>{
+            console.log('uploaded'),
+             swal({
+            title: "Upload Completed",
+            text: "Close and click remove file",
+            icon: "success",
+            button: "close!",
+          }),this.props.loadVehicle()} 
 
         this.progress = file => console.log('progress', file);
 

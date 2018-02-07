@@ -116,25 +116,20 @@ export default {
           }).catch(function (error) {
             console.log(error);
           });;
-        }
-
-
-
-
-  // , deleteImgDb: function (vin, deleteItem) {
-  //   console.log("im in send file", vin, deleteItem);
-  //   return axios.delete("/file/filesend/", {
-   
-  //       theVin: vin,
-  //       deleteItem: deleteItem
-  //   })
-  //     .then(function (results) {
-  //       console.log("saved vin url results->", results);
-  //       return results;
-  //     }).catch(function (error) {
-  //       console.log(error);
-  //     });
-  // }
+        }, deletePhotosDbHandler: function (vin, deleteUrl,deleteName) {
+    console.log('delete photo handler' ,vin, deleteUrl,deleteName);
+    return axios.get("/google/uploads/", {
+      params:{theVin: vin,
+      deleteUrl: deleteUrl,
+      deleteName:deleteName} 
+    })
+      .then(function (results) {
+        console.log("return from delete photo->", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
+  }
 
   // Deletes the book with the given id
   // deleteBook: function(id) {
