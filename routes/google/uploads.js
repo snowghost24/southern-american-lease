@@ -4,6 +4,7 @@ const format = require('util').format;
 const Multer = require('multer');
 const helmet = require('helmet');
 
+
 const Storage = require('@google-cloud/storage');
 const projectId = "vin-photos";
   // Creates a client
@@ -28,7 +29,7 @@ router.route("/").post(multer.single('file'), (req, res, next) => {
     res.status(400).send('No file uploaded.');
     return;
   }
-  console.log("the perams is", req.body.myParameter);
+  var theOriginalVin = req.body.myParameter;
   var nameExtension = Math.floor(Math.random()*100000)
   req.file.originalname = req.body.myParameter+'_'+nameExtension;
   console.log(req.file.originalname);
@@ -48,7 +49,15 @@ router.route("/").post(multer.single('file'), (req, res, next) => {
   blobStream.on("finish", () => {
     const publicUrl = `https://storage.googleapis.com/${bucketname}/${blob.name}`;
           blob.makePublic().then(() => {
-     res.status(200).send(`Success!\n Image uploaded to ${publicUrl}`);
+            var changes = {photoArray:publicUrl}
+
+            AutoEntry.findOneAndUpdate({ vin:theOriginalVin }, { $push: changes }, { upsert: true, new: true })
+            .then((dbModel) => {
+              console.log("confirmed true model", dbModel);
+              res.send(dbModel)
+            })
+            .catch(err => res.status(422).json(err));
+    //  res.status(200).send(`Success!\n Image uploaded to ${publicUrl}`);
     });
   });
 

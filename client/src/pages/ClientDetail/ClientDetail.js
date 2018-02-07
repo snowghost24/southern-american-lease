@@ -32,8 +32,27 @@ class ControlledCarousel extends React.Component {
     });
   }
 
+  // returns carousel items
+  renderCarouselItem = () => {
+    if (this.props.thePhotosUrls !== undefined){
+      console.log(this.props.thePhotosUrls);
+      return this.props.thePhotosUrls.map((thePhoto, index) => {
+        return (
+          <Carousel.Item  key={index} >
+            <img  alt="900x500" src={thePhoto} />
+          </Carousel.Item>
+         
+        );
+      });
+
+    }
+
+  }
+
   render() {
     const { index, direction } = this.state;
+    const {thePhotosUrls}=this.props;
+    console.log(thePhotosUrls);
     return (
       <Carousel
         activeIndex={index}
@@ -43,15 +62,13 @@ class ControlledCarousel extends React.Component {
         wrap={true}
         className="carousel slide"
             >
-        <Carousel.Item   >
-          <img  alt="900x500"src="http://st.motortrend.com/uploads/sites/10/2016/11/2017-Ford-F-150-XLT-front-three-quarter.jpg" />
-        </Carousel.Item>
-        <Carousel.Item>
+      {this.renderCarouselItem()}
+        {/* <Carousel.Item>
           <img width={1200} height={500} alt="900x500" src="http://st.motortrend.com/uploads/sites/5/2017/01/2018-Ford-F-150-front-three-quarters.jpg"  />
         </Carousel.Item>
         <Carousel.Item>
           <img width={1200} height={500} alt="900x500" src="https://media.ed.edmunds-media.com/ford/f-150/2016/ot/2016_ford_f-150_LIFE2_ot_902161_1280.jpg"  />
-        </Carousel.Item>
+        </Carousel.Item> */}
       </Carousel>
     );
   }
@@ -203,7 +220,7 @@ goToPrev(){
        
         <Row>
         <Col size="md-10 md-offset-1">
-        <ControlledCarousel />
+        <ControlledCarousel thePhotosUrls ={this.state.vehicle.photoArray}/>
         </Col>
         </Row>
         <Row>

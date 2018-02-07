@@ -36,6 +36,7 @@ class Main extends Component {
                   {/* Using <NavLink> in place of <a> and "to" in place of "href" */}
                   <li><NavLink exact to="/">Add Vehicle</NavLink></li>
                   <li><NavLink to="/saved">Inventory</NavLink></li>
+                  <li><NavLink to="/inventory/">Marketing Inventory</NavLink></li>
                   <li><NavLink to="/leather">Leather</NavLink></li>
                   <li><NavLink to="/lift">Lift</NavLink></li>
                   <li><NavLink to="/detail">Detail</NavLink></li>

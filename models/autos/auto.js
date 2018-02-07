@@ -42,6 +42,7 @@ const AutoEntrySchema = new Schema({
   vinImage:String,
   vinConfirmed:{type:Boolean,default:false}, 
   inMarketCart:{type:Boolean,default:false},
+  photoArray: [String],
 
   date: { type: Date, default: Date.now }
 

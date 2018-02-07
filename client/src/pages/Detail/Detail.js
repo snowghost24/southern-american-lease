@@ -118,28 +118,11 @@ class Detail extends Component {
 
   upLoadInventoryPhotos(){
 return(
-
   <DefaultUpload theVehicleId={this.state.vehicle.vin}/>
-  // <div className="FileUpload">
-  // <Dropzone
-  //   multiple={false}
-  //   accept="image/*"
-  //   onDrop={this.onInventoryPhotoDrop.bind(this)}>
-  //   <p>Select of Drop VEHICLE Images</p>
-  // </Dropzone>
-  // </div>
 )
   }
 
-  // onInventoryPhotoDrop(){
-
-  // }
-
-
-
-
-
-
+  
   render() {
     console.log("state from detail", this.state.vehicle);
     return (
