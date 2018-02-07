@@ -119,7 +119,7 @@ class Detail extends Component {
   upLoadInventoryPhotos(){
 return(
 
-  <DefaultUpload />
+  <DefaultUpload theVehicleId={this.state.vehicle.vin}/>
   // <div className="FileUpload">
   // <Dropzone
   //   multiple={false}

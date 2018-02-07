@@ -162,7 +162,7 @@ goToPrev(){
       <Row>
       <Col size="md-2 md-offset-3 ">
       {/* <Link to={"/inventory/" + this.state.prevVehicle} >prev</Link> */}
-      <button type="button" className="btn btn-danger center-block" onClick={this.goToPrev.bind(this)}>Prev Vehicle</button>
+      <button type="button" className="btn btn-danger center-block" onClick={this.goToPrev.bind(this)}>Prev Vehicle<i className="far fa-arrow-alt-circle-left"></i></button>
       </Col>
       <Col size="md-2">
       <h3 className="center-text">{this.state.numbVehicle}/{this.state.inventoryLength}</h3>

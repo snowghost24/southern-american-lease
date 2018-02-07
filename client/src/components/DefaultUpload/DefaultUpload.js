@@ -1,16 +1,11 @@
 import React, { Component } from "react";
 import ReactDOM from 'react-dom';
 import DropzoneComponent from 'react-dropzone-component';
-
+import swal from 'sweetalert'
 export default class DefaultUpload extends React.Component {
     constructor(props) {
         super(props);
-
-        this.djsConfig = {
-            addRemoveLinks: true,
-            acceptedFiles: "image/jpeg,image/png,image/gif"
-        };
-
+     this.state = {theVin:this.props.theVehicleId};
         this.componentConfig = {
             iconFiletypes: ['.jpg', '.png', '.gif'],
             showFiletypeIcon: true,
@@ -24,7 +19,12 @@ export default class DefaultUpload extends React.Component {
         // Simple callbacks work too, of course
         this.callback = () => console.log('Hello!');
 
-        this.success = file => console.log('uploaded', file);
+        this.success = file => console.log('uploaded', swal({
+          title: "Upload Completed",
+          text: "Close and click remove file",
+          icon: "success",
+          button: "close!",
+        }));
 
         this.progress = file => console.log('progress', file);
 
@@ -34,9 +34,16 @@ export default class DefaultUpload extends React.Component {
     }
 
     render() {
-        const config = this.componentConfig;
-        const djsConfig = this.djsConfig;
-
+       
+      var { theVehicleId} = this.props;
+              const config = this.componentConfig;
+        const djsConfig = {
+          addRemoveLinks: true,
+          acceptedFiles: "image/jpeg,image/png,image/gif",
+          params: {
+            myParameter: theVehicleId
+        }
+      }
         // For a list of all possible events (there are many), see README.md!
         const eventHandlers = {
             init: dz => this.dropzone = dz,

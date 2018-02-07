@@ -24,53 +24,54 @@ const bucket = storage.bucket(bucketname);
 
 
 router.route("/").post(multer.single('file'), (req, res, next) => {
-  console.log("Multer is not working");
   if (!req.file) {
     res.status(400).send('No file uploaded.');
     return;
   }
-
+  console.log("the perams is", req.body.myParameter);
+  var nameExtension = Math.floor(Math.random()*100000)
+  req.file.originalname = req.body.myParameter+'_'+nameExtension;
+  console.log(req.file.originalname);
+// console.log(req.file);
   // Create a new blob in the bucket and upload the file data.
   const blob = bucket.file(req.file.originalname);
-  // const blobStream = blob.createWriteStream();
   const blobStream = blob.createWriteStream({
     metadata: {
       contentType: req.file.mimetype
     }
   });
-  console.log(blobStream);
 
   blobStream.on('error', (err) => {
     next(err);
   });
 
-  blobStream.on('finish', () => {
-    // The public URL can be used to directly access the file via HTTP.
-    const publicUrl = format(`https://storage.googleapis.com/${bucketname}/${blob.name}`);
-    console.log("the url is",publicUrl);
-
-    makePublic(bucketname,req.file.originalname)
-    res.status(200).send(publicUrl);
+  blobStream.on("finish", () => {
+    const publicUrl = `https://storage.googleapis.com/${bucketname}/${blob.name}`;
+          blob.makePublic().then(() => {
+     res.status(200).send(`Success!\n Image uploaded to ${publicUrl}`);
+    });
   });
 
   blobStream.end(req.file.buffer);
 });
 
-function makePublic(bucketname, filename) {
 
-  // Makes the file public
-  storage
-    .bucket(bucketname)
-    .file(filename)
-    .makePublic()
-    .then(() => {
-      console.log(`gs://${bucketname}/${filename} is now public.`);
-    })
-    .catch(err => {
-      console.error('ERROR:', err);
-    });
-  // [END storage_make_public]
-}
+// makePublic(bucketname,req.file.originalname)
+// function makePublic(bucketname, filename) {
+
+//   // Makes the file public
+//   storage
+//     .bucket(bucketname)
+//     .file(filename)
+//     .makePublic()
+//     .then(() => {
+//       console.log(`gs://${bucketname}/${filename} is now public.`);
+//     })
+//     .catch(err => {
+//       console.error('ERROR:', err);
+//     });
+//   // [END storage_make_public]
+// }
 
 
 
