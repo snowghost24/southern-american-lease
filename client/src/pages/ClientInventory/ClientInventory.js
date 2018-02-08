@@ -36,21 +36,23 @@ class ClientInventory extends Component {
 
   // On mount get all saved articles from our db
   componentDidMount() {
-    helpers.getSaved()
-      .then((articleData) => {
-        this.setState({ savedArticles: articleData.data });
-      });
-    console.log("the location", this.props.location);
-    this.getDealers()
-
-  console.log("dealer data is", this.props.location);
+   this.getMarketingData()
+  this.getDealers()
   }
+
+  // gets all marketing vehicles - called on component mount
+getMarketingData(){
+  helpers.getSavedMarketing()
+  .then((articleData) => {
+    this.setState({ savedArticles: articleData.data });
+  }).catch(err=>{console.log(err);})
+}
+
 
   getDealers(){
     helpers.getSavedDealers()
     .then((dealerData) => {
       var newArray = []
-      console.log(dealerData.data[0].name);
       for (var i = 0; i < dealerData.data.length; i += 1) {
         var newObj = new Contact(dealerData.data[i].name, dealerData.data[i].email)
         newArray.push(newObj);
@@ -167,7 +169,7 @@ class ClientInventory extends Component {
                   </Link>
                 </a>
                 {/* pass the pressed item () => this.handleClick(article) */}
-                <button className="btn btn-primary" onClick={() => this.handleClick(article)}>Delete</button>
+                {/* <button className="btn btn-primary" onClick={() => this.handleClick(article)}>Delete</button> */}
                 {this.state.isCreating ? (<form className="form-control">
                   <label>
                     Add to Markerting:
@@ -180,7 +182,7 @@ class ClientInventory extends Component {
                 </form>) : null}
               </span>
             </h3>
-            <p>Days Since Entered: {this.getDate(article.date)}</p>
+            {/* <p>Days Since Entered: {this.getDate(article.date)}</p> */}
           </li>
         </div>
       );
@@ -347,8 +349,13 @@ renderDealerForm(){
 }
 
 
+
 seeDealerForm(){
   this.setState({addDealerActive:!this.state.addDealerActive})
+}
+
+sendClearSearch(){
+  this.getMarketingData();
 }
   // A helper method for rendering a container and all of our artiles inside
   renderContainer = () => {
@@ -363,7 +370,7 @@ seeDealerForm(){
                     <i className="fa fa-download" aria-hidden="true"></i> Vehicle Inventory</strong>
                 </h1>
                 {/* thePath={this.props.location.pathname */}
-                <Filter handleCreateClick={this.handleCreateClick.bind(this)} isCreating={this.state.isCreating} filteredSearch={this.handleFilteredSearch} inventoryState={this.state} handleSendInventory={this.handleSendInventory.bind(this)} toggleModalInventory={this.toggleModalInventory.bind(this)} />
+                <Filter handleCreateClick={this.handleCreateClick.bind(this)} isCreating={this.state.isCreating} filteredSearch={this.handleFilteredSearch} inventoryState={this.state} handleSendInventory={this.handleSendInventory.bind(this)} toggleModalInventory={this.toggleModalInventory.bind(this)}  sendClearSearchInventoryClient={this.sendClearSearch.bind(this)} renderedFrom={this.props.location.pathname}/>
 
               </div>
               <div className="panel-body">

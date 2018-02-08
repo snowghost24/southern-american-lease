@@ -3,7 +3,7 @@ const vehDataController = require("../../../controllers/vehDataController");
 
 // Matches with "/api/booking/books"
 router.route("/")
-  .get(vehDataController.findAll)
+  .get(vehDataController.getSavedMarketing)
   .post(vehDataController.useVinDecoder)
   .put(vehDataController.enterVehicle);
 

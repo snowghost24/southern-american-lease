@@ -5,20 +5,14 @@ import API from "../../utils/API";
 import helpers from "../../utils/helpers";
 import Filter from "../../components/filter/filter";
 import Constributors from "../../components/Constributors/Constributors";
-// import MultiSelect from "../../components/multiSelect/";
 import Modal from 'react-modal';
 import swal from 'sweetalert'
-// Create the Main component
 
-// values are set When component mounts
-
-
+// values are set When component mount
 function Contact(label, value) {
   this.label = label;
   this.value = value;
 }
-
-
 
 
 class Inventory extends Component {
@@ -30,21 +24,27 @@ class Inventory extends Component {
     addDealerActive:false,
     deleteDealerActive:false,
     savedDealers:[],
-    selectedContacts:[]
+    selectedContacts:[],
+    showDeleteButton:false
   }
 
 
   // On mount get all saved articles from our db
   componentDidMount() {
+    this.getSavedData()
+    // console.log("the location", this.props.location);
+    this.getDealers()
+  }
+
+  getSavedData(){
+  console.log("i was hit in clear attempt ");
     helpers.getSaved()
       .then((articleData) => {
         this.setState({ savedArticles: articleData.data });
       });
-    console.log("the location", this.props.location);
-    this.getDealers()
-
-  console.log("dealer data is", this.props.location);
   }
+
+
 
   getDealers(){
     helpers.getSavedDealers()
@@ -161,13 +161,17 @@ class Inventory extends Component {
                 <em>{article.vin}</em>
               </span>
               <span className="btn-group pull-right">
-                <a href={article.url} rel="noopener noreferrer" target="_blank">
+                {/* <a href={article.url} rel="noopener noreferrer" target="_blank"> </a> */}
                   <Link to={"/books/" + article._id}>
                     <button className="btn btn-default ">View Vehicle</button>
                   </Link>
-                </a>
+                
                 {/* pass the pressed item () => this.handleClick(article) */}
-                <button className="btn btn-primary" onClick={() => this.handleClick(article)}>Delete</button>
+              
+                {this.state.showDeleteButton ? (<button className="btn btn-primary" onClick={() => this.handleClick(article)}>Delete</button>) : null}
+              
+
+
                 {this.state.isCreating ? (<form className="form-control">
                   <label>
                     Add to Markerting:
@@ -390,7 +394,6 @@ renderDeleteDealerForm() {
       return (
         <div  key={index} >
         <li>
-          {/* <a href={thePhoto} >{thePhoto}</a> */}
           <span>{theDealer.label}</span>
           <button className="btn btn-dark" type='button' onClick={()=>{ this.deleateDealerDB(theDealer.value)}}>
           <span className="ex"> ✘</span>
@@ -410,6 +413,16 @@ seeDealerForm(){
 seeDeleteDealerForm(){
   this.setState({deleteDealerActive:!this.state.deleteDealerActive})
 }
+
+
+toggleButtonEditor(theLowerState){
+  this.setState({showDeleteButton:theLowerState})
+}
+
+// clears the search from in filter component 
+sendClearSearch(){
+  this.getSavedData();
+}
   // A helper method for rendering a container and all of our artiles inside
   renderContainer = () => {
     return (
@@ -423,7 +436,7 @@ seeDeleteDealerForm(){
                     <i className="fa fa-download" aria-hidden="true"></i> Vehicle Inventory</strong>
                 </h1>
                 {/* thePath={this.props.location.pathname */}
-                <Filter handleCreateClick={this.handleCreateClick.bind(this)} isCreating={this.state.isCreating} filteredSearch={this.handleFilteredSearch} inventoryState={this.state} handleSendInventory={this.handleSendInventory.bind(this)} toggleModalInventory={this.toggleModalInventory.bind(this)} />
+                <Filter handleCreateClick={this.handleCreateClick.bind(this)} isCreating={this.state.isCreating} filteredSearch={this.handleFilteredSearch} inventoryState={this.state} handleSendInventory={this.handleSendInventory.bind(this)} toggleModalInventory={this.toggleModalInventory.bind(this)} renderedFrom={this.props.location.pathname} toggleButtonEditor={this.toggleButtonEditor.bind(this)} sendClearSearchInventory={this.sendClearSearch.bind(this)}/>
 
               </div>
               <div className="panel-body">

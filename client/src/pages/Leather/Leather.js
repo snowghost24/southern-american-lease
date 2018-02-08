@@ -235,12 +235,17 @@ class Leather extends Component {
 
   // gets all saved articles from our db
   componentDidMount() {
+   this.getSavedLeatherData()
+  }
+
+  getSavedLeatherData(){
     helpers.getSavedLeather()
     .then((vehicleData) => {
       this.setState({ savedVehicles: vehicleData.data });
       console.log("saved results", vehicleData.data);
       console.log("The current state in leather", this.state);
     });
+
   }
 // reloads data  from db after a submit
   reloadComponent (){
@@ -370,6 +375,10 @@ class Leather extends Component {
     });
   }
 
+  sendClearSearch(){
+    this.getSavedLeatherData();
+  }
+
   // A helper method for rendering a container and all of our artiles inside
   renderContainer = () => {
     return (
@@ -382,7 +391,8 @@ class Leather extends Component {
                   <strong>
                     <i className="fa fa-download" aria-hidden="true"></i> Leather Inventory</strong>
                 </h1>
-                <Filter filteredSearch={this.handleFilteredSearch} workFrom={this.state.workFrom} savedVehicles={this.state.savedVehicles} theReload={this.reloadComponent.bind(this)}/>
+                <Filter filteredSearch={this.handleFilteredSearch} workFrom={this.state.workFrom} savedVehicles={this.state.savedVehicles} theReload={this.reloadComponent.bind(this)}
+                sendClearSearchLeather={this.sendClearSearch.bind(this)} renderedFrom={this.props.location.pathname}/>
               </div>
               <div className="panel-body">
                 <ul className="list-group">

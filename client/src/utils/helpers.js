@@ -29,8 +29,19 @@ const helpers = {
   //--------------------------------------------------------
   ,
   // This will return all saved vehicles in database 
+  // called from inventory
   getSaved: function () {
     return axios.get("/api/saving/saved")
+      .then(function (results) {
+        console.log("axios results from get saved", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
+  },  
+  //called from client inventory
+  getSavedMarketing: function () {
+    return axios.get("/api/vehicle/data")
       .then(function (results) {
         console.log("axios results from get saved", results);
         return results;

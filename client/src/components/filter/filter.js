@@ -7,6 +7,8 @@ import Modal from 'react-modal';
 import API from "../../utils/API";
 import { Input } from "../../components/Form";
 import { Link } from "react-router-dom";
+import ToggleButton from 'react-toggle-button'
+
 
 
 var pdfMake = require('pdfmake/build/pdfmake.js')
@@ -15,7 +17,6 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 function CreateButton(props) {
   return (
-
     <button className="btn btn-info" onClick={props.onClick}>
      Create Marketing Invertory
     </button>
@@ -29,7 +30,6 @@ function  CloseInventoryButton(props) {
     <button className="btn btn-info" onClick={props.onClick}>
       Close Marketing Inventory
     </button>
-  
     </div>
   );
 }
@@ -37,16 +37,12 @@ function  CloseInventoryButton(props) {
 
 function SendInventoryButton(props) {
   return (
-
     <button className="btn btn-danger" onClick={props.onClick}>
     Compose Emails
     </button>
-
   );
 }
-// function (params) {
-  
-// }
+
 
 class Filter extends React.Component {
   constructor(props) {
@@ -58,13 +54,23 @@ class Filter extends React.Component {
     searchedFrom:'',
     leatherStatus:'',
     releasedStatus:'',
-    isActive: false 
+    isActive: false ,
+    toggleButtonValue:false,
+    
   };
-  // this.handleCreateClick = this.handleCreateClick.bind(this);
-  // this.handleSendClick = this.handleSendClick.bind(this);
+ 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  componentDidMount = ()=>{
+    if (this.props.workFrom){
+      this.setState({
+        searchedFrom:this.props.workFrom
+      });
+    }
+  }
+
 
 
 
@@ -88,17 +94,11 @@ class Filter extends React.Component {
     this.setState({releasedStatus: e.target.value})
   }
 
-  componentDidMount = ()=>{
-    if (this.props.workFrom){
-      this.setState({
-        searchedFrom:this.props.workFrom
-      });
-    }
-  }
+
 
 // showing hidden items per page
-
   handleSubmit(event) {
+    event.preventDefault();
     var searchItem;
     var searchType ;
     if (this.state.value === "location" ){
@@ -106,7 +106,6 @@ class Filter extends React.Component {
       searchType = this.state.value;
     }
     else if (this.state.value === "jobStatus" && this.state.searchedFrom === 'leather' ){
-
       searchItem = this.state.leatherStatus;
       searchType = 'leatherStatus';
     } else if (this.state.value === "released" ){
@@ -116,9 +115,6 @@ class Filter extends React.Component {
       searchType = this.state.value;
       searchItem = this.state.searchText;
    }
-    // console.log("im submitting", searchType,searchItem);
-    event.preventDefault();
-    // console.log(this.state.searchText);
     this.props.filteredSearch(searchType,searchItem)
   }
 
@@ -292,16 +288,40 @@ console.log(this.props.leatherProps);
    .catch(err => console.log(err));
  };
 
-//  handleCreateClick() {
-//   this.setState({isCreating: true});
-// }
 
-// handleSendClick() {
-//   this.setState({isCreating: false});
-// }
+ // if the location viewed from is saved render the toggle delete button
+ // then if toggle delete button is true then render the delete buttons 
+  showDeleteButton() {
+    return (
+      <div>
+        {this.props.renderedFrom === "/saved" ? (
+          <div>
+            <ToggleButton
+              value={this.state.toggleButtonValue || false}
+              onToggle={(value) => {
+                this.setState({
+                  toggleButtonValue: !value,
+                }, ()=>{this.sendUpToggleButtonValue()})
+              }} />
+            <p>Turn ON to see Delete Vehicle option</p>
+          </div>) : null
+        }
+      </div>
+    )
+  }
 
+  sendUpToggleButtonValue(){
+    this.props.toggleButtonEditor(this.state.toggleButtonValue)
+  }
 
-
+  sendClearSearch() {
+    if (this.props.renderedFrom === "/saved") {
+      this.props.sendClearSearchInventory()
+    } else if (this.props.renderedFrom === "/inventory/") {
+      this.props.sendClearSearchInventoryClient()
+    } else if (this.props.renderedFrom === "/leather") { 
+      this.props.sendClearSearchLeather() }
+  }
 
   render() {
     var theStateValue;
@@ -316,19 +336,21 @@ console.log(this.props.leatherProps);
     }
 
 
-    // const isCreating = this.props.isCreating;
-
+    // if the location is saved show the create inventory button
+    // if the create inventory is true then to display open model else close it
     let button = null;
-    if (this.props.isCreating) {
-      button = <div><CloseInventoryButton  onClick={this.props.handleCreateClick} />
-      <SendInventoryButton  onClick={this.props.toggleModalInventory} />
-      </div>;
-      // button = <SendInventoryButton  onClick={this.props.handleSendInventory} />;
-      
-
-    } else {
-      button = <CreateButton onClick={this.props.handleCreateClick} />;
+    if (this.props.renderedFrom === "/saved"){
+      if (this.props.isCreating) {
+        button = <div><CloseInventoryButton  onClick={this.props.handleCreateClick} />
+        <SendInventoryButton  onClick={this.props.toggleModalInventory} />
+        </div>;      
+      } else {
+        button = <CreateButton onClick={this.props.handleCreateClick} />;
+      }
     }
+
+  
+
 
     return (
       <div>
@@ -354,12 +376,18 @@ console.log(this.props.leatherProps);
         <input className="form-control" type="submit" value="Submit"/>
      </label>
       </form>
+
+      <input className="form-control" type="submit" value="Clear Search" onClick={this.sendClearSearch.bind(this)}/>
+
       <button className="btn btn-danger"onClick={this.openPDF.bind(this)}>Download to Print Results</button>
       {/* renders hidden button */}
       {this.renderShowHide()}
     
        <div >
         {button}
+      </div>
+      <div>
+        {this.showDeleteButton()}
       </div>
 
 

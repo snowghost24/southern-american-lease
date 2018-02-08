@@ -20,25 +20,20 @@ module.exports = {
       }
     });
   },
-  findAll: function (req, res) {
-    // console.log("Find all querys");
-    // console.log(req.query.searchType);
-    // console.log("pending wont pass",req.query.searchItem);
-    var searchType = req.query.searchType;
-    var searchItem = req.query.searchItem
-    // var searchItem = req.query.searchItem.toUpperCase();
-    //Donot search for searchType but for the value 
-    AutoEntry.find({ [searchType]: searchItem }).collation({ locale: 'en', strength: 2 })
-      .exec(function (err, doc) {
+
+  getSavedMarketing: function(req, res) {
+    AutoEntry.find({inMarketCart:true} )
+      .exec(function(err, doc) {
         if (err) {
           console.log(err);
         }
         else {
-          console.log("Find all sent back docs", doc);
+          // console.log("Im sending back docs",doc);
           res.send(doc);
         }
       });
   },
+
   findById: function (req, res) {
     console.log("Ive alsoe been hit");
     AutoEntry.findById(req.params.id)

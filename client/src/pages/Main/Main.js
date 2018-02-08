@@ -34,7 +34,7 @@ class Main extends Component {
               <div className="collapse navbar-collapse navbar-ex1-collapse">
                 <ul className="nav navbar-nav navbar-right">
                   {/* Using <NavLink> in place of <a> and "to" in place of "href" */}
-                  <li><NavLink exact to="/">Add Vehicle</NavLink></li>
+                  <li><NavLink exact to="/entry">Add Vehicle</NavLink></li>
                   <li><NavLink to="/saved">Inventory</NavLink></li>
                   <li><NavLink to="/inventory/">Marketing Inventory</NavLink></li>
                   <li><NavLink to="/leather">Leather</NavLink></li>

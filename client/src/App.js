@@ -20,11 +20,8 @@ const App = () =>
     <div>
       <Main >
       <Switch>
-      <Route exact path="/" component={VehicleEntry} />
-
-        {/* <Route exact path="/" component={Search} /> */}
-        {/* <Route exact path={`${process.env.PUBLIC_URL}/search`} component={Search} /> */}
-        <Route path={`${process.env.PUBLIC_URL}/vehicle/entry`} component={VehicleEntry} />
+        {/* <Route exact path="/" component={Access} /> */}
+      <Route exact path={`${process.env.PUBLIC_URL}/entry`} component={VehicleEntry} />
         <Route path={`${process.env.PUBLIC_URL}/sell/:id`} component={Search} />
         <Route path={`${process.env.PUBLIC_URL}/leather`} component={Leather} />
         <Route path={`${process.env.PUBLIC_URL}/lift`} component={Leather} />
