@@ -3,16 +3,11 @@ import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
 import API from "../../utils/API";
 import { Input, TextArea } from "../../components/Form";
-// import axios from 'axios'
 import FileUploader from "../../components/FileUploader/FileUploader";
 import AutoDetailsForm from "../../components/AutoDetailsForm/AutoDetailsForm";
-// import "./details.css";
-// import Carousel from "../../components/Carousel/Carousel";
-// import Slider from "react-slick"
 import { Carousel } from 'react-bootstrap';
-
 import "./clientDetail.css";
-
+// import "./details.css";
 
 class ControlledCarousel extends React.Component {
   constructor(props, context) {
@@ -25,7 +20,6 @@ class ControlledCarousel extends React.Component {
   }
 
   handleSelect(selectedIndex, e) {
-    // alert(`selected=${selectedIndex}, direction=${e.direction}`);
     this.setState({
       index: selectedIndex,
       direction: e.direction
@@ -41,12 +35,9 @@ class ControlledCarousel extends React.Component {
           <Carousel.Item  key={index} >
             <img  alt="900x500" src={thePhoto} />
           </Carousel.Item>
-         
         );
       });
-
     }
-
   }
 
   render() {
@@ -63,12 +54,6 @@ class ControlledCarousel extends React.Component {
         className="carousel slide"
             >
       {this.renderCarouselItem()}
-        {/* <Carousel.Item>
-          <img width={1200} height={500} alt="900x500" src="http://st.motortrend.com/uploads/sites/5/2017/01/2018-Ford-F-150-front-three-quarters.jpg"  />
-        </Carousel.Item>
-        <Carousel.Item>
-          <img width={1200} height={500} alt="900x500" src="https://media.ed.edmunds-media.com/ford/f-150/2016/ot/2016_ford_f-150_LIFE2_ot_902161_1280.jpg"  />
-        </Carousel.Item> */}
       </Carousel>
     );
   }
@@ -85,32 +70,11 @@ class ClientDetail extends Component {
     nextVehicle:"",
     prevVehicle:""
   };
-
-  handleEditFormChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value
-    });
-  }
-
-  // when component mounts call load vehicle function
+  
+    // grabs all the vehicle available for marketing in inventory
   componentDidMount() {
-    this.loadVehicle()
     this.getSavedInventory()
   }
-
-  //goes to the db and grabs info of the paramater and makes dbrequest
-  loadVehicle = () => {
-    API.getVehicle(this.props.match.params.id)
-      .then((res) => {
-        console.log("API.get books res data from detail", res.data);
-        this.setState({
-          vehicle: res.data,
-        })
-      }).catch(err => console.log(err));
-  };
 
 
   getSavedInventory = () => {
@@ -118,10 +82,12 @@ class ClientDetail extends Component {
       .then((res) => {
         var thePath = this.props.location.pathname;
         thePath = thePath.slice(11);
-        // console.log("the path is ",thePath);
         res.data.forEach((element,index) => {
           console.log(element._id);
           if(thePath == element._id) {
+            this.setState({
+              vehicle: res.data[index]
+            })
             this.setState({numbVehicle:index+1})
             if (index === 0){
               var prevAtZero = res.data.length - 1;
@@ -158,16 +124,13 @@ goToNext(){
   var addressId = this.state.nextVehicle;
   var path = `${addressId}`;
   this.props.history.push(path)
-  this.loadVehicle()
   this.getSavedInventory()
-
 }
 
 goToPrev(){
   var addressId = this.state.prevVehicle
   var path = `${addressId}`;
   this.props.history.push(path)
-  this.loadVehicle()
   this.getSavedInventory()
  console.log(this.props.history);
 }
@@ -176,21 +139,18 @@ goToPrev(){
     console.log("state from detail", this.state);
     return (
       <Container fluid>
-      <Row>
-      <Col size="md-2 md-offset-3 ">
-      {/* <Link to={"/inventory/" + this.state.prevVehicle} >prev</Link> */}
-      <button type="button" className="btn btn-danger center-block" onClick={this.goToPrev.bind(this)}>Prev Vehicle<i className="far fa-arrow-alt-circle-left"></i></button>
-      </Col>
-      <Col size="md-2">
-      <h3 className="center-text">{this.state.numbVehicle}/{this.state.inventoryLength}</h3>
-      </Col>
-      <Col size="md-2">
-      {/* <Link to={"/inventory/" + this.state.nextVehicle}> Next */}
-      <button type="button" className="btn btn-danger center-block" onClick={this.goToNext.bind(this)}>Next Vehicle</button>
-      {/* </Link> */}
-      </Col>
-      
-      </Row>
+        <Row>
+          <Col size="md-2 md-offset-3 ">
+            <button type="button" className="btn btn-danger center-block" onClick={this.goToPrev.bind(this)}>Prev Vehicle<i className="far fa-arrow-alt-circle-left"></i></button>
+          </Col>
+          <Col size="md-2">
+            <h3 className="center-text">{this.state.numbVehicle}/{this.state.inventoryLength}</h3>
+          </Col>
+          <Col size="md-2">
+            <button type="button" className="btn btn-danger center-block" onClick={this.goToNext.bind(this)}>Next Vehicle</button>
+          </Col>
+        </Row>
+
         <Row>
           <Col size="md-12">
             <h3>Vehicle Information</h3><hr />
@@ -219,11 +179,12 @@ goToPrev(){
         </Row>
        
         <Row>
-        <Col size="md-10 md-offset-1">
-        <ControlledCarousel thePhotosUrls ={this.state.vehicle.photoArray}/>
-        </Col>
+          <Col size="md-10 md-offset-1">
+            <ControlledCarousel thePhotosUrls={this.state.vehicle.photoArray} />
+          </Col>
         </Row>
         <Row>
+          <hr/>
           <Col size="md-2">
             <Link to="/inventory/">← Back to Inventory</Link>
           </Col>

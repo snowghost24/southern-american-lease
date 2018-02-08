@@ -6,20 +6,14 @@ import API from "../../utils/API";
 import helpers from "../../utils/helpers";
 import Filter from "../../components/filter/filter";
 import Constributors from "../../components/Constributors/Constributors";
-// import MultiSelect from "../../components/multiSelect/";
 import Modal from 'react-modal';
 import swal from 'sweetalert'
-// Create the Main component
 
 // values are set When component mounts
-
-
 function Contact(label, value) {
   this.label = label;
   this.value = value;
 }
-
-
 
 
 class ClientInventory extends Component {

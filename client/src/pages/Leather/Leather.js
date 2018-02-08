@@ -131,10 +131,6 @@ class LeatherStatus extends React.Component {
       <Col size="md-2">
         <input className="btn btn-primary" type="button" value="Hide" onClick={this.hideVehicleDisplay} />
         </Col>
-       
-         
-         
-    
     </Row>
     );
   }

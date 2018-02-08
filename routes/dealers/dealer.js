@@ -1,3 +1,4 @@
+const nodemailer = require('nodemailer');
 const router = require("express").Router();
 const DealerEntry = require("../../models/dealers/dealer");
 'use strict';
