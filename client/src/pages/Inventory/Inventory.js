@@ -28,6 +28,7 @@ class Inventory extends Component {
     isActive: false,
     selectedOption: 'option1',
     addDealerActive:false,
+    deleteDealerActive:false,
     savedDealers:[],
     selectedContacts:[]
   }
@@ -288,6 +289,8 @@ class Inventory extends Component {
     .catch(err=>console.log(err));
     }
 
+
+
   
 
   //sets state for adddealer form
@@ -306,6 +309,7 @@ renderDealerForm(){
   return (
  <form onSubmit={this.addDealerDB.bind(this)}>
  <hr/>
+ <h3>ADD DEALER FORM</h3>
                   <div className="form-group row">
                     <label className="col-2 col-form-label">Full Name
   <div className="col-10">
@@ -345,9 +349,66 @@ renderDealerForm(){
   )
 }
 
+deleateDealerDB(dealerEmailKilled) {
+  console.log(dealerEmailKilled);
+  helpers.deleteDealerDBHelper(dealerEmailKilled)
+  .then(res => {
+    if(res.data === 'Deleted'){
+      swal({
+        title: "Congrats",
+        text: "Dealer Has Been Deleted!",
+        icon: "success",
+        button: "close!",
+      }); 
+      this.getDealers();
+    }
+  })
+  .catch(err => console.log(err));
+
+  // event.preventDefault();
+  // var name = this.state.name;
+  // var email = this.state.email;
+  // var dealership = this.state.dealership;
+  // var tel = this.state.tel;
+  // var url = this.state.url;
+  // var dealerEntryData = {name,email,dealership,tel,url}
+  // helpers.enterDealerHelper(dealerEntryData)
+  // .then(res=>{
+  //   this.setState({name:"",email:"",dealership:"",tel:"",url:""}, ()=>{console.log(this.state);})
+  //   this.getDealers();
+  //   console.log(res)
+  // })
+  // .catch(err=>console.log(err));
+  }
+
+
+renderDeleteDealerForm() {
+  console.log(this.state.savedDealers);
+  if (this.state.savedDealers !== undefined){
+    // console.log("the photo array",this.state.vehicle.photoArray);
+    return this.state.savedDealers.map((theDealer, index) => {
+      return (
+        <div  key={index} >
+        <li>
+          {/* <a href={thePhoto} >{thePhoto}</a> */}
+          <span>{theDealer.label}</span>
+          <button className="btn btn-dark" type='button' onClick={()=>{ this.deleateDealerDB(theDealer.value)}}>
+          <span className="ex"> ✘</span>
+          </button>
+          </li>
+       </div>  
+      );
+    });
+  }
+}
+
 
 seeDealerForm(){
   this.setState({addDealerActive:!this.state.addDealerActive})
+}
+
+seeDeleteDealerForm(){
+  this.setState({deleteDealerActive:!this.state.deleteDealerActive})
 }
   // A helper method for rendering a container and all of our artiles inside
   renderContainer = () => {
@@ -404,9 +465,11 @@ seeDealerForm(){
                 </form>
                 {this.state.selectedOption === 'option2' ? this.SelectDealers() : null}
                 {this.state.addDealerActive ? this.renderDealerForm() : null}
+                {this.state.deleteDealerActive ? this.renderDeleteDealerForm() : null}
               </div>
               <div className="modal-footer">
               <button type="button" className="btn btn-info" onClick={() => this.seeDealerForm()} >Toggle Add Dealer</button>
+              <button type="button" className="btn btn-info" onClick={() => this.seeDeleteDealerForm()} >Toggle Delete Dealer</button>
                 <button type="button" className="btn btn-primary" onClick={() => this.sendInventoryEmail()} >Send Inventory</button>
                 <button type="button" onClick={() => this.toggleModalInventory()} className="btn btn-secondary" data-dismiss="modal">Close</button>
               </div>

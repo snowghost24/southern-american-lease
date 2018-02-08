@@ -492,3 +492,59 @@ export default class ContactForm extends React.Component {
 
 const CLOUDINARY_UPLOAD_PRESET = 'pxp1u3go';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dcv191fk7/upload';
+
+<form onSubmit={this.handleSubmit}>
+                 <div className="form-group">
+                   <h4 className=""><strong>VIN Number</strong></h4>
+                   <input
+                   name="vin"
+                     type="text"
+                     value={this.state.vin}
+                     className="form-control"
+                     id="search"
+                     onChange={this.handleInputChange}
+                     //triggers on blue push
+                     onBlur={this.handleBlur}
+                     required
+                   />
+                    {/* {this.renderResults()} */}
+                    <h4><strong>Make</strong></h4>
+                   <input
+                   name="make"
+                     type="text"
+                     value={this.state.make}
+                     className="form-control"
+                     id="start"
+                     onChange={this.handleInputChange}
+                     required
+                   />
+                   <h4><strong>Model</strong></h4>
+                   <input
+                   name="model"
+                     type="text"
+                     value={this.state.model}
+                     className="form-control"
+                     id="end"
+                     onChange={this.handleInputChange}
+                     required
+                   />
+                   <h4><strong>Year</strong></h4>
+                   <input
+                   name="year"
+                     type="number"
+                     value={this.state.year}
+                     className="form-control"
+                     id="end"
+                     onChange={this.handleInputChange}
+                     required
+                   />
+                 </div>
+                 {/* Here we create the onClick event that triggers the HandleSubmit */}
+                 <div className="pull-right">
+                   <button
+                     type="submit"
+                     className="btn btn-danger">
+                     <h4>Submit</h4>
+                   </button>
+                 </div>
+               </form>

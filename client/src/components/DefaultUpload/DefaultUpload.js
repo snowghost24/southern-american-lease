@@ -55,7 +55,6 @@ export default class DefaultUpload extends React.Component {
             removedfile: this.removedfile,
             uploadprogress: this.progress
         }
-
         return <DropzoneComponent config={config} eventHandlers={eventHandlers} djsConfig={djsConfig} />
     }
 }

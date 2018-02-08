@@ -1,13 +1,13 @@
-// Include the Axios library for HTTP requests
+// Includes the Axios library for HTTP requests
 import axios from "axios";
 // Helper Functions
 const helpers = {
-  // retrieves vehicle data from NHTSA
+  // called from vehicle Entry
+  // retrieves vehicle data from NHTSA /endping -> data-vehDataController-func: create
   vinSearchNHTSAHelper: function (vinNumb) {
     var formattedVinNum = vinNumb.trim();
-    return axios.post("/api/booking/books", { vin: formattedVinNum })
+    return axios.post("/api/vehicle/data", { vin: formattedVinNum })
       .then(function (response) {
-        console.log("vinSearchNHTSAHelper func response", response);
         return response
       }).catch(function (error) {
         console.log(error);
@@ -17,30 +17,11 @@ const helpers = {
   // This will run our query.
   enterVehicleDataHelper: function (entryData) {
     console.log(entryData);
-    var newArticle = { 
-      vin: entryData[0], 
-      make: entryData[1], 
-      model: entryData[2], 
-      year: entryData[3], 
-      lastsix: entryData[4], 
-      series:entryData[5], 
-      bodyCabType:entryData[6], 
-      bodyClass:entryData[7],
-      trim:entryData[8],
-      drivetrain:entryData[9],
-      doors:entryData[10],
-      fuelType:entryData[11]
-    };
-    console.log('postSaved', newArticle)
-    return axios.post("/api/saving/saved", newArticle)
+
+    console.log('postSaved', entryData)
+    return axios.put("/api/vehicle/data", entryData)
       .then(function (response) {
-        console.log(response);
-        if (response.data === "duplicate vehicle entry") {
-          return response
-        } else {
-          console.log("axios results", response.data._id);
-          return response.data._id;
-        }
+        return response
       }).catch(function (error) {
         console.log(error);
       });
@@ -118,11 +99,12 @@ const helpers = {
       }).catch(function (error) {
         console.log(error);
       });
-  },   sendInventoryEmailHelper: function (emailRecipients) {
+  },  
+
+  // sends emaisl to individuals 
+  sendInventoryEmailHelper: function (emailRecipients) {
     return axios.put("/dealers/dealer/", {
-     
         emailRecipients
-     
     })
       .then(function (results) {
         console.log("axios results from get filtered", results);
@@ -130,19 +112,31 @@ const helpers = {
       }).catch(function (error) {
         console.log(error);
       });
-  },  sendInventoryEmailHelperAll: function (emailRecipients) {
+  }, 
+  
+  sendInventoryEmailHelperAll: function (emailRecipients) {
     return axios.put("/dealers/dealer/", {
-     
         emailRecipients:'all'
-     
     })
       .then(function (results) {
         console.log("axios results from get filtered", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
+  }, deleteDealerDBHelper: function (delDealerEmail) {
+    return axios.delete("/dealers/dealer/",{
+      params: {
+        "dealer": delDealerEmail
+      },
+    } )
+      .then(function (results) {
         return results;
       }).catch(function (error) {
         console.log(error);
       });
   },
+
 }
 
 
