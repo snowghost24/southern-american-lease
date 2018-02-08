@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 // Including the Link component from React Router to navigate within our application without full page reloads
 // https://github.com/ReactTraining/react-router/blob/master/docs/API.md#link
 import { NavLink } from "react-router-dom";
+  //  import { Input, TextArea, FormBtn } from "../../components/Form";
 
 // Create the Main component
 class Main extends Component {
@@ -39,7 +40,7 @@ class Main extends Component {
                   <li><NavLink to="/inventory/">Marketing Inventory</NavLink></li>
                   <li><NavLink to="/leather">Leather</NavLink></li>
                   <li><NavLink to="/lift">Lift</NavLink></li>
-                  <li><NavLink to="/detail">Detail</NavLink></li>
+                  <li><NavLink to="/detail">Detail</NavLink></li> 
                 </ul>
               </div>
             </div>

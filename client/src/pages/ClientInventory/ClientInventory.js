@@ -361,7 +361,7 @@ sendClearSearch(){
               <div className="panel-heading">
                 <h1 className="panel-title">
                   <strong>
-                    <i className="fa fa-download" aria-hidden="true"></i> Vehicle Inventory</strong>
+                    <i className="fa fa-download" aria-hidden="true"></i> Search By</strong>
                 </h1>
                 {/* thePath={this.props.location.pathname */}
                 <Filter handleCreateClick={this.handleCreateClick.bind(this)} isCreating={this.state.isCreating} filteredSearch={this.handleFilteredSearch} inventoryState={this.state} handleSendInventory={this.handleSendInventory.bind(this)} toggleModalInventory={this.toggleModalInventory.bind(this)}  sendClearSearchInventoryClient={this.sendClearSearch.bind(this)} renderedFrom={this.props.location.pathname}/>

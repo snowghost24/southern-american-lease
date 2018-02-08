@@ -2,96 +2,33 @@
   Element Styles
 ==================================== */
 
-
-
-
-
 input {
   font-size: 1.12em;
-  /* height: 46px; */
-  /* padding-bottom: 1em; */
   padding-left: 0;
   background: white;
   border: none;
   outline: 0;
-  /* border-bottom: 4px solid #e4e4e4; */
   transition: border-color .4s;
   border-radius: 3px;
 } 
-/* 
-input:focus {
-  border-color: #c1c1c1;
-} */
-
-/* button {
-  width: 40px;
-  height: 35px;
-  border: 0;
-  background: none;
-  cursor: pointer;
-  outline: 0;
-  position: relative;
-  z-index: 2000;
-} */
-
-/* .search-form input:only-of-type {
-  width: 100%;
-  margin-right: -40px;
-  padding-right: 35px;
-} */
 
 .search-button {
   font-size: 1.12em;
-  /* float: right; */
   margin-left: 10px;
-
-   /* width: 40px; */
-  /* height: 35px; */
   border-radius: 3px;
   color: #293d51;
   border-bottom-color: blue;
   border-color:white;
-  /* border: 0; */
-  /* background: none; */
   cursor: pointer;
   outline: 0;
   position: relative;
   z-index: 2000;
 }
-
-/* .icn-search {
-  font-weight: 700;
-} */
-
-
 
 
 /* ================================= 
   Layout Styles
 ==================================== */
-
-/* .inner,
-.main-content {
-  width: 90%;
-  max-width: 1025px;
-  margin: auto;
-}
-
-.main-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: #fff;
-  min-height: 80px;
-  z-index: 1000;
-}
-
-.main-content::after {
-  content: " ";
-  display: table;
-  clear: both;
-} */
 
 .is-hidden {
   border: 0;
@@ -109,16 +46,10 @@ input:focus {
 ==================================== */
 
 
-
-
 @media (min-width: 769px) {
-
   .search-form {
     width: 422px;
-    /* float: right; */
-    /* margin-top: 34px; */
   }
-  
 }
 
 .Complete{

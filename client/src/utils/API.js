@@ -2,9 +2,6 @@ import axios from "axios";
 
 export default {
   // Gets all books
-  // getBooks: function() {
-  //   return axios.get("/api/booking/books");
-  // },
   // Gets the book with the given id
   getVehicle: function(id) {
     return axios.get("/api/booking/books/" + id)
@@ -110,13 +107,15 @@ export default {
               console.log(error);
             });
         },getSavedInventoryHandler: function(id) {
-          return axios.get("/sales/inventory")
+          return axios.get("/api/vehicle/data")
           .then(function (results) {
             return results;
           }).catch(function (error) {
             console.log(error);
           });;
-        }, deletePhotosDbHandler: function (vin, deleteUrl,deleteName) {
+        },
+        // "/sales/inventory"
+        deletePhotosDbHandler: function (vin, deleteUrl,deleteName) {
     console.log('delete photo handler' ,vin, deleteUrl,deleteName);
     return axios.get("/google/uploads/", {
       params:{theVin: vin,

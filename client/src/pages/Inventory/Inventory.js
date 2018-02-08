@@ -160,15 +160,15 @@ class Inventory extends Component {
               <span>
                 <em>{article.vin}</em>
               </span>
-              <span className="btn-group pull-right">
+              <span className="btn-group pull-right ">
                 {/* <a href={article.url} rel="noopener noreferrer" target="_blank"> </a> */}
                   <Link to={"/books/" + article._id}>
-                    <button className="btn btn-default ">View Vehicle</button>
+                    <button className="btn btn-primary ">View Vehicle</button>
                   </Link>
                 
                 {/* pass the pressed item () => this.handleClick(article) */}
               
-                {this.state.showDeleteButton ? (<button className="btn btn-primary" onClick={() => this.handleClick(article)}>Delete</button>) : null}
+                {this.state.showDeleteButton ? (<button className="btn btn-danger" onClick={() => this.handleClick(article)}>Delete</button>) : null}
               
 
 
@@ -433,7 +433,7 @@ sendClearSearch(){
               <div className="panel-heading">
                 <h1 className="panel-title">
                   <strong>
-                    <i className="fa fa-download" aria-hidden="true"></i> Vehicle Inventory</strong>
+                    <i className="fa fa-download" aria-hidden="true"></i> Search By</strong>
                 </h1>
                 {/* thePath={this.props.location.pathname */}
                 <Filter handleCreateClick={this.handleCreateClick.bind(this)} isCreating={this.state.isCreating} filteredSearch={this.handleFilteredSearch} inventoryState={this.state} handleSendInventory={this.handleSendInventory.bind(this)} toggleModalInventory={this.toggleModalInventory.bind(this)} renderedFrom={this.props.location.pathname} toggleButtonEditor={this.toggleButtonEditor.bind(this)} sendClearSearchInventory={this.sendClearSearch.bind(this)}/>
