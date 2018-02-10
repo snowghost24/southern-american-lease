@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react'
 import axios from "axios"
-import JsPDF from "../JsPDF";
 import Modal from 'react-modal';
 import API from "../../utils/API";
 import { Input } from "../../components/Form";
@@ -9,40 +8,25 @@ import { Link } from "react-router-dom";
 import ToggleButton from 'react-toggle-button'
 import "./Filter.css";
 import { Col, Row, Container } from "../../components/Grid";
-
+import { FormGroup, FormControl } from 'react-bootstrap';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Button, ButtonGroup,Collapse, CardBody, Card  } from 'reactstrap';
 // this is used to create pdfs
 var pdfMake = require('pdfmake/build/pdfmake.js')
 var pdfFonts = require('pdfmake/build/vfs_fonts.js')
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-// These are used to render buttons conditionally
-function CreateButton(props) {
-  return (
-    <button className="btn btn-info" onClick={props.onClick}>
-    Market Invertory
-    </button>
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
 
-  );
-}
-
-function CloseInventoryButton(props) {
-  return (
-    <div>
-      <button className="btn btn-info" onClick={props.onClick}>
-        Close Marketing
-    </button>
-    </div>
-  );
-}
-
-
-function SendInventoryButton(props) {
-  return (
-    <button className="btn btn-danger" onClick={props.onClick}>
-      Compose Emails
-    </button>
-  );
-}
 
 
 class Filter extends React.Component {
@@ -205,58 +189,56 @@ class Filter extends React.Component {
   selectOne = () => {
     if (this.state.value === 'location') {
       return (
-          <select className="form-control" type="string" name="searchText" value={this.state.searchLocation} onChange={this.handleLocation} >
-            <option value="">Select Option</option>
-            <option value="pending">Pending</option>
-            <option value="Watson">Watson</option>
-            <option value="High Standards">High Standards</option>
-            <option value="Southern Leather">Southern Leather</option>
-            <option value="Distinction Detail">Distinct Detials</option>
-            <option value="WashBay">WashBay</option>
-            <option value="Go">GO</option>
-            <option value="Auction">Auction</option>
-            <option value="body shop">Body Shop</option>
-            <option value="delivered">Delivered to buyer</option>
-            <option value="other">Other</option>
-          </select>
+        <select className="form-control input-group" type="string" name="searchText" value={this.state.searchLocation} onChange={this.handleLocation} >
+          <option value="">Select Option</option>
+          <option value="pending">Pending</option>
+          <option value="Watson">Watson</option>
+          <option value="High Standards">High Standards</option>
+          <option value="Southern Leather">Southern Leather</option>
+          <option value="Distinction Detail">Distinct Detials</option>
+          <option value="WashBay">WashBay</option>
+          <option value="Go">GO</option>
+          <option value="Auction">Auction</option>
+          <option value="body shop">Body Shop</option>
+          <option value="delivered">Delivered to buyer</option>
+          <option value="other">Other</option>
+        </select>
       );
     } else if (this.state.value === 'released') {
       return (
-        
-    <select className="form-control" type="string" name="searchText" value={this.state.releasedStatus} onChange={this.handleReleaseChange} >
-            <option value="">Select Option</option>
-            <option value="pending released">Pending Release</option>
-            <option value="relased">Released</option>
-            <option value="released intransit">Released Intransit</option>
-            <option value="arrived">Arrived</option>
-          </select>
-       
+
+        <select className="form-control" type="string" name="searchText" value={this.state.releasedStatus} onChange={this.handleReleaseChange} >
+          <option value="">Select Option</option>
+          <option value="pending released">Pending Release</option>
+          <option value="relased">Released</option>
+          <option value="released intransit">Released Intransit</option>
+          <option value="arrived">Arrived</option>
+        </select>
+
       )
     } else {
       return (
-      
-    <select className="form-control" type="string" name="leatherStatus" value={this.state.leatherStatus} onChange={this.handleStatusChange} >
-            <option value="">Select Option</option>
-            <option value="Pending">Pending</option>
-            <option value="Processing">Processing</option>
-            <option value="Complete">Complete</option>
-            <option value="na">na</option>
-          </select>
-       )
+
+        <select className="form-control" type="string" name="leatherStatus" value={this.state.leatherStatus} onChange={this.handleStatusChange} >
+          <option value="">Select Option</option>
+          <option value="Pending">Pending</option>
+          <option value="Processing">Processing</option>
+          <option value="Complete">Complete</option>
+          <option value="na">na</option>
+        </select>
+      )
     }
   }
 
   searchInput = () => {
     return (
-     
-      <input type="text" className="form-control" placeholder="Search for..." value={this.state.searchText} onChange={this.typeChange}/>
- 
-
-    )}
+      <input type="text" className="form-control" placeholder="Search for..." value={this.state.searchText} onChange={this.typeChange} />
+    )
+  }
 
 
 
-// used to togle modal 
+  // used to togle modal 
   toggleModal = () => {
     this.setState({
       isActive: !this.state.isActive
@@ -265,8 +247,9 @@ class Filter extends React.Component {
 
   renderShowHide() {
     if (this.state.searchedFrom === 'leather') {
-      return <button className="btn btn-info" onClick={() => this.toggleModal()}>Hidden Vehicles</button>
+      return <Button className="btn btn-info" onClick={() => this.toggleModal()}>Hidden Vehicles</Button>
     }
+      // <Button className="btn btn-info" onClick={this.openPDF.bind(this)}>Print</Button>{
   }
 
   bringBackLeather = () => {
@@ -288,20 +271,21 @@ class Filter extends React.Component {
     return (
       <div>
         {this.props.renderedFrom === "/saved" ? (
-      
-          <div className="row" style={{marginLeft:5, marginTop:10}}>
-          <Row>
-            <Col size="sm-1">
-            <ToggleButton
-              value={this.state.toggleButtonValue || false}
-              onToggle={(value) => {
-                this.setState({
-                  toggleButtonValue: !value,
-                }, () => { this.sendUpToggleButtonValue() })
-              }} />
+
+          <div className="row" style={{ marginLeft: 5, marginTop: 15 }}>
+            <Row>
+              <Col size="sm-1">
+                <ToggleButton
+                  value={this.state.toggleButtonValue || false}
+                  onToggle={(value) => {
+                    this.setState({
+                      toggleButtonValue: !value,
+                    }, () => { this.sendUpToggleButtonValue() })
+                  }} />
               </Col>
-              
-            <p>Turn ON Delete Option</p>
+              <Col size="sm-10">
+                <p>Turn ON Delete Option</p>
+              </Col>
             </Row>
           </div>) : null
         }
@@ -315,13 +299,33 @@ class Filter extends React.Component {
   }
 
   // clears form depending on the location 
-  sendClearSearch() {
+  sendClearSearch(e) {
+    e.preventDefault()
     if (this.props.renderedFrom === "/saved") {
       this.props.sendClearSearchInventory()
     } else if (this.props.renderedFrom === "/inventory/") {
       this.props.sendClearSearchInventoryClient()
     } else if (this.props.renderedFrom === "/leather") {
       this.props.sendClearSearchLeather()
+    }
+  }
+
+
+
+  displayMakertingButton() {
+    if (this.props.renderedFrom === "/saved") {
+      if (this.props.isCreating) {
+        return (
+          <span>
+            <Button className="btn btn-warning" onClick={this.props.handleCreateClick}> Close Market </Button>
+            <Button className="btn btn-info" onClick={this.props.toggleModalInventory}>Email </Button>
+          </span>
+        );
+      } else {
+        return (
+          <Button className="btn btn-info" onClick={this.props.handleCreateClick}> Edit Market </Button>
+        );
+      }
     }
   }
 
@@ -337,84 +341,90 @@ class Filter extends React.Component {
       theStateValue = "other"
     }
 
-    // if the location is saved show the create inventory button
-    // if the create inventory is true then to display open model else close it
-    let button = null;
-    if (this.props.renderedFrom === "/saved") {
-      if (this.props.isCreating) {
-        button = <div><CloseInventoryButton onClick={this.props.handleCreateClick} />
-          <SendInventoryButton onClick={this.props.toggleModalInventory} />
-        </div>;
-      } else {
-        button = <CreateButton onClick={this.props.handleCreateClick} />;
-      }
-    }
-
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <div className="row">
-            <div className="col-lg-2">
-              <div className="input-group" role="group" aria-label="...">
-                <select className="form-control" value={this.state.value} onChange={this.handleChange}>
-                  <option value="">Select Option</option>
-                  <option value="lastsix">Last six</option>
-                  <option value="vin">VIN</option>
-                  <option value="make">Make</option>
-                  <option value="model">Model</option>
-                  <option value="year">Year</option>
-                  <option value="location">Location</option>
-                  <option value="released">Released Status</option>
-                  <option value="jobStatus">Job Status</option>
-                </select>
-
-                   </div>
+        <nav className="navbar navbar-default">
+          <div className="container-fluid">
+            <div className="navbar-collapse" id="bs-example-navbar-collapse-1">
+              <form className="navbar-form navbar-left" role="search" onSubmit={this.handleSubmit}>
+                <FormGroup controlId="formControlsSelect">
+                  <FormControl componentClass="select" placeholder="select" value={this.state.value} onChange={this.handleChange}>
+                    <option value="">Select Option</option>
+                    <option value="lastsix">Last six</option>
+                    <option value="vin">VIN</option>
+                    <option value="make">Make</option>
+                    <option value="model">Model</option>
+                    <option value="year">Year</option>
+                    <option value="location">Location</option>
+                    <option value="released">Released Status</option>
+                    <option value="jobStatus">Job Status</option>
+                  </FormControl>
+                </FormGroup>
+                <div className="form-group">
+                  {theStateValue === 'other' ? this.searchInput() : this.selectOne()}
                 </div>
-              <div className="col-lg-4 ">    
-              <div className="input-group">
+                <button type="submit" className="btn btn-success form-control">Submit</button>
+              </form>
+              <ButtonGroup className="navbar-form navbar-right" style={{ marginTop: 9 }}>
+                <Button className="btn btn-default" onClick={this.sendClearSearch.bind(this)}>Clear</Button>{' '}
+                <Button className="btn btn-danger" onClick={this.openPDF.bind(this)}>Print</Button>{' '}
+                {this.displayMakertingButton()}
+                
+                {/* displays the a modal to find hidden cars */}
+                {/* {this.renderShowHide()}{' '} */}
 
-                {theStateValue === 'other' ? this.searchInput() : this.selectOne()}
-                <span className="input-group-btn">
-        <button className="btn btn-success" type="submit">Submit</button>
-                 </span>
-              </div>
-            </div>
-            <div className="col-lg-6"> 
-            <div className="btn-group pull-right" role="group" aria-label="...">
-        <input className="btn btn-default" type="submit" value="Clear Search" onClick={this.sendClearSearch.bind(this)} />
-        <button className="btn btn-danger" onClick={this.openPDF.bind(this)}>Print Inventory</button>
-          {button}
-          {this.renderShowHide()}
-        </div>
+              </ButtonGroup>
             </div>
           </div>
-        </form>
-       
-       
-        
-    
+        </nav>
 
-     
-        <div>
+        <div>         
           {this.showDeleteButton()}
         </div>
-      
-        <Modal className="modal-dialog" role="document" isOpen={this.state.isActive} ariaHideApp={false}>
-          <div className="modal-content">
-            <div className="modal-header">
-              <h3 className="modal-title" id="exampleModalLabel">Use form to bring back a vehicle</h3>
+        {this.state.searchedFrom === 'leather' ? <Button className="btn btn-info form-control" onClick={() => this.toggleModal()}>Hidden Vehicles</Button> : null}
+
+
+        
+
+        <Modal style={{
+          overlay: {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(255, 255, 255, 0.75)'
+          },
+          content: {
+            position: 'absolute',
+            top: '40px',
+            left: '40px',
+            right: '40px',
+            bottom: '40px',
+            border: '1px solid #ccc',
+            background: '#fff',
+            // overflow: 'auto',
+            WebkitOverflowScrolling: 'touch',
+            borderRadius: '4px',
+            outline: 'none',
+            padding: '20px'
+          }
+        }} className="modal-dialog" role="document" isOpen={this.state.isActive} ariaHideApp={false}>
+          <div className="modal-header">
+            <h3 className="modal-title" id="exampleModalLabel">Use form to bring back a vehicle</h3>
+            <div className="modal-content">
+            </div>
             </div>
             <div className="modal-body">
               <p>Enter full VIN or Last six of Vehicle </p>
               <div id="addNote">
                 <input className="form-control" ref="newText" type="text" />
-              </div>
-            </div>
+              </div>            </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-primary" onClick={() => this.bringBackLeather()} >Bring It Back</button>
               <button type="button" onClick={() => this.toggleModal()} className="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
-          </div>
+        
         </Modal>
       </div>
     );

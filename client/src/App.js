@@ -13,7 +13,6 @@ import ClientInventory from "./pages/ClientInventory";
 
 import Leather from "./pages/Leather";
 import PdfCreate from "./pages/PdfCreate";
-import JsPDF from "./components/JsPDF";
 import VehicleEntry from "./pages/VehicleEntry";
 const App = () =>
   <Router>
@@ -27,14 +26,12 @@ const App = () =>
         <Route path={`${process.env.PUBLIC_URL}/lift`} component={Leather} />
         <Route path={`${process.env.PUBLIC_URL}/detail`} component={Leather} />
         <Route path={`${process.env.PUBLIC_URL}/pdf`} component={PdfCreate} />
-        <Route path={`${process.env.PUBLIC_URL}/JsPDF`} component={JsPDF} />
-
         <Route path="/saved" component={Inventory} />
         <Route exact path="/books" component={Books} />
         <Route path="/books/:id" component={Detail} />
         <Route exact path="/inventory" component={ClientInventory} />
         <Route path="/inventory/:id" component={ClientDetail} />
-        {/* <Route component={NoMatch} /> */}
+        <Route component={NoMatch} />
       </Switch>
       </Main>
     </div>

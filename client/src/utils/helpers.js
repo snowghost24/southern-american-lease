@@ -92,13 +92,7 @@ const helpers = {
     console.log('dealer entry data', newDealer)
     return axios.post("/dealers/dealer/", newDealer)
       .then(function (response) {
-        console.log(response);
-        if (response.data === "duplicate dealer entry") {
-          return response
-        } else {
-          console.log("dealer entry results", response.data._id);
-          return response.data._id;
-        }
+     return response
       }).catch(function (error) {
         console.log(error);
       });

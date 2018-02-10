@@ -548,3 +548,23 @@ const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dcv191fk7/upload'
                    </button>
                  </div>
                </form>
+
+
+
+// displayMakertingButton () {
+//   if (this.props.renderedFrom === "/saved") {
+//     if (this.props.isCreating) {
+//      return (
+//        <div>
+//       <Button className="btn btn-info" onClick={this.props.handleCreateClick}> Close Market </Button>
+//       <Button className="btn btn-info" onClick={this.props.toggleModalInventory}>Send Invertory </Button>
+//       </div>
+//      );
+    
+//     } else {
+//       return(
+//         <Button className="btn btn-info" onClick={this.props.handleCreateClick}> Close Market </Button>
+//       );
+//     }
+//   }
+// }

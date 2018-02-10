@@ -6,14 +6,16 @@ import helpers from "../../utils/helpers";
 import Filter from "../../components/filter/filter";
 import Constributors from "../../components/Constributors/Constributors";
 import Modal from 'react-modal';
-import swal from 'sweetalert'
+import swal from 'sweetalert';
+import { Col, Row } from "../../components/Grid";
+import "./Inventory.css";
+
 
 // values are set When component mount
 function Contact(label, value) {
   this.label = label;
   this.value = value;
 }
-
 
 class Inventory extends Component {
   state = {
@@ -25,7 +27,11 @@ class Inventory extends Component {
     deleteDealerActive:false,
     savedDealers:[],
     selectedContacts:[],
-    showDeleteButton:false
+    showDeleteButton:false,
+     name:"", 
+     email:"", 
+     dealership:"",
+     tel:"",
   }
 
 
@@ -132,64 +138,11 @@ class Inventory extends Component {
       )
       .catch(err => console.log(err));
     }
-  //   if (this.state.forMarketing.indexOf(vehicle) === -1) {
-  //     // console.log(this.state.forMarketing.indexOf(vehicle))
-  //     var newStateArray = this.state.forMarketing.slice();
-  //     newStateArray.push(vehicle);
-  //     this.setState({forMarketing: newStateArray }, this.myFunction)
-  //   } else if (this.state.forMarketing.indexOf(vehicle) !== -1) {
-  //     var newStateArray = this.state.forMarketing.slice();
-  //     newStateArray.pop(vehicle);
-  //     this.setState({forMarketing: newStateArray }, this.myFunction)    }
-  // }
+
 
 
   // A helper method for mapping through our articles and outputting some HTML
-  renderArticles = () => {
-    return this.state.savedArticles.map((article, index) => {
 
-      return (
-        <div key={index}>
-          <li className="list-group-item">
-            <h3>
-              <span>
-                <em>{article.make}&nbsp;&nbsp;&nbsp;</em>
-                <em>{article.model}&nbsp;&nbsp;&nbsp;</em>
-                <em>{article.year}&nbsp;&nbsp;&nbsp;</em>
-              </span>
-              <span>
-                <em>{article.vin}</em>
-              </span>
-              <span className="btn-group pull-right ">
-                {/* <a href={article.url} rel="noopener noreferrer" target="_blank"> </a> */}
-                  <Link to={"/books/" + article._id}>
-                    <button className="btn btn-primary ">View Vehicle</button>
-                  </Link>
-                
-                {/* pass the pressed item () => this.handleClick(article) */}
-              
-                {this.state.showDeleteButton ? (<button className="btn btn-danger" onClick={() => this.handleClick(article)}>Delete</button>) : null}
-              
-
-
-                {this.state.isCreating ? (<form className="form-control">
-                  <label>
-                    Add to Markerting:
-                    <input
-                      name={article._id}
-                      type="checkbox"
-                      checked={article.inMarketCart}
-                      onChange={(e) => this.handleInputChange(e, article._id, index)} />
-                  </label>
-                </form>) : null}
-              </span>
-            </h3>
-            <p>Days Since Entered: {this.getDate(article.date)}</p>
-          </li>
-        </div>
-      );
-    });
-  }
 
 
   handleCreateClick = () => {
@@ -206,9 +159,7 @@ class Inventory extends Component {
     }
   }
 
-  handleSendInventory() {
-    prompt(" Who do you want to send to")
-  }
+
 
   toggleModalInventory = () => {
     this.setState({
@@ -240,12 +191,6 @@ class Inventory extends Component {
    }else{
       helpers.sendInventoryEmailHelperAll()
       this.toggleModalInventory()
-      // swal("Inventory was sent!")
-      // swal({
-      //   title: "Top result:",
-      //   text: name,
-      //   icon: imageURL,
-      // });
       swal({
         title: "Inventory Sent!",
         text: "Clicked button to close!",
@@ -284,11 +229,21 @@ class Inventory extends Component {
     var tel = this.state.tel;
     var url = this.state.url;
     var dealerEntryData = {name,email,dealership,tel,url}
+    console.log(dealerEntryData);
     helpers.enterDealerHelper(dealerEntryData)
     .then(res=>{
+      console.log("im back and here is the response",res);
       this.setState({name:"",email:"",dealership:"",tel:"",url:""}, ()=>{console.log(this.state);})
       this.getDealers();
-      console.log(res)
+      if (res.data._id){
+        swal({
+          title: "Congrats",
+          text: `${res.data.name} was added successfully` ,
+          icon: "success",
+          button: "close!",
+        }); 
+      }
+      
     })
     .catch(err=>console.log(err));
     }
@@ -311,45 +266,38 @@ class Inventory extends Component {
 
 renderDealerForm(){
   return (
- <form onSubmit={this.addDealerDB.bind(this)}>
- <hr/>
- <h3>ADD DEALER FORM</h3>
-                  <div className="form-group row">
-                    <label className="col-2 col-form-label">Full Name
-  <div className="col-10">
-                        <input className="form-control" name="name" type="text" required="required" value={this.state.value} onChange={this.handleDealerChange.bind(this)}/>
-                      </div>
-                    </label>
-                    <label className="col-2 col-form-label">Dealership
-  <div className="col-10">
-                        <input className="form-control" name="dealership" type="text" value={this.state.value} onChange={this.handleDealerChange.bind(this)}/>
-                      </div>
-                    </label>
-                  </div>
-                  {/* <div className="form-group row">
+    <form className="" onSubmit={this.addDealerDB.bind(this)} style={{ marginLeft: 15 }}>
+      <hr />
+      <h4>ADD DEALER FORM</h4>
+      <div className="form-group row" >
+        <label className="col-2 col-form-label">Full Name
+                          <div className="col-10">
+            <input className="form-control" name="name" type="text" required="required" value={this.state.name} onChange={this.handleDealerChange.bind(this)} />
+          </div>
+        </label>
+        <label className="col-2 col-form-label">Dealership
+                          <div className="col-10">
+            <input className="form-control" name="dealership" type="text" value={this.state.dealership} onChange={this.handleDealerChange.bind(this)} />
+          </div>
+        </label>
+      </div>
+      {/* <div className="form-group row">
                
                   </div> */}
-                  <div className="form-group row">
-                    <label className="col-2 col-form-label">  Email
-  <div className="col-10">
-                        <input className="form-control" name="email" type="email" required="required" value={this.state.value} onChange={this.handleDealerChange.bind(this)}/>
-                      </div>
-                    </label>
-                    <label className="col-2 col-form-label"> Telephone
-  <div className="col-10">
-                        <input className="form-control" name="tel" type="tel" value={this.state.value} onChange={this.handleDealerChange.bind(this)} data-fv-numeric="true" data-fv-numeric-message="Please enter valid phone numbers"/>
-                      </div>
-                    </label>
-                  </div>
-                  <div className="form-group row">
-                    <label className="col-2 col-form-label">  URL
-  <div className="col-10">
-                        <input className="form-control" name="url" type="url" placeholder="https://getbootstrap.com" value={this.state.value} onChange={this.handleDealerChange.bind(this)}/>
-                      </div>
-                    </label>
-                  </div>
-                  <input type="submit" className="btn btn-danger" value="Add Dealer" />
-                </form>
+      <div className="form-group row">
+        <label className="col-2 col-form-label">  Email
+                        <div className="col-10">
+            <input className="form-control" name="email" type="email" required="required" value={this.state.email} onChange={this.handleDealerChange.bind(this)} />
+          </div>
+        </label>
+        <label className="col-2 col-form-label"> Telephone
+                        <div className="col-10">
+            <input className="form-control" name="tel" type="tel" value={this.state.tel} onChange={this.handleDealerChange.bind(this)} data-fv-numeric="true" data-fv-numeric-message="Please enter valid phone numbers" />
+          </div>
+        </label>
+      </div>
+      <input type="submit" className="btn btn-danger" value="Add Dealer" />
+    </form>
   )
 }
 
@@ -423,6 +371,108 @@ toggleButtonEditor(theLowerState){
 sendClearSearch(){
   this.getSavedData();
 }
+
+linkToDetail(addressId){
+  var path = `/books/${addressId}`;
+  this.props.history.push(path)
+}
+
+renderArticles = () => {
+  return this.state.savedArticles.map((article, index) => {
+    var liBackground=null;
+
+    if( index % 2 == 0){
+        console.log(index);
+      liBackground = '#eeeeee';
+    } else{
+      liBackground = 'white';
+    }
+
+    return (
+      <div key={index}>
+        <li className="list-group-item" style={{backgroundColor:`${liBackground}`}}>
+        {/* <div class="panel panel-primary">
+<div class="panel-heading"><span>
+              <em>{article.make}&nbsp;&nbsp;&nbsp;</em>
+              <em>{article.model}&nbsp;&nbsp;&nbsp;</em>
+              <em>{article.year}&nbsp;&nbsp;&nbsp;</em>
+            </span></div>
+<div class="panel-body">Panel Content</div>
+</div> */}
+          <h4 className="panel-text-size">
+            <span>
+              <em>{article.make}&nbsp;&nbsp;&nbsp;</em>
+              <em>{article.model}&nbsp;&nbsp;&nbsp;</em>
+              <em>{article.year}&nbsp;&nbsp;&nbsp;</em>
+            </span>
+            <span>
+              <em>{article.vin}</em>
+            </span>
+             </h4>
+
+            <span className="btn-group pull-right ">
+                {/* <Link to={"/books/" + article._id}>  </Link> */}
+                  <button onClick={() => this.linkToDetail(article._id)} className="btn btn-primary btn-responsive" >View Vehicle</button>
+              
+                            
+              {this.state.showDeleteButton ? (<button className="btn btn-danger btn-responsive" onClick={() => this.handleClick(article)}>Delete</button>) : null}
+            </span>
+
+             {this.state.isCreating ? (
+              
+              <form>
+                <label>
+                  Add to Markerting:
+                  <input
+                    name={article._id}
+                    type="checkbox"
+                    checked={article.inMarketCart}
+                    onChange={(e) => this.handleInputChange(e, article._id, index)} />
+                </label>
+              </form>
+            
+            ) : null}
+         
+          <p>Days Since Entered: {this.getDate(article.date)}</p>
+
+                      <Row>
+
+                        <Col size="xs-3">
+                        <Row>
+                        <Col size="sm-6"><strong>Miles:</strong>&nbsp;{article.miles}</Col>
+                           <Col size="sm-6"><strong>Color:</strong>&nbsp;{article.color}</Col>
+                           
+                        {/* Color:{article.color} */}
+                        </Row>
+                        </Col>
+
+                        <Col size="xs-5">
+                        <Row>
+                           <Col size="sm-4"><strong>Trim:</strong>&nbsp;{article.trim}</Col>
+                            <Col size="sm-8"><strong>Location:</strong>&nbsp;{article.location}</Col>
+                        {/* Color:{article.color} */}
+                        </Row>
+                        </Col>
+                        <Col size="xs-4">
+                        <Row>
+                           <Col size="sm-6"><strong>Price:</strong>&nbsp;{article.price}</Col>
+                            <Col size="sm-6"><strong>Color:</strong>&nbsp;{article.color}</Col>
+                        {/* Color:{article.color} */}
+                        </Row>
+                        </Col>
+
+
+
+
+
+                        {/* <Col size="xs-6">Color:{article.color}</Col> */}
+
+</Row>
+        </li>
+      </div>
+    );
+  });
+}
   // A helper method for rendering a container and all of our artiles inside
   renderContainer = () => {
     return (
@@ -431,12 +481,8 @@ sendClearSearch(){
           <div className="col-lg-12">
             <div className="panel panel-primary">
               <div className="panel-heading">
-                <h1 className="panel-title">
-                  <strong>
-                    <i className="fa fa-download" aria-hidden="true"></i> Search By</strong>
-                </h1>
                 {/* thePath={this.props.location.pathname */}
-                <Filter handleCreateClick={this.handleCreateClick.bind(this)} isCreating={this.state.isCreating} filteredSearch={this.handleFilteredSearch} inventoryState={this.state} handleSendInventory={this.handleSendInventory.bind(this)} toggleModalInventory={this.toggleModalInventory.bind(this)} renderedFrom={this.props.location.pathname} toggleButtonEditor={this.toggleButtonEditor.bind(this)} sendClearSearchInventory={this.sendClearSearch.bind(this)}/>
+                <Filter handleCreateClick={this.handleCreateClick.bind(this)} isCreating={this.state.isCreating} filteredSearch={this.handleFilteredSearch} inventoryState={this.state}  toggleModalInventory={this.toggleModalInventory.bind(this)} renderedFrom={this.props.location.pathname} toggleButtonEditor={this.toggleButtonEditor.bind(this)} sendClearSearchInventory={this.sendClearSearch.bind(this)}/>
 
               </div>
               <div className="panel-body">
@@ -448,7 +494,30 @@ sendClearSearch(){
           </div>
         </div>
         <div>
-          <Modal className="modal-dialog" role="document" isOpen={this.state.isActive} ariaHideApp={false}>
+          <Modal style={{
+    overlay: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(255, 255, 255, 0.75)'
+    },
+    content: {
+      position: 'absolute',
+      top: '40px',
+      left: '40px',
+      right: '40px',
+      bottom: '40px',
+      border: '1px solid #ccc',
+      background: '#fff',
+      overflow: 'auto',
+      WebkitOverflowScrolling: 'touch',
+      borderRadius: '4px',
+      outline: 'none',
+      padding: '20px'
+    }
+  }} className="modal-dialog" role="document" isOpen={this.state.isActive} ariaHideApp={false}>
             <div className="modal-content">
               <div className="modal-header">
                 <h3 className="modal-title" id="exampleModalLabel">Select Inventory Recipients</h3>
@@ -481,9 +550,9 @@ sendClearSearch(){
                 {this.state.deleteDealerActive ? this.renderDeleteDealerForm() : null}
               </div>
               <div className="modal-footer">
-              <button type="button" className="btn btn-info" onClick={() => this.seeDealerForm()} >Toggle Add Dealer</button>
-              <button type="button" className="btn btn-info" onClick={() => this.seeDeleteDealerForm()} >Toggle Delete Dealer</button>
-                <button type="button" className="btn btn-primary" onClick={() => this.sendInventoryEmail()} >Send Inventory</button>
+              <button type="button" className="btn btn-primary" onClick={() => this.seeDealerForm()} >Toggle Add Dealer</button>
+              <button type="button" className="btn btn-primary" onClick={() => this.seeDeleteDealerForm()} >Toggle Delete Dealer</button>
+                <button type="button" className="btn btn-success" onClick={() => this.sendInventoryEmail()} >Send Inventory</button>
                 <button type="button" onClick={() => this.toggleModalInventory()} className="btn btn-secondary" data-dismiss="modal">Close</button>
               </div>
             </div>

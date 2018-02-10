@@ -24,18 +24,21 @@ router.route("/")
 
   // handles entering dealers into a database from Helpers func:enterDealerHelper
   .post(function (req, res) {
+    console.log(req.body);
     var newDealerEntry = new DealerEntry(req.body);
     newDealerEntry.save(function (err, doc) {
       if (err) {
         //note sure whey the error had to be inside error
         if (err.name === 'MongoError' && err.code === 11000) {
           //DO NOT change response message
+          console.log(err);
           res.send("duplicate dealer entry");
         }
         console.log(err);
+       res.send(err)
       }
       else {
-        // console.log("this is the doc",doc);
+        console.log("this is the doc",doc);
         res.send(doc);
       }
     });
