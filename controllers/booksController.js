@@ -14,9 +14,14 @@ module.exports = {
     AutoEntry.find({[searchType]:searchItem}).collation( { locale: 'en', strength: 2 } )
     .exec(function(err, doc) {
       if (err) {
-        console.log(err);
+        // console.log(err);
+        res.send(err)
       }
       else {
+        if (doc == ""){
+         res.send("doc is empty",doc);
+
+        }
         console.log("Find all sent back docs",doc);
         res.send(doc);
       }

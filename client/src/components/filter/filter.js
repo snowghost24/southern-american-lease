@@ -82,12 +82,17 @@ class Filter extends React.Component {
     if (this.props.inventoryState) {
       var pdfData = [];
       var options = this.props.inventoryState.savedArticles;
-      function Person(vin, make, model, year, days) {
+      console.log(this.props.inventoryState.savedArticles);
+      function Person(vin, make, model, year,miles, trim, days, price ) {
         this.vin = vin;
         this.make = make;
         this.model = model;
         this.year = year;
-        this.days = days
+        this.miles = miles
+        this.trim = trim;
+        this.days = days;
+        this.price = price;
+      
       }
 
       function daysEntered(passDate) {
@@ -98,14 +103,30 @@ class Filter extends React.Component {
         return day
       }
 
+      function convertNumbersToStrings(theString) {
+        var theStringParsed;
+        if (theString == undefined){
+           theStringParsed = "" 
+          console.log("undefined price", theString);
+        } else{
+          theString = `${theString}`
+          var frontLenght = theString.length - 3;
+          var front = theString.slice(0,frontLenght);
+          var back = theString.slice(frontLenght);
+           theStringParsed = `${front},${back}`
+        }
+        return theStringParsed; 
+      }
+
       for (var i = 0; i < options.length; i += 1) {
-        var newObj = new Person(options[i].vin, options[i].make, options[i].model, options[i].year, daysEntered(options[i].date))
+
+        var newObj = new Person(options[i].vin, options[i].make, options[i].model,options[i].year,convertNumbersToStrings(options[i].miles),  options[i].trim, convertNumbersToStrings(options[i].price) , daysEntered(options[i].date))
         pdfData.push(newObj);
       }
 
       function buildTableBody(data) {
         var body = [];
-        var columns = ['vin', 'make', 'model', 'year', 'days'];
+        var columns = ['vin', 'make', 'model', 'year','miles','trim', 'price','days'];
         body.push(columns);
         data.forEach(function (row) {
           var dataRow = [];
@@ -154,8 +175,8 @@ class Filter extends React.Component {
           }
         },
       }
-
-      pdfMake.createPdf(dd).open({}, window);
+      pdfMake.createPdf(dd).download();
+      // pdfMake.createPdf(dd).open({}, window);
     } else if (this.props.savedVehicles) {
       //set printing options for leather and others 
       console.log("Leather", this.props.savedVehicles);

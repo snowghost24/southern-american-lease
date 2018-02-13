@@ -38,18 +38,15 @@ class Inventory extends Component {
   // On mount get all saved articles from our db
   componentDidMount() {
     this.getSavedData()
-    // console.log("the location", this.props.location);
     this.getDealers()
   }
 
   getSavedData(){
-  console.log("i was hit in clear attempt ");
     helpers.getSaved()
       .then((articleData) => {
         this.setState({ savedArticles: articleData.data });
       });
   }
-
 
 
   getDealers(){
@@ -74,13 +71,12 @@ class Inventory extends Component {
     API.deleteFileCloud(theVin, theFile).then(res => console.log(res)).catch(err => console.log(err));
 
     // deletes the vehicle from db
+    // Get the revised list!
     helpers.deleteSaved(item.vin)
       .then(() => {
-        // Get the revised list!
         helpers.getSaved()
           .then((articleData) => {
             this.setState({ savedArticles: articleData.data });
-            // console.log("saved results", articleData.data);
           });
       });
   }
@@ -89,13 +85,11 @@ class Inventory extends Component {
     helpers.getFilteredSaved(searchType, searchItem)
       .then((articleData) => {
         this.setState({ savedArticles: articleData.data });
-        // console.log("saved results", articleData.data);
       })
   }
 
   getDate(date) {
     var dayEntered = new Date(date).getTime();
-    //method returns the number of milliseconds elapsed since January 1 1970
     var now = Date.now();
     var elapsedTime = now - dayEntered;
     var days = Math.floor(elapsedTime / 8.64e+7);
@@ -115,36 +109,20 @@ class Inventory extends Component {
     );
   }
 
-  myFunction = () => {
-    console.log(this.state);
-    // console.log("the state is",this.state);
-  }
 
-  myOtherFunction = () => {
-    console.log("the state is", this.state);
-    // console.log("the state is",this.state);
-  }
+// Get the revised list!
   handleInputChange(event, theId, index) {
     API.addToCartHelper(theId)
-      .then(
-        () => {
-          // Get the revised list!
-          helpers.getSaved()
+      .then(() => { helpers.getSaved()
             .then((articleData) => {
               this.setState({ savedArticles: articleData.data });
-              // console.log("saved results", articleData.data);
             });
-        }
-      )
-      .catch(err => console.log(err));
+        }).catch(err => console.log(err));
     }
 
 
 
-  // A helper method for mapping through our articles and outputting some HTML
-
-
-
+  // A helper method for mapping through our articles and outputting some HTL
   handleCreateClick = () => {
     if (this.state.isCreating) {
       console.log("changed to false");
@@ -219,7 +197,7 @@ class Inventory extends Component {
 // retrieves selected contacts from contributors component
   handleRetrievedContacts(retrievedContacts) {
     var newStateArray = retrievedContacts.split(",")
-    this.setState({selectedContacts: newStateArray }, this.myFunction)
+    this.setState({selectedContacts: newStateArray })
   }
   addDealerDB(event) {
     event.preventDefault();
@@ -260,7 +238,6 @@ class Inventory extends Component {
     this.setState({
       [name]: value
     });
-    // this.setState({value: event.target.value});
   }
 
 
@@ -316,21 +293,6 @@ deleateDealerDB(dealerEmailKilled) {
     }
   })
   .catch(err => console.log(err));
-
-  // event.preventDefault();
-  // var name = this.state.name;
-  // var email = this.state.email;
-  // var dealership = this.state.dealership;
-  // var tel = this.state.tel;
-  // var url = this.state.url;
-  // var dealerEntryData = {name,email,dealership,tel,url}
-  // helpers.enterDealerHelper(dealerEntryData)
-  // .then(res=>{
-  //   this.setState({name:"",email:"",dealership:"",tel:"",url:""}, ()=>{console.log(this.state);})
-  //   this.getDealers();
-  //   console.log(res)
-  // })
-  // .catch(err=>console.log(err));
   }
 
 
@@ -391,14 +353,6 @@ renderArticles = () => {
     return (
       <div key={index}>
         <li className="list-group-item" style={{backgroundColor:`${liBackground}`}}>
-        {/* <div class="panel panel-primary">
-<div class="panel-heading"><span>
-              <em>{article.make}&nbsp;&nbsp;&nbsp;</em>
-              <em>{article.model}&nbsp;&nbsp;&nbsp;</em>
-              <em>{article.year}&nbsp;&nbsp;&nbsp;</em>
-            </span></div>
-<div class="panel-body">Panel Content</div>
-</div> */}
           <h4 className="panel-text-size">
             <span>
               <em>{article.make}&nbsp;&nbsp;&nbsp;</em>
@@ -411,15 +365,10 @@ renderArticles = () => {
              </h4>
 
             <span className="btn-group pull-right ">
-                {/* <Link to={"/books/" + article._id}>  </Link> */}
-                  <button onClick={() => this.linkToDetail(article._id)} className="btn btn-primary btn-responsive" >View Vehicle</button>
-              
-                            
+                  <button onClick={() => this.linkToDetail(article._id)} className="btn btn-primary btn-responsive" >View Vehicle</button>            
               {this.state.showDeleteButton ? (<button className="btn btn-danger btn-responsive" onClick={() => this.handleClick(article)}>Delete</button>) : null}
             </span>
-
              {this.state.isCreating ? (
-              
               <form>
                 <label>
                   Add to Markerting:
@@ -434,40 +383,26 @@ renderArticles = () => {
             ) : null}
          
           <p>Days Since Entered: {this.getDate(article.date)}</p>
-
-                      <Row>
-
-                        <Col size="xs-3">
-                        <Row>
-                        <Col size="sm-6"><strong>Miles:</strong>&nbsp;{article.miles}</Col>
-                           <Col size="sm-6"><strong>Color:</strong>&nbsp;{article.color}</Col>
-                           
-                        {/* Color:{article.color} */}
-                        </Row>
-                        </Col>
-
-                        <Col size="xs-5">
-                        <Row>
-                           <Col size="sm-4"><strong>Trim:</strong>&nbsp;{article.trim}</Col>
-                            <Col size="sm-8"><strong>Location:</strong>&nbsp;{article.location}</Col>
-                        {/* Color:{article.color} */}
-                        </Row>
-                        </Col>
-                        <Col size="xs-4">
-                        <Row>
-                           <Col size="sm-6"><strong>Price:</strong>&nbsp;{article.price}</Col>
-                            <Col size="sm-6"><strong>Color:</strong>&nbsp;{article.color}</Col>
-                        {/* Color:{article.color} */}
-                        </Row>
-                        </Col>
-
-
-
-
-
-                        {/* <Col size="xs-6">Color:{article.color}</Col> */}
-
-</Row>
+          <Row>
+            <Col size="xs-3">
+              <Row>
+                <Col size="sm-6"><strong>Miles:</strong>&nbsp;{article.miles}</Col>
+                <Col size="sm-6"><strong>Color:</strong>&nbsp;{article.color}</Col>
+              </Row>
+            </Col>
+            <Col size="xs-5">
+              <Row>
+                <Col size="sm-4"><strong>Trim:</strong>&nbsp;{article.trim}</Col>
+                <Col size="sm-8"><strong>Location:</strong>&nbsp;{article.location}</Col>
+              </Row>
+            </Col>
+            <Col size="xs-4">
+              <Row>
+                <Col size="sm-6"><strong>Price:</strong>&nbsp;{article.price}</Col>
+                <Col size="sm-6"><strong>Color:</strong>&nbsp;{article.color}</Col>
+              </Row>
+            </Col>
+          </Row>
         </li>
       </div>
     );
@@ -483,7 +418,6 @@ renderArticles = () => {
               <div className="panel-heading">
                 {/* thePath={this.props.location.pathname */}
                 <Filter handleCreateClick={this.handleCreateClick.bind(this)} isCreating={this.state.isCreating} filteredSearch={this.handleFilteredSearch} inventoryState={this.state}  toggleModalInventory={this.toggleModalInventory.bind(this)} renderedFrom={this.props.location.pathname} toggleButtonEditor={this.toggleButtonEditor.bind(this)} sendClearSearchInventory={this.sendClearSearch.bind(this)}/>
-
               </div>
               <div className="panel-body">
                 <ul className="list-group">

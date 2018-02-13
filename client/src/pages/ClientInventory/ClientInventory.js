@@ -7,7 +7,9 @@ import helpers from "../../utils/helpers";
 import Filter from "../../components/filter/filter";
 import Constributors from "../../components/Constributors/Constributors";
 import Modal from 'react-modal';
-import swal from 'sweetalert'
+import swal from 'sweetalert';
+import { Col, Row } from "../../components/Grid";
+import { Alert } from 'reactstrap';
 
 // values are set When component mounts
 function Contact(label, value) {
@@ -78,8 +80,18 @@ getMarketingData(){
   handleFilteredSearch = (searchType, searchItem) => {
     helpers.getFilteredSaved(searchType, searchItem)
       .then((articleData) => {
-        this.setState({ savedArticles: articleData.data });
-        // console.log("saved results", articleData.data);
+        console.log("empty", articleData)
+
+        // if(articleData.data[0]['_id'] === undefined || articleData.data === "" ){
+        //   console.log(articleData);
+        //   alert("there alerts arent working");
+        //   <Alert color="warning">
+        //   Sorry this search has no results!
+        // </Alert>
+        // }
+        // console.log(articleData);
+
+        // this.setState({ savedArticles: articleData.data });
       })
   }
 
@@ -138,47 +150,119 @@ getMarketingData(){
   //     newStateArray.pop(vehicle);
   //     this.setState({forMarketing: newStateArray }, this.myFunction)    }
   // }
-
+  linkToDetail(addressId){
+    var path = `/inventory/${addressId}`;
+    this.props.history.push(path)
+  }
 
   // A helper method for mapping through our articles and outputting some HTML
   renderArticles = () => {
     return this.state.savedArticles.map((article, index) => {
+      var liBackground=null;
 
+      if( index % 2 == 0){
+          console.log(index);
+        liBackground = '#eeeeee';
+      } else{
+        liBackground = 'white';
+      }
       return (
+
         <div key={index}>
-          <li className="list-group-item">
-            <h3>
-              <span>
-                <em>{article.make}&nbsp;&nbsp;&nbsp;</em>
-                <em>{article.model}&nbsp;&nbsp;&nbsp;</em>
-                <em>{article.year}&nbsp;&nbsp;&nbsp;</em>
-              </span>
-              <span>
-                <em>{article.vin}</em>
-              </span>
-              <span className="btn-group pull-right">
-                <a href={article.url} rel="noopener noreferrer" target="_blank">
-                  <Link to={"/inventory/" + article._id}  >
+        <li className="list-group-item" style={{backgroundColor:`${liBackground}`}}>
+          <h4 className="panel-text-size">
+            <span>
+              <em>{article.make}&nbsp;&nbsp;&nbsp;</em>
+              <em>{article.model}&nbsp;&nbsp;&nbsp;</em>
+              <em>{article.year}&nbsp;&nbsp;&nbsp;</em>
+            </span>
+            <span>
+              <em>{article.vin}</em>
+            </span>
+            <span className="btn-group pull-right ">
+                {/* <Link to={"/books/" + article._id}>  </Link> */}
+                  <button onClick={() => this.linkToDetail(article._id)} className="btn btn-primary btn-responsive" >View Vehicle</button>
+              
+                            
+              {this.state.showDeleteButton ? (<button className="btn btn-danger btn-responsive" onClick={() => this.handleClick(article)}>Delete</button>) : null}
+            </span>
+             </h4>
+           
+             {/* <Link to={"/inventory/" + article._id}  >
                     <button className="btn btn-default ">View Vehicle</button>
-                  </Link>
-                </a>
-                {/* pass the pressed item () => this.handleClick(article) */}
-                {/* <button className="btn btn-primary" onClick={() => this.handleClick(article)}>Delete</button> */}
-                {this.state.isCreating ? (<form className="form-control">
-                  <label>
-                    Add to Markerting:
-                    <input
-                      name={article._id}
-                      type="checkbox"
-                      checked={article.inMarketCart}
-                      onChange={(e) => this.handleInputChange(e, article._id, index)} />
-                  </label>
-                </form>) : null}
-              </span>
-            </h3>
-            {/* <p>Days Since Entered: {this.getDate(article.date)}</p> */}
-          </li>
-        </div>
+                 </Link> */}
+         
+
+                      <Row>
+
+                        <Col size="xs-3">
+                        <Row>
+                        <Col size="sm-6"><strong>Miles:</strong>&nbsp;{article.miles}</Col>
+                           <Col size="sm-6"><strong>Color:</strong>&nbsp;{article.color}</Col>
+                           
+                        {/* Color:{article.color} */}
+                        </Row>
+                        </Col>
+
+                        <Col size="xs-5">
+                        <Row>
+                           <Col size="sm-6"><strong>Trim:</strong>&nbsp;{article.trim}</Col>
+                            
+                            <Col size="sm-6"><strong>Drive Train:</strong>&nbsp;{article.drivetrain}</Col>
+                        {/* Color:{article.color} */}
+                        </Row>
+                        </Col>
+                        <Col size="xs-4">
+                        <Row>
+                           <Col size="sm-6"><strong>Key Features:</strong>&nbsp;{article.keyfeatures}</Col>
+                           <Col size="sm-6"><strong>Fuel Type:</strong>&nbsp;{article.fuelType}</Col>
+                        {/* Color:{article.color} */}
+                        </Row>
+                        </Col>
+
+
+
+
+
+                        {/* <Col size="xs-6">Color:{article.color}</Col> */}
+
+</Row>
+        </li>
+      </div>
+        // <div key={index}>
+        //   <li className="list-group-item">
+        //     <h3>
+        //       <span>
+        //         <em>{article.make}&nbsp;&nbsp;&nbsp;</em>
+        //         <em>{article.model}&nbsp;&nbsp;&nbsp;</em>
+        //         <em>{article.year}&nbsp;&nbsp;&nbsp;</em>
+        //       </span>
+        //       <span>
+        //         <em>{article.vin}</em>
+        //       </span>
+        //       <span className="btn-group pull-right">
+        //         <a href={article.url} rel="noopener noreferrer" target="_blank">
+        //           <Link to={"/inventory/" + article._id}  >
+        //             <button className="btn btn-default ">View Vehicle</button>
+        //           </Link>
+        //         </a>
+        //         {/* pass the pressed item () => this.handleClick(article) */}
+        //         {/* <button className="btn btn-primary" onClick={() => this.handleClick(article)}>Delete</button> */}
+        //         {this.state.isCreating ? (<form className="form-control">
+        //           <label>
+        //             Add to Markerting:
+        //             <input
+        //               name={article._id}
+        //               type="checkbox"
+        //               checked={article.inMarketCart}
+        //               onChange={(e) => this.handleInputChange(e, article._id, index)} />
+        //           </label>
+        //         </form>) : null}
+        //       </span>
+        //     </h3>
+        //     {/* <p>Days Since Entered: {this.getDate(article.date)}</p> */}
+        //   </li>
+        // </div>
       );
     });
   }

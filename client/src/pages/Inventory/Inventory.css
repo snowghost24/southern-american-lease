@@ -12,37 +12,3 @@
 .notes{
   color: #eb0000;
 }
-
-@media (min-width: 600px) and (max-width: 992px) {
-  .btn-responsive {
-    /* padding:4px 9px;
-    font-size:100%; */
-    line-height: 1;
-  }
-
-  .panel-text-size{
-    padding:2px 4px;
-    font-size:85%;
-  }
-}
-
-@media (min-width: 600px) and (max-width: 992px) {
-  .btn-responsive {
-    /* padding:4px 9px;
-    font-size:100%; */
-    line-height: 1.3;
-  }
-}
-
-@media (min-width: 993px) and (max-width: 1200) {
-  .slide-right {
-     /* padding:4px 9px; */
-    font-size:100%; 
-    /* line-height: 1; */
-    /* float: right!important; */
-  }
-
-  .li-background{
-    background-color: black;
-  }
-}

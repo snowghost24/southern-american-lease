@@ -308,6 +308,13 @@ getVehicleDataFromAPI (theVin) {
            </div>
          </div>
        </div>
+       <li className="list-group-item">
+          <h3>
+            <span>
+              <em>Fill form to enter vehicle into inventory...</em>
+            </span>
+          </h3>
+        </li>
      </div>
    );
  }

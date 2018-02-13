@@ -139,11 +139,8 @@ return(
         return (
           <div  key={index} >
             <a href={thePhoto} >{thePhoto}</a>
-
             <button className="btn btn-dark" type='button' onClick={()=>{ this.deletePhoto(this.state.vehicle.vin,thePhoto)}}>
             <span className="ex"> ✘</span>
-           
-            
             </button>
          </div>  
         );
