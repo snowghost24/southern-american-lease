@@ -78,21 +78,35 @@ getMarketingData(){
   }
 
   handleFilteredSearch = (searchType, searchItem) => {
-    helpers.getFilteredSaved(searchType, searchItem)
-      .then((articleData) => {
-        console.log("empty", articleData)
-
-        // if(articleData.data[0]['_id'] === undefined || articleData.data === "" ){
-        //   console.log(articleData);
-        //   alert("there alerts arent working");
-        //   <Alert color="warning">
-        //   Sorry this search has no results!
-        // </Alert>
-        // }
-        // console.log(articleData);
-
-        // this.setState({ savedArticles: articleData.data });
+    if (searchItem === "" || searchType == ""){
+      swal({
+        icon: "error",
+        title: 'Oops...!',
+        text: 'Please Fill Form Completely',
       })
+    } else {
+      helpers.getFilteredSaved(searchType, searchItem)
+      .then((articleData) => {
+        if ( articleData.data.name === "CastError" ){
+          swal({
+            icon: "error",
+            title: 'Sorry No Results Found!',
+            text: 'Try Another Search',
+          })
+        } else if (articleData.data.length === 0){
+          swal({
+            icon: "error",
+            title: 'Sorry No Results Found!',
+            text: 'Try Another Search',
+          })
+        } else {
+          console.log("article data",articleData);
+          this.setState({ savedArticles: articleData.data });
+        }
+        
+      })
+    }
+  
   }
 
   getDate(date) {

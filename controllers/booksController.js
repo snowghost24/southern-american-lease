@@ -4,28 +4,67 @@ const requesting = require('request');
 // Defining methods for the booksController
 module.exports = {
   findAll: function(req, res) {
-    // console.log("Find all querys");
-    // console.log(req.query.searchType);
-    // console.log("pending wont pass",req.query.searchItem);
     var searchType = req.query.searchType;
     var searchItem = req.query.searchItem
+    if (req.query.location === "leather"){
+      
+      console.log("filtering leather");
+      AutoEntry.find({[searchType]:searchItem, leatherColor: { $ne: "none",  }, leatherHide:false}).collation( { locale: 'en', strength: 2 } )
+      .exec(function(err, doc) {
+     
+        if (err) {
+          // res.status(422).json(err)
+          res.send(err)
+        }
+        else {
+          res.send(doc);
+        }
+      })
+
+    }  else if (req.query.location === "lift"){
+      console.log("filtering lift");
+      AutoEntry.find({[searchType]:searchItem, liftrange: { $ne: "none",  }, liftHide:false}).collation( { locale: 'en', strength: 2 } )
+      .exec(function(err, doc) {
+     
+        if (err) {
+          // res.status(422).json(err)
+          res.send(err)
+        }
+        else {
+          res.send(doc);
+        }
+      })
+
+    } else if (req.query.location === "detail"){
+      console.log("filtering leather");
+      AutoEntry.find({[searchType]:searchItem, detail: { $ne: "none",  }, detailHide:false}).collation( { locale: 'en', strength: 2 } )
+      .exec(function(err, doc) {
+     
+        if (err) {
+          // res.status(422).json(err)
+          res.send(err)
+        }
+        else {
+          res.send(doc);
+        }
+      })
+
+    }else {
+      AutoEntry.find({[searchType]:searchItem}).collation( { locale: 'en', strength: 2 } )
+      .exec(function(err, doc) {
+     
+        if (err) {
+          res.send(err)
+        }
+        else {
+          res.send(doc);
+        }
+      })
+    }
     // var searchItem = req.query.searchItem.toUpperCase();
     //Donot search for searchType but for the value 
-    AutoEntry.find({[searchType]:searchItem}).collation( { locale: 'en', strength: 2 } )
-    .exec(function(err, doc) {
-      if (err) {
-        // console.log(err);
-        res.send(err)
-      }
-      else {
-        if (doc == ""){
-         res.send("doc is empty",doc);
 
-        }
-        console.log("Find all sent back docs",doc);
-        res.send(doc);
-      }
-    });
+    // .catch(err => res.status(422).json(err));
   },
   findById: function(req, res) {
     console.log("Ive alsoe been hit");

@@ -49,13 +49,14 @@ const helpers = {
         console.log(error);
       });
   },
-  getFilteredSaved: function (searchType, searchItem) {
+  getFilteredSaved: function (searchType, searchItem, location) {
     var searchTypeFormatted = searchType.trim();
     var searchItemFormatted = searchItem.trim()
     return axios.get("/api/booking/books", {
       params: {
         searchType: searchTypeFormatted,
-        searchItem: searchItemFormatted
+        searchItem: searchItemFormatted,
+        location:location,
       }
     })
       .then(function (results) {
@@ -86,8 +87,23 @@ const helpers = {
       }).catch(function (error) {
         console.log(error);
       });
+  },getSavedLift: function () {
+    return axios.get("/api/lift/liftrange")
+      .then(function (results) {
+        console.log("axios results", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
+  },getSavedDetail: function () {
+    return axios.get("/api/detail/detailedTrucks/")
+      .then(function (results) {
+        console.log("axios results", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
   },  enterDealerHelper: function (dealerEntry) {
-    // console.log(dealerData);
     var newDealer = dealerEntry;
     console.log('dealer entry data', newDealer)
     return axios.post("/dealers/dealer/", newDealer)

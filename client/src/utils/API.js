@@ -36,7 +36,29 @@ export default {
       }).catch(function (error) {
         console.log(error);
       });
-  }, deleteFileCloud: function (vin,formData) {
+  },   updateLift: function (id,newChanges) {
+    // console.log("update date helper",id,newChanges);
+    return axios.put("/api/lift/liftrange/"+ id, {
+      newChanges
+    })
+      .then(function (results) {
+        // console.log("results after new color", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
+  },   updateDetail: function (id,newChanges) {
+    // console.log("update date helper",id,newChanges);
+    return axios.put("/api/detail/detailedTrucks/"+ id, {
+      newChanges
+    })
+      .then(function (results) {
+        // console.log("results after new color", results);
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
+  },deleteFileCloud: function (vin,formData) {
     console.log("im in send file", vin);
     return axios.post("/file/filesend/"+ vin, {
       formData
@@ -70,9 +92,7 @@ export default {
       }).catch(function (error) {
         console.log(error);
       });
-    },hideVehicleHandler:function (id) {
-      //Hides vehicles from Leather
-      // console.log(object);
+    },hideLeatherHandler:function (id) {
       return axios.delete("/api/leather/leatherkit/"+ id, {
         id:id
       })
@@ -82,11 +102,12 @@ export default {
         }).catch(function (error) {
           console.log(error);
         });
-      },bringBackLeatherHandler:function (vin) {
+      },
+      hideLiftHandler:function (id) {
         //Hides vehicles from Leather
         // console.log(object);
-        return axios.post("/api/leather/leatherkit", {
-          vin:vin
+        return axios.delete("/api/lift/liftrange/"+ id, {
+          id:id
         })
           .then(function (results) {
             console.log("printing data results", results);
@@ -94,7 +115,55 @@ export default {
           }).catch(function (error) {
             console.log(error);
           });
-        },  addToCartHelper: function (vehicleId) {
+        },
+        hideDetailHandler:function (id) {
+          //Hides vehicles from Leather
+          // console.log(object);
+          return axios.delete("/api/detail/detailedTrucks/"+ id, {
+            id:id
+          })
+            .then(function (results) {
+              console.log("printing data results", results);
+              return results;
+            }).catch(function (error) {
+              console.log(error);
+            });
+          },bringBackLeatherHandler:function (vin) {
+        //Brings Back hidden vehicles
+        return axios.post("/api/leather/leatherkit", {
+          vin:vin
+        })
+          .then(function (results) {
+            console.log("api / bringbackleatherhadler", results);
+            return results;
+          }).catch(function (error) {
+            console.log(error);
+          });
+        },bringBackLiftHandler:function (vin) {
+          //Hides vehicles from Leather
+          // console.log(object);
+          return axios.post("/api/lift/liftrange", {
+            vin:vin
+          })
+            .then(function (results) {
+              console.log("printing data results", results);
+              return results;
+            }).catch(function (error) {
+              console.log(error);
+            });
+          },bringBackDetailHandler:function (vin) {
+            //Hides vehicles from Leather
+            // console.log(object);
+            return axios.post("/api/detail/detailedTrucks/", {
+              vin:vin
+            })
+              .then(function (results) {
+                console.log("printing data results", results);
+                return results;
+              }).catch(function (error) {
+                console.log(error);
+              });
+            },  addToCartHelper: function (vehicleId) {
          // Use req.query.... to grab values
           return axios.get("/cart/addtocart/", {
             params: {

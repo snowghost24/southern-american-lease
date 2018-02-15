@@ -393,9 +393,9 @@ class AutoDetailsForm extends React.Component {
                  Detail:
            <select type="string" name="detail" value={this.state.detail} onChange={this.handleInputChange} onBlur={this.alterState}>
                    <option value="">Select option</option>
-                   <option value="full detail">Full Detail</option>
-                   <option value="washandvac">Wash and Vac</option>
-                   <option value="spruce">Spruce</option>
+                   <option value="Full detail">Full Detail</option>
+                   <option value="Wash and Vac">Wash and Vac</option>
+                   <option value="Spruce">Spruce</option>
                    <option value="none">None</option>
                  </select>
                </label>

@@ -37,7 +37,7 @@ const AutoEntrySchema = new Schema({
   transitLink:String,
   graphics:String,
   leatherHide:{type:Boolean,default:false},
-  liftHide:Boolean,
+  liftHide:{type:Boolean,default:false},
   detailHide:{type:Boolean,default:false},
   vinImage:String,
   vinConfirmed:{type:Boolean,default:false}, 

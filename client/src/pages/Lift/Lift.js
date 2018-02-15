@@ -7,16 +7,16 @@ import { Input, TextArea, FormBtn } from "../../components/Form";
 import ToggleButton from 'react-toggle-button'
 import helpers from "../../utils/helpers";
 import Filter from "../../components/filter/filter";
-import "./Leather.css";
+import "./Lift.css";
 import swal from 'sweetalert';
 import { Button, ButtonGroup, } from 'reactstrap';
 
 
-class LeatherStatus extends React.Component {
+class LiftStatus extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      leatherStatus: '',
+      liftStatus: '',
       location: '',
     };
     this.handleChange = this.handleChange.bind(this);
@@ -39,7 +39,7 @@ class LeatherStatus extends React.Component {
   alsoChangeLocation(value) {
     if (value === "Processing") {
       this.setState({
-        location: "Southern Leather"
+        location: "High Standards"
       })
     }
   }
@@ -48,17 +48,17 @@ class LeatherStatus extends React.Component {
     event.preventDefault();
     console.log(this.state);
     var theVehicleId = this.props.theVehicle._id
-    var newLeatherStatus = this.state.leatherStatus;
+    var newLiftStatus = this.state.liftStatus;
     var newLocation = this.state.location;
 
     var newChanges = {
-      leatherStatus: newLeatherStatus,
+      liftStatus: newLiftStatus,
       location: newLocation,
 
     }
-    API.updateLeather(theVehicleId, newChanges)
+    API.updateLift(theVehicleId, newChanges)
       .then((res) => {
-        this.props.theReloadLeather()
+        this.props.theReload()
       }).catch(err => console.log(err));
   }
 
@@ -69,15 +69,15 @@ class LeatherStatus extends React.Component {
     var theStatus = this.props.theVehicle.location;
     var theLocation = this.props.theVehicle.location;
     this.setState({
-      leatherStatus: theStatus,
+      liftStatus: theStatus,
       location: theLocation
     });
   }
 
   hideVehicleDisplay() {
-    API.hideLeatherHandler(this.props.theVehicle._id)
+    API.hideLiftHandler(this.props.theVehicle._id)
       .then((res) => {
-        this.props.theReloadLeather()
+        this.props.theReload()
       }).catch(err => console.log(err));
   }
 
@@ -89,8 +89,8 @@ class LeatherStatus extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <Col size="md-3">
             <label>
-              Leather Status:
-           <select type="string" name="leatherStatus" value={this.state.leatherStatus} onChange={this.handleChange} >
+              Lift Status:
+           <select type="string" name="liftStatus" value={this.state.liftStatus} onChange={this.handleChange} >
                 <option value="Pending">Pending</option>
                 <option value="Processing">Processing</option>
                 <option value="Complete">Complete</option>
@@ -137,12 +137,12 @@ class LeatherStatus extends React.Component {
 
 
 
-class LeatherOption extends React.Component {
+class LiftOption extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      leatherColor: '',
-      leatherNote: ""
+      liftrange: '',
+      liftNote: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -162,19 +162,19 @@ class LeatherOption extends React.Component {
     var theVehicleId = this.props.theVehicle._id
 
     var newChange = {
-      leatherColor: this.state.leatherColor,
-      leatherNote: this.state.leatherNote
+      liftrange: this.state.liftrange,
+      liftNote: this.state.liftNote
     }
-    API.updateLeather(theVehicleId, newChange)
+    API.updateLift(theVehicleId, newChange)
       .then((res) => {
-        this.props.theReloadLeather()
+        this.props.theReload()
       }).catch(err => console.log(err));
   }
 
   componentDidMount = () => {
     this.setState({
-      leatherColor: this.props.theVehicle.leatherColor,
-      leatherNote: this.props.theVehicle.leatherNote
+      liftrange: this.props.theVehicle.liftrange,
+      liftNote: this.props.theVehicle.liftNote
     });
 
   }
@@ -183,31 +183,28 @@ class LeatherOption extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <label>
-          Change Install:
-         <select type="string"
-            name="leatherColor"
-            value={this.state.leatherColor}
-            onChange={this.handleChange} >
-            <option value="black">Black</option>
-            <option value="black stone stone">Black/Stone/Stone</option>
-            <option value="licore">Licore</option>
-            <option value="barracuda">Barracuda</option>
-            <option value="limited kit">Limited</option>
-            <option value="stone">Stone</option>
-            <option value="sandstone">Sandstone</option>
-            <option value="black cardinal">black_cardinal</option>
-            <option value="xtra woodland">Xtra Woodland</option>
-            <option value="lightgrey">Light Grey</option>
-            <option value="puddy">Puddy</option>
-            <option value="shale">shale</option>
-            <option value="none">None</option>
-          </select>
-        </label>
+          <label>
+                 Lift Kit Range:
+           <select type="string" 
+           name="liftrange" 
+           value={this.state.liftrange} 
+           onChange={this.handleChange} onBlur={this.alterState}>
+                   <option value="">Select option</option>
+                   <option value="7000-6500">7000 - 6500</option>
+                   <option value="6000-5500">6500 - 6000</option>
+                   <option value="6000-5500">6000 - 5500</option>
+                   <option value="5500-5000">5500 - 5000</option>
+                   <option value="5000-4500">5000 - 4500</option>
+                   <option value="4500-4000">4500 - 4000</option>
+                   <option value="4000-3500">4000 - 3500</option>
+                   <option value="3500-3000">3500 - 3000</option>
+                   <option value="none">None</option>
+                 </select>
+               </label>
         <br />
         <label>
-          Leather Notes:
-        <TextArea className="leatherText" type="string" name="leatherNote" value={this.state.leatherNote} onChange={this.handleChange} />
+          Lift Notes:
+        <TextArea className="leatherText" type="string" name="liftNote" value={this.state.liftNote} onChange={this.handleChange} />
         </label>
         <br />
         <input className="btn btn-danger" type="submit" value="Submit" />
@@ -219,24 +216,21 @@ class LeatherOption extends React.Component {
 
 
 
-
-
-
 // Create the Main component
-class Leather extends Component {
+class Lift extends Component {
   state = {
     savedVehicles: [],
     arrayValue: [],
-    workFrom: "leather"
+    workFrom: "lift"
   }
 
   // gets all saved articles from our db
   componentDidMount() {
-    this.getSavedLeatherData()
+    this.getSavedLiftData()
   }
 
-  getSavedLeatherData() {
-    helpers.getSavedLeather()
+  getSavedLiftData() {
+    helpers.getSavedLift()
       .then((vehicleData) => {
         this.setState({ savedVehicles: vehicleData.data });
       });
@@ -244,7 +238,7 @@ class Leather extends Component {
   }
   // reloads data  from db after a submit
   reloadComponent() {
-    helpers.getSavedLeather()
+    helpers.getSavedLift()
       .then((vehicleData) => {
         this.setState({ savedVehicles: vehicleData.data });
       });
@@ -315,11 +309,11 @@ class Leather extends Component {
         linkTrigger = 'Active'
       }
 
-      if (vehicle.leatherNote === "") {
+      if (vehicle.liftNote === "") {
         noteTrigger = 'Not Active'
-      } else if (vehicle.leatherNote === undefined) {
+      } else if (vehicle.liftNote === undefined) {
         noteTrigger = 'Not Active'
-      } else if (vehicle.leatherNote === null) {
+      } else if (vehicle.liftNote === null) {
         noteTrigger = 'Not Active'
       } else {
         noteTrigger = 'Active'
@@ -342,18 +336,18 @@ class Leather extends Component {
             </Col>
             <Col size="sm-8">
             <span className="btn-group">
-              <LeatherStatus theVehicle={vehicle} theReloadLeather={this.reloadComponent.bind(this)} />
+              <LiftStatus theVehicle={vehicle} theReload={this.reloadComponent.bind(this)} />
             </span>
             </Col>
             </Row>
-            <h4>Install Kit: <strong>{vehicle.leatherColor}</strong></h4>
+            <h4>Lift Range: <strong>{vehicle.liftrange}</strong></h4>
             <h4>Vehicle Location: <strong>{vehicle.location}
             </strong></h4>
 
             {linkTrigger === "Active" ? (<h4>Transport: <a href={vehicle.transitLink} rel="noopener noreferrer" target="_blank">See Intransit Location </a></h4>) : (<p></p>)}
-            {noteTrigger === "Active" ? (<h4>Vehicle Note: <strong><span className="notes">{vehicle.leatherNote}</span></strong></h4>) : (<p></p>)}
+            {noteTrigger === "Active" ? (<h4>Vehicle Note: <strong><span className="notes">{vehicle.liftNote}</span></strong></h4>) : (<p></p>)}
 
-            <h4>Install Status: <span className={vehicle.leatherStatus}><strong>{vehicle.leatherStatus}</strong></span></h4>
+            <h4>Install Status: <span className={vehicle.liftStatus}><strong>{vehicle.liftStatus}</strong></span></h4>
             <ToggleButton
               value={this.state.arrayValue[index][theCheck]}
               onToggle={(value) => {
@@ -362,7 +356,7 @@ class Leather extends Component {
               }} />
             <div>
               {this.state.arrayValue[index][theCheck] ? (
-                <LeatherOption theVehicle={vehicle} theReloadLeather={this.reloadComponent.bind(this)} />
+                <LiftOption theVehicle={vehicle} theReload={this.reloadComponent.bind(this)} />
               ) : (
                   <p>Turn ON to change kit and add note</p>
                 )}
@@ -374,7 +368,7 @@ class Leather extends Component {
   }
 
   sendClearSearch() {
-    this.getSavedLeatherData();
+    this.getSavedLiftData();
   }
 
   // A helper method for rendering a container and all of our artiles inside
@@ -387,10 +381,10 @@ class Leather extends Component {
               <div className="panel-heading">
                 <h1 className="panel-title">
                   <strong>
-                    <i className="fa fa-download" aria-hidden="true"></i> Leather Inventory</strong>
+                  <i className="fa fa-download" aria-hidden="true"></i> Lift Inventory</strong>
                 </h1>
                 <Filter filteredSearch={this.handleFilteredSearch} workFrom={this.state.workFrom} savedVehicles={this.state.savedVehicles} theReload={this.reloadComponent.bind(this)}
-                  sendClearSearchLeather={this.sendClearSearch.bind(this)} renderedFrom={this.props.location.pathname} />
+                  sendClearSearchLift={this.sendClearSearch.bind(this)} renderedFrom={this.props.location.pathname} />
               </div>
               <div className="panel-body">
                 <ul className="list-group">
@@ -416,4 +410,4 @@ class Leather extends Component {
 };
 
 // Export the module back to the route
-export default Leather;
+export default Lift;

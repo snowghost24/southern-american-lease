@@ -257,7 +257,7 @@ return(
           </Col>
           <Col size="md-2">
             {/* This link is to sell vehicle page */}
-            <Link to={"/sell/" + this.state.vehicle._id}>Sell Vehicles →</Link>
+            <Link to={"/pdf/" + this.state.vehicle._id}>Sell Vehicles →</Link>
           </Col>
         </Row>
       </Container>

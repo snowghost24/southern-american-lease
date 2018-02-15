@@ -8,6 +8,8 @@ import Constributors from "../../components/Constributors/Constributors";
 import Modal from 'react-modal';
 import swal from 'sweetalert';
 import { Col, Row } from "../../components/Grid";
+
+
 import "./Inventory.css";
 
 
@@ -82,10 +84,34 @@ class Inventory extends Component {
   }
 
   handleFilteredSearch = (searchType, searchItem) => {
-    helpers.getFilteredSaved(searchType, searchItem)
-      .then((articleData) => {
-        this.setState({ savedArticles: articleData.data });
+    if (searchItem === "" || searchType == ""){
+      swal({
+        icon: "error",
+        title: 'Oops...!',
+        text: 'Please Fill Form Completely',
       })
+    } else {
+      helpers.getFilteredSaved(searchType, searchItem)
+      .then((articleData) => {
+        if ( articleData.data.name === "CastError" ){
+          swal({
+            icon: "error",
+            title: 'Sorry No Results Found!',
+            text: 'Try Another Search',
+          })
+        } else if (articleData.data.length === 0){
+          swal({
+            icon: "error",
+            title: 'Sorry No Results Found!',
+            text: 'Try Another Search',
+          })
+        } else {
+          console.log("article data",articleData);
+          this.setState({ savedArticles: articleData.data });
+        } 
+      })
+    }
+  
   }
 
   getDate(date) {
@@ -418,6 +444,7 @@ renderArticles = () => {
               <div className="panel-heading">
                 {/* thePath={this.props.location.pathname */}
                 <Filter handleCreateClick={this.handleCreateClick.bind(this)} isCreating={this.state.isCreating} filteredSearch={this.handleFilteredSearch} inventoryState={this.state}  toggleModalInventory={this.toggleModalInventory.bind(this)} renderedFrom={this.props.location.pathname} toggleButtonEditor={this.toggleButtonEditor.bind(this)} sendClearSearchInventory={this.sendClearSearch.bind(this)}/>
+                
               </div>
               <div className="panel-body">
                 <ul className="list-group">

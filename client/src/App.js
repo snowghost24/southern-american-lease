@@ -10,8 +10,9 @@ import Main from "./pages/Main";
 import Search from "./pages/Search";
 import Inventory from "./pages/Inventory";
 import ClientInventory from "./pages/ClientInventory";
-
+import Lift from "./pages/Lift";
 import Leather from "./pages/Leather";
+import Details from "./pages/Details";
 import PdfCreate from "./pages/PdfCreate";
 import VehicleEntry from "./pages/VehicleEntry";
 const App = () =>
@@ -23,9 +24,9 @@ const App = () =>
       <Route exact path={`${process.env.PUBLIC_URL}/entry`} component={VehicleEntry} />
         <Route path={`${process.env.PUBLIC_URL}/sell/:id`} component={Search} />
         <Route path={`${process.env.PUBLIC_URL}/leather`} component={Leather} />
-        <Route path={`${process.env.PUBLIC_URL}/lift`} component={Leather} />
-        <Route path={`${process.env.PUBLIC_URL}/detail`} component={Leather} />
-        <Route path={`${process.env.PUBLIC_URL}/pdf`} component={PdfCreate} />
+        <Route path={`${process.env.PUBLIC_URL}/lift`} component={Lift} />
+        <Route path={`${process.env.PUBLIC_URL}/detail`} component={Details} />
+        <Route path={`${process.env.PUBLIC_URL}/pdf/:id`} component={PdfCreate} />
         <Route path="/saved" component={Inventory} />
         <Route exact path="/books" component={Books} />
         <Route path="/books/:id" component={Detail} />

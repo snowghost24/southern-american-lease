@@ -7,16 +7,16 @@ import { Input, TextArea, FormBtn } from "../../components/Form";
 import ToggleButton from 'react-toggle-button'
 import helpers from "../../utils/helpers";
 import Filter from "../../components/filter/filter";
-import "./Leather.css";
+import "./Details.css";
 import swal from 'sweetalert';
 import { Button, ButtonGroup, } from 'reactstrap';
 
 
-class LeatherStatus extends React.Component {
+class DetailStatus extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      leatherStatus: '',
+      detailStatus: '',
       location: '',
     };
     this.handleChange = this.handleChange.bind(this);
@@ -39,7 +39,7 @@ class LeatherStatus extends React.Component {
   alsoChangeLocation(value) {
     if (value === "Processing") {
       this.setState({
-        location: "Southern Leather"
+        location: "Distinction Detail"
       })
     }
   }
@@ -48,17 +48,17 @@ class LeatherStatus extends React.Component {
     event.preventDefault();
     console.log(this.state);
     var theVehicleId = this.props.theVehicle._id
-    var newLeatherStatus = this.state.leatherStatus;
+    var newDetailStatus = this.state.detailStatus;
     var newLocation = this.state.location;
 
     var newChanges = {
-      leatherStatus: newLeatherStatus,
+      detailStatus: newDetailStatus,
       location: newLocation,
 
     }
-    API.updateLeather(theVehicleId, newChanges)
+    API.updateDetail(theVehicleId, newChanges)
       .then((res) => {
-        this.props.theReloadLeather()
+        this.props.theReload()
       }).catch(err => console.log(err));
   }
 
@@ -69,15 +69,15 @@ class LeatherStatus extends React.Component {
     var theStatus = this.props.theVehicle.location;
     var theLocation = this.props.theVehicle.location;
     this.setState({
-      leatherStatus: theStatus,
+      detailStatus: theStatus,
       location: theLocation
     });
   }
 
   hideVehicleDisplay() {
-    API.hideLeatherHandler(this.props.theVehicle._id)
+    API.hideDetailHandler(this.props.theVehicle._id)
       .then((res) => {
-        this.props.theReloadLeather()
+        this.props.theReload()
       }).catch(err => console.log(err));
   }
 
@@ -89,8 +89,8 @@ class LeatherStatus extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <Col size="md-3">
             <label>
-              Leather Status:
-           <select type="string" name="leatherStatus" value={this.state.leatherStatus} onChange={this.handleChange} >
+              Detail Status:
+           <select type="string" name="detailStatus" value={this.state.detailStatus} onChange={this.handleChange} >
                 <option value="Pending">Pending</option>
                 <option value="Processing">Processing</option>
                 <option value="Complete">Complete</option>
@@ -137,12 +137,12 @@ class LeatherStatus extends React.Component {
 
 
 
-class LeatherOption extends React.Component {
+class DetailOption extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      leatherColor: '',
-      leatherNote: ""
+      detail: '',
+      detailNote: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -162,19 +162,19 @@ class LeatherOption extends React.Component {
     var theVehicleId = this.props.theVehicle._id
 
     var newChange = {
-      leatherColor: this.state.leatherColor,
-      leatherNote: this.state.leatherNote
+      detail: this.state.detail,
+      detailNote: this.state.detailNote
     }
-    API.updateLeather(theVehicleId, newChange)
+    API.updateDetail(theVehicleId, newChange)
       .then((res) => {
-        this.props.theReloadLeather()
+        this.props.theReload()
       }).catch(err => console.log(err));
   }
 
   componentDidMount = () => {
     this.setState({
-      leatherColor: this.props.theVehicle.leatherColor,
-      leatherNote: this.props.theVehicle.leatherNote
+      detail: this.props.theVehicle.detail,
+      detailNote: this.props.theVehicle.detailNote
     });
 
   }
@@ -183,31 +183,23 @@ class LeatherOption extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <label>
-          Change Install:
-         <select type="string"
-            name="leatherColor"
-            value={this.state.leatherColor}
-            onChange={this.handleChange} >
-            <option value="black">Black</option>
-            <option value="black stone stone">Black/Stone/Stone</option>
-            <option value="licore">Licore</option>
-            <option value="barracuda">Barracuda</option>
-            <option value="limited kit">Limited</option>
-            <option value="stone">Stone</option>
-            <option value="sandstone">Sandstone</option>
-            <option value="black cardinal">black_cardinal</option>
-            <option value="xtra woodland">Xtra Woodland</option>
-            <option value="lightgrey">Light Grey</option>
-            <option value="puddy">Puddy</option>
-            <option value="shale">shale</option>
-            <option value="none">None</option>
-          </select>
-        </label>
+          <label>
+                 Detail Type:
+           <select type="string" 
+           name="detail" 
+           value={this.state.detail} 
+           onChange={this.handleChange} onBlur={this.alterState}>
+                    <option value="">Select option</option>
+                   <option value="Full Detail">Full Detail</option>
+                   <option value="Wash and Vac">Wash and Vac</option>
+                   <option value="Spruce">Spruce</option>
+                   <option value="none">None</option>
+                 </select>
+               </label>
         <br />
         <label>
-          Leather Notes:
-        <TextArea className="leatherText" type="string" name="leatherNote" value={this.state.leatherNote} onChange={this.handleChange} />
+          Detail Notes:
+        <TextArea className="leatherText" type="string" name="detailNote" value={this.state.detailNote} onChange={this.handleChange} />
         </label>
         <br />
         <input className="btn btn-danger" type="submit" value="Submit" />
@@ -219,32 +211,30 @@ class LeatherOption extends React.Component {
 
 
 
-
-
-
 // Create the Main component
-class Leather extends Component {
+class Details extends Component {
   state = {
     savedVehicles: [],
     arrayValue: [],
-    workFrom: "leather"
+    workFrom: "detail"
   }
 
   // gets all saved articles from our db
   componentDidMount() {
-    this.getSavedLeatherData()
+    this.getSavedDetailData()
   }
 
-  getSavedLeatherData() {
-    helpers.getSavedLeather()
+  getSavedDetailData() {
+    helpers.getSavedDetail()
       .then((vehicleData) => {
+        console.log(vehicleData);
         this.setState({ savedVehicles: vehicleData.data });
       });
 
   }
   // reloads data  from db after a submit
   reloadComponent() {
-    helpers.getSavedLeather()
+    helpers.getSavedDetail()
       .then((vehicleData) => {
         this.setState({ savedVehicles: vehicleData.data });
       });
@@ -315,11 +305,11 @@ class Leather extends Component {
         linkTrigger = 'Active'
       }
 
-      if (vehicle.leatherNote === "") {
+      if (vehicle.detailNote === "") {
         noteTrigger = 'Not Active'
-      } else if (vehicle.leatherNote === undefined) {
+      } else if (vehicle.detailNote === undefined) {
         noteTrigger = 'Not Active'
-      } else if (vehicle.leatherNote === null) {
+      } else if (vehicle.detailNote === null) {
         noteTrigger = 'Not Active'
       } else {
         noteTrigger = 'Active'
@@ -342,18 +332,18 @@ class Leather extends Component {
             </Col>
             <Col size="sm-8">
             <span className="btn-group">
-              <LeatherStatus theVehicle={vehicle} theReloadLeather={this.reloadComponent.bind(this)} />
+              <DetailStatus theVehicle={vehicle} theReload={this.reloadComponent.bind(this)} />
             </span>
             </Col>
             </Row>
-            <h4>Install Kit: <strong>{vehicle.leatherColor}</strong></h4>
+            <h4>Detail Type: <strong>{vehicle.detail}</strong></h4>
             <h4>Vehicle Location: <strong>{vehicle.location}
             </strong></h4>
 
             {linkTrigger === "Active" ? (<h4>Transport: <a href={vehicle.transitLink} rel="noopener noreferrer" target="_blank">See Intransit Location </a></h4>) : (<p></p>)}
-            {noteTrigger === "Active" ? (<h4>Vehicle Note: <strong><span className="notes">{vehicle.leatherNote}</span></strong></h4>) : (<p></p>)}
+            {noteTrigger === "Active" ? (<h4>Vehicle Note: <strong><span className="notes">{vehicle.detailNote}</span></strong></h4>) : (<p></p>)}
 
-            <h4>Install Status: <span className={vehicle.leatherStatus}><strong>{vehicle.leatherStatus}</strong></span></h4>
+            <h4>Install Status: <span className={vehicle.detailStatus}><strong>{vehicle.detailStatus}</strong></span></h4>
             <ToggleButton
               value={this.state.arrayValue[index][theCheck]}
               onToggle={(value) => {
@@ -362,7 +352,7 @@ class Leather extends Component {
               }} />
             <div>
               {this.state.arrayValue[index][theCheck] ? (
-                <LeatherOption theVehicle={vehicle} theReloadLeather={this.reloadComponent.bind(this)} />
+                <DetailOption theVehicle={vehicle} theReload={this.reloadComponent.bind(this)} />
               ) : (
                   <p>Turn ON to change kit and add note</p>
                 )}
@@ -374,7 +364,7 @@ class Leather extends Component {
   }
 
   sendClearSearch() {
-    this.getSavedLeatherData();
+    this.getSavedDetailData();
   }
 
   // A helper method for rendering a container and all of our artiles inside
@@ -387,10 +377,10 @@ class Leather extends Component {
               <div className="panel-heading">
                 <h1 className="panel-title">
                   <strong>
-                    <i className="fa fa-download" aria-hidden="true"></i> Leather Inventory</strong>
+                  <i className="fa fa-download" aria-hidden="true"></i> Detail Inventory</strong>
                 </h1>
                 <Filter filteredSearch={this.handleFilteredSearch} workFrom={this.state.workFrom} savedVehicles={this.state.savedVehicles} theReload={this.reloadComponent.bind(this)}
-                  sendClearSearchLeather={this.sendClearSearch.bind(this)} renderedFrom={this.props.location.pathname} />
+                  sendClearSearchDetail={this.sendClearSearch.bind(this)} renderedFrom={this.props.location.pathname} />
               </div>
               <div className="panel-body">
                 <ul className="list-group">
@@ -416,4 +406,4 @@ class Leather extends Component {
 };
 
 // Export the module back to the route
-export default Leather;
+export default Details;
