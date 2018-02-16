@@ -9,12 +9,15 @@ import AutoDetailsForm from "../../components/AutoDetailsForm/AutoDetailsForm";
 // import Dropzone from "react-dropzone";
 import "./details.css";
 import DefaultUpload from '../../components/DefaultUpload/DefaultUpload';
+
+
 class Detail extends Component {
   state = {
     vehicle: {},
     editForm: true,
     name: "",
-    file: null
+    file: null,
+    feature:'',
   };
 
   handleEditFormChange(event) {
@@ -35,7 +38,7 @@ class Detail extends Component {
   loadVehicle = () => {
     API.getVehicle(this.props.match.params.id)
       .then((res) => {
-        console.log("API.get books res data from detail", res.data);
+        // console.log("API.get books res data from detail", res.data);
         //edit form is the check that enables and disables the form fields
         this.setState({
           vehicle: res.data,
@@ -73,14 +76,12 @@ class Detail extends Component {
 
   checkVinImgExists() {
     if (this.state.vehicle.vinImage === "" || this.state.vehicle.vinImage === undefined) {
-      console.log("empty");
       return (
         <FileUploader sentDownStates={this.state} checkVinImgExists={this.checkVinImgExists.bind(this)
         } loadVehicle={this.loadVehicle.bind(this)
         } />
       )
     } else {
-      console.log("not empty");
       return (
         <div><p>VIN Has been entered.</p>
           {this.vinImageMatch()}
@@ -123,18 +124,26 @@ return(
   }
 
   deletePhoto(theVin,linkToRemove) {
-    console.log(linkToRemove.slice(44));
+    // console.log(linkToRemove.slice(44));
     var deleteName = linkToRemove.slice(44);
     API.deletePhotosDbHandler(theVin,linkToRemove,deleteName)
       .then((res) => {
         this.loadVehicle()
-        console.log("delete photo detail", res.data);
+        // console.log("delete photo detail", res.data);
       }).catch(err => console.log(err));
   }
 
+
+  deleteFeature(theId,featureToRemove) {
+    API.deleteFeatureDbHandler(theId,featureToRemove)
+      .then((res) => {
+        console.log(res.data)
+        this.loadVehicle()
+      }).catch(err => console.log(err));
+  }
   managePhotoLInks(){
     if (this.state.vehicle.photoArray !== undefined){
-      console.log("the photo array",this.state.vehicle.photoArray);
+      // console.log("the photo array",this.state.vehicle.photoArray);
       return this.state.vehicle.photoArray.map((thePhoto, index) => {
         return (
           <div  key={index} >
@@ -148,9 +157,56 @@ return(
     }
   }
 
+  addFeatureFunction(e){
+    console.log(this.state.vehicle._id);
+    e.preventDefault()
+    API.addFeatureFunctionHandler(this.state.feature, this.state.vehicle._id)
+    .then((res)=>{
+      this.loadVehicle()
+      this.setState({feature:""})
+      console.log(res.data.feature);
+    }).catch(err=>{console.log(err);})
+  }
+  
+  manageFeatures(){
+    if (this.state.vehicle.feature !== undefined){
+      // console.log("the photo array",this.state.vehicle.photoArray);
+      return this.state.vehicle.feature.map((theFeature, index) => {
+        return (
+          <div  key={index} style={{float:'left'}}>
+            <span>{theFeature}</span>
+            <button className="btn btn-dark" type='button' onClick={()=>{ this.deleteFeature(this.state.vehicle._id,theFeature)}}>
+            <span className="ex"> ✘</span>
+            </button>
+         </div>  
+        );
+      });
+    }
+  }
+
+
+  
+  renderFeaturesTextArea() {
+    return (
+
+      <form onSubmit={this.addFeatureFunction.bind(this)} >
+      <div className="row">
+  <div className="col-lg-6">
+    <div className="input-group">
+      <span className="input-group-btn">
+        <button className="btn btn-primary" type="submit">Add Feature</button>
+      </span>
+      <input name="feature" onChange={this.handleEditFormChange.bind(this)} value ={this.state.feature} name='feature' type="text" className="form-control" required='true' placeholder="Add Feature ONE AT A TIME..."  />
+    </div>
+  </div>
+  </div>
+  </form> 
+    )
+   
+  }
   
   render() {
-    console.log("state from detail second", this.state.vehicle);
+    // console.log("state from detail second", this.state.vehicle);
     return (
       <Container fluid>
         <Row>
@@ -244,16 +300,27 @@ return(
                </Col>
             </Row>
             <Row>
+              
             {this.managePhotoLInks()}
+          
             </Row>
+            <Row>
+            <div>
+                <h3>Vehicle Features</h3>
+            {this.manageFeatures()}
+            </div>
+              </Row>
           </Col>
           
         </Row>
+        <Row>
+          {this.renderFeaturesTextArea()}
+          </Row>
 
 
         <Row>
           <Col size="md-2">
-            <Link to="/">← Back to Inventory</Link>
+            <Link to="/saved">← Back to Inventory</Link>
           </Col>
           <Col size="md-2">
             {/* This link is to sell vehicle page */}

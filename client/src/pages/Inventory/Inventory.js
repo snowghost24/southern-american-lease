@@ -8,6 +8,9 @@ import Constributors from "../../components/Constributors/Constributors";
 import Modal from 'react-modal';
 import swal from 'sweetalert';
 import { Col, Row } from "../../components/Grid";
+import { FormGroup, FormControl } from 'react-bootstrap';
+import { Input, TextArea } from "../../components/Form";
+
 
 
 import "./Inventory.css";
@@ -37,7 +40,7 @@ class Inventory extends Component {
      address:"",
      city:"",
      state:"",
-     zip:""
+     zip:"",
   }
 
 
@@ -287,7 +290,7 @@ renderDealerForm(){
         </label>
         <label className="col-2 col-form-label">Dealership
                           <div className="col-10">
-            <input className="form-control" name="dealership" type="text" value={this.state.dealership} onChange={this.handleDealerChange.bind(this)} />
+            <input className="form-control" name="dealership" type="text" value={this.state.dealership} onChange={this.handleDealerChange.bind(this)} required="required"  />
           </div>
         </label>
       </div>
@@ -299,14 +302,14 @@ renderDealerForm(){
         </label>
         <label className="col-2 col-form-label"> Telephone
                         <div className="col-10">
-            <input className="form-control" name="tel" type="tel" value={this.state.tel} onChange={this.handleDealerChange.bind(this)} data-fv-numeric="true" data-fv-numeric-message="Please enter valid phone numbers" />
+            <input className="form-control" name="tel" type="tel" value={this.state.tel} onChange={this.handleDealerChange.bind(this)} data-fv-numeric="true" data-fv-numeric-message="Please enter valid phone numbers" placeholder="example 490-989-9029" required="required" maxlength="12"  />
           </div>
         </label>
       </div>
       <div className="form-group row">
         <label className="col-2 col-form-label">  Address
                         <div className="col-10">
-            <input className="form-control" name="address" type="string" required="required" value={this.state.address} onChange={this.handleDealerChange.bind(this)} />
+            <input className="form-control" name="address" type="string" required="required" value={this.state.address} onChange={this.handleDealerChange.bind(this)} required="required"  />
           </div>
         </label>
         <label className="col-2 col-form-label"> City
@@ -316,14 +319,68 @@ renderDealerForm(){
         </label>
       </div>
       <div className="form-group row">
-        <label className="col-2 col-form-label">  State
-                        <div className="col-10">
-            <input className="form-control" name="state" type="string" required="required" value={this.state.state} onChange={this.handleDealerChange.bind(this)} />
+      <label className="col-2 col-form-label">State
+      <div className="col-12">
+      <FormControl componentClass="select" name="state" value={this.state.state} onChange={this.handleDealerChange.bind(this)}>
+      <option value="">Select State</option>
+			<option value="AK">Alaska</option>
+			<option value="AL">Alabama</option>
+			<option value="AR">Arkansas</option>
+			<option value="AZ">Arizona</option>
+			<option value="CA">California</option>
+			<option value="CO">Colorado</option>
+			<option value="CT">Connecticut</option>
+			<option value="DC">District of Columbia</option>
+			<option value="DE">Delaware</option>
+			<option value="FL">Florida</option>
+			<option value="GA">Georgia</option>
+			<option value="HI">Hawaii</option>
+			<option value="IA">Iowa</option>
+			<option value="ID">Idaho</option>
+			<option value="IL">Illinois</option>
+			<option value="IN">Indiana</option>
+			<option value="KS">Kansas</option>
+			<option value="KY">Kentucky</option>
+			<option value="LA">Louisiana</option>
+			<option value="MA">Massachusetts</option>
+			<option value="MD">Maryland</option>
+			<option value="ME">Maine</option>
+			<option value="MI">Michigan</option>
+			<option value="MN">Minnesota</option>
+			<option value="MO">Missouri</option>
+			<option value="MS">Mississippi</option>
+			<option value="MT">Montana</option>
+			<option value="NC">North Carolina</option>
+			<option value="ND">North Dakota</option>
+			<option value="NE">Nebraska</option>
+			<option value="NH">New Hampshire</option>
+			<option value="NJ">New Jersey</option>
+			<option value="NM">New Mexico</option>
+			<option value="NV">Nevada</option>
+			<option value="NY">New York</option>
+			<option value="OH">Ohio</option>
+			<option value="OK">Oklahoma</option>
+			<option value="OR">Oregon</option>
+			<option value="PA">Pennsylvania</option>
+			<option value="PR">Puerto Rico</option>
+			<option value="RI">Rhode Island</option>
+			<option value="SC">South Carolina</option>
+			<option value="SD">South Dakota</option>
+			<option value="TN">Tennessee</option>
+			<option value="TX">Texas</option>
+			<option value="UT">Utah</option>
+			<option value="VA">Virginia</option>
+			<option value="VT">Vermont</option>
+			<option value="WA">Washington</option>
+			<option value="WI">Wisconsin</option>
+			<option value="WV">West Virginia</option>
+			<option value="WY">Wyoming</option>
+</FormControl>
           </div>
         </label>
         <label className="col-2 col-form-label"> Zip
                         <div className="col-10">
-            <input className="form-control" name="zip" type="tel" value={this.state.zip} onChange={this.handleDealerChange.bind(this)}  />
+            <input className="form-control" name="zip" type="string" value={this.state.zip} onChange={this.handleDealerChange.bind(this)} required="required" maxlength="5"  />
           </div>
         </label>
       </div>
@@ -393,6 +450,8 @@ linkToDetail(addressId){
   this.props.history.push(path)
 }
 
+
+
 renderArticles = () => {
   return this.state.savedArticles.map((article, index) => {
     var liBackground=null;
@@ -403,6 +462,9 @@ renderArticles = () => {
     } else{
       liBackground = 'white';
     }
+
+ 
+
 
     return (
       <div key={index}>
@@ -510,9 +572,6 @@ renderArticles = () => {
             <div className="modal-content">
               <div className="modal-header">
                 <h3 className="modal-title" id="exampleModalLabel">Select Inventory Recipients</h3>
-                {/* <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-         </button> */}
               </div>
               <div className="modal-body">
                 <p>Choose Recepients </p>

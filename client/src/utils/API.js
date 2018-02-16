@@ -197,6 +197,32 @@ export default {
       }).catch(function (error) {
         console.log(error);
       });
+  },
+  // "/sales/inventory"
+  deleteFeatureDbHandler: function (id, deleteFeature) {
+// console.log('delete feature handler' ,vin, deleteFeature);
+return axios.get("/sales/inventory", {
+params:{theId: id,
+deleteFeature: deleteFeature,
+} 
+})
+.then(function (results) {
+  // console.log("return from delete feature->", results);
+  return results;
+}).catch(function (error) {
+  console.log(error);
+});
+},addFeatureFunctionHandler:function(feature,id) {
+    return axios.post("/sales/inventory", {
+      feature:feature,
+      _id:id
+    })
+      .then(function (results) {
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
+    
   }
 
   // Deletes the book with the given id
