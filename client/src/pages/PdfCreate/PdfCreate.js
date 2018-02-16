@@ -12,137 +12,11 @@ function Contact(label, value) {
   this.label = label;
   this.value = value;
 }
-
-// const STATES = require('../data/states');
-class StatesField extends Component {
-  state = {
-    country: 'AU',
-    disabled: false,
-    searchable: this.props.searchable,
-    selectValue: 'new-south-wales',
-    clearable: true,
-    rtl: false,
-    savedDealers:[],
-    dealersInfo:[],
-  }
-
-  componentDidMount(){
-    this.getDealers()
-  }
-	
-	clearValue (e) {
-		this.select.setInputValue('');
-  } 
-  
-	switchCountry (e) {
-		var newCountry = e.target.value;
-		this.setState({
-			country: newCountry,
-			selectValue: null,
-		});
-  }
-  
-	updateValue (newValue) {
-		this.setState({
-			selectValue: newValue,
-		});
-  }
-  
-	// focusStateSelect () {
-	// 	this.refs.stateSelect.focus();
-  // }
-  
-  
-  getDealers(){
-    helpers.getSavedDealers()
-    .then((dealerData) => {
-      console.log(dealerData);
-      var newArray = []
-      // console.log(dealerData.data[0].name);
-      for (var i = 0; i < dealerData.data.length; i += 1) {
-        var newObj = new Contact(dealerData.data[i].name, dealerData.data[i].email)
-        newArray.push(newObj);
-      }
-      this.setState({ 
-        savedDealers: newArray,
-        dealersInfo:dealerData
-      });
-    })
-    ;
-  }
-
-
-	render () {
-    // console.log(this.state);
-		var options = this.state.savedDealers;
-		return (
-			<div className="section">
-				<h3 className="section-heading">Select Buyer</h3>
-				<Select
-					id="state-select"
-					ref={(ref) => { this.select = ref; }}
-					onBlurResetsInput={false}
-					onSelectResetsInput={false}
-					autoFocus
-					options={options}
-					simpleValue
-					clearable={this.state.clearable}
-					name="selected-state"
-					disabled={this.state.disabled}
-					value={this.state.selectValue}
-					onChange={this.updateValue.bind(this)}
-					rtl={this.state.rtl}
-					searchable={this.state.searchable}
-				/>
-				{/* <button style={{ marginTop: '15px' }} type="button" onClick={this.focusStateSelect}>Focus Select</button> */}
-				<button style={{ marginTop: '15px' }} type="button" className="btn btn-primary" onClick={this.clearValue}>Clear Value</button>
-			</div>
-		);
-	}
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+var docDefinition; 
 class PdfCreate extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      buyerName:'',
-      buyerBusinessName:'',
-      buyerAddress:'',
-      buyerCity:'',
-      buyerPhone:'',
-      buyerZip: '',
-      buyerState:'',
       buyingPrice:'',
       vehicleMiles:'',
       vehicleMake:'',
@@ -152,12 +26,28 @@ class PdfCreate extends Component {
       vehicleBodyType:'',
       vehicleYear:'',
       savedDealers:[],
+      country: 'AU',
+      disabled: false,
+      selectValue: 'new-south-wales',
+      clearable: true,
+      rtl: false,
+      savedDealers:[],
+      dealersInfo:[],
+      selectedDealer:[]
     };
+
+    this.submitValue = this.submitValue.bind(this)
   }
 
 
 
   componentDidMount(){
+    this.loadVehicleData();
+    this.getDealers();
+  }
+
+
+  loadVehicleData(){
     var theId = this.props.location.pathname.slice(5);
     API.getVehicle(theId)
     .then(res=>{
@@ -180,23 +70,64 @@ class PdfCreate extends Component {
     })
   }
 
+	
+	submitValue (e) {
+    console.log(this.state.selectValue);
+    if (this.state.selectValue === 'new-south-wales'){
+      alert('Please select Buyer')
+    } else {
+      var selectedDealerArray= []
+      var dataArray = this.state.dealersInfo.data;
+      dataArray.forEach((element,index)=>{
+        if (element.email === this.state.selectValue){
+         
+           var arrayvar = this.state.selectedDealer.slice()
+            arrayvar = [];
+              arrayvar.push(this.state.dealersInfo.data[index])
+              this.setState({ selectedDealer: arrayvar },()=>{this.createPdf()})
+        }
+       
+      })
+    }
+  } 
+  
+	switchCountry (e) {
+		var newCountry = e.target.value;
+		this.setState({
+			country: newCountry,
+			selectValue: null,
+		});
+  }
+  
+	updateValue (newValue) {
+		this.setState({
+			selectValue: newValue,
+		});
+  }
+    
+  getDealers(){
+    helpers.getSavedDealers()
+    .then((dealerData) => {
+      console.log(dealerData);
+      var newArray = []
+      for (var i = 0; i < dealerData.data.length; i += 1) {
+        var newObj = new Contact(dealerData.data[i].name, dealerData.data[i].email)
+        newArray.push(newObj);
+      }
+      this.setState({ 
+        savedDealers: newArray,
+        dealersInfo:dealerData
+      });
+    })
+    ;
+  }
+  // {}, window.open('/hello', '_blank'));
+createPdf() {
+  console.log("selected dealer is",this.state.selectedDealer);
+    pdfMake.createPdf(docDefinition).download();
+  }
 
 
-  // getDealers(){
-  //   helpers.getSavedDealers()
-  //   .then((dealerData) => {
-  //     var newArray = []
-  //     console.log(dealerData.data[0].name);
-  //     for (var i = 0; i < dealerData.data.length; i += 1) {
-  //       var newObj = new Contact(dealerData.data[i].name, dealerData.data[i].email)
-  //       newArray.push(newObj);
-  //     }
-  //     this.setState({ savedDealers: newArray});
-  //   })
-  //   ;
-  // }
-
-// retrieves selected contacts from contributors component
 handleRetrievedContacts(retrievedContacts) {
   var newStateArray = retrievedContacts.split(",")
   this.setState({selectedContacts: newStateArray })
@@ -204,12 +135,16 @@ handleRetrievedContacts(retrievedContacts) {
 
 
   render() {
+    if ( this.state.selectedDealer[0] != undefined){
+      var {address, zip, city, state, name, dealership, tel}=this.state.selectedDealer[0]
+    }
+  
     var {buyerName, buyerBusinessName, buyerAddress, buyerCity, buyerPhone,
     buyerZip, buyerState, buyingPrice, vehicleMiles, vehicleMake,
     vehicleModel, vehicleVin, vehicleColor, vehicleBodyType,
     vehicleYear} = this.state;
 //---------------------Start PDF Create--------------------------
-var docDefinition = {	content: [
+ docDefinition = {	content: [
   {
     text: 'Wholesale Order',
     style: 'header',
@@ -357,7 +292,7 @@ var docDefinition = {	content: [
                 body: [
                   [{border: [false, false, false,false],
                     fillColor: '#ffffff',
-                    text: 'CANAM AUTO',
+                    text: `${dealership}`,
                     // style:'formData',
                   }],
                 ]
@@ -375,7 +310,7 @@ var docDefinition = {	content: [
                 body: [
                   [{border: [false, false, false,false],
                     fillColor: '#ffffff',
-                    text: '4266 Dove Rd. Suite C',
+                    text: `${address}`,
                     // style:'formData',
                   }],
                 ]
@@ -392,7 +327,7 @@ var docDefinition = {	content: [
                 body: [
                   [{border: [false, false, false,false],
                     fillColor: '#ffffff',
-                    text: 'Port Hudson',
+                    text: `${city}`,
                     // style:'formData',
                   }],
                 ]
@@ -409,7 +344,7 @@ var docDefinition = {	content: [
                 body: [
                   [{border: [false, false, false,false],
                     fillColor: '#ffffff',
-                    text: '48060',
+                    text:`${zip}`,
                     // style:'formData',
                   }],
                 ]
@@ -426,7 +361,7 @@ var docDefinition = {	content: [
                 body: [
                   [{border: [false, false, false,false],
                     fillColor: '#ffffff',
-                    text: 'MI',
+                    text: `${state}`,
                     // style:'formData',
                   }],
                 ]
@@ -443,7 +378,7 @@ var docDefinition = {	content: [
                 body: [
                   [{border: [false, false, false,false],
                     fillColor: '#ffffff',
-                    text: '407-399-0044',
+                    text: `${tel}`,
                     // style:'formData',
                   }],
                 ]
@@ -722,7 +657,7 @@ var docDefinition = {	content: [
                   body: [
                     [{border: [false, false, false,false],
                       fillColor: '#ffffff',
-                      text: '4266 Dove Rd. Suite C',
+                      text: `${address}`,
                       // style:'formData',
                     }],
                   ]
@@ -739,7 +674,7 @@ var docDefinition = {	content: [
                   body: [
                     [{border: [false, false, false,false],
                       fillColor: '#ffffff',
-                      text: 'Port Hudson',
+                      text: `${city}`,
                       // style:'formData',
                     }],
                   ]
@@ -756,7 +691,7 @@ var docDefinition = {	content: [
                   body: [
                     [{border: [false, false, false,false],
                       fillColor: '#ffffff',
-                      text: '48060',
+                      text: `${zip}`,
                       // style:'formData',
                     }],
                   ]
@@ -773,7 +708,7 @@ var docDefinition = {	content: [
                   body: [
                     [{border: [false, false, false,false],
                       fillColor: '#ffffff',
-                      text: 'MI',
+                      text: `${state}`,
                       // style:'formData',
                     }],
                   ]
@@ -837,18 +772,35 @@ styles: { tableHeader: {
 
 
 
-    function createPdf() {
-      pdfMake.createPdf(docDefinition).open({}, window.open('/hello', '_blank'));
-      // pdfMake.createPdf(docDefinition).download();
-    }
+ 
 
    
-
-    
+console.log(this.state.selectedDealer);
+var options = this.state.savedDealers;
     return (
       <div>
-       <StatesField />
-      <button type="button" onClick={()=>createPdf()}>Download</button>
+       <div className="section">
+				<h3 className="section-heading">Select Buyer</h3>
+				<Select
+					id="state-select"
+					ref={(ref) => { this.select = ref; }}
+					onBlurResetsInput={false}
+					onSelectResetsInput={false}
+					autoFocus
+					options={options}
+					simpleValue
+					clearable={this.state.clearable}
+					name="selected-state"
+					disabled={this.state.disabled}
+					value={this.state.selectValue}
+					onChange={this.updateValue.bind(this)}
+					rtl={this.state.rtl}
+					searchable={this.state.searchable}
+				/>
+				{/* <button style={{ marginTop: '15px' }} type="button" onClick={this.focusStateSelect}>Focus Select</button> */}
+				<button style={{ marginTop: '15px' }} type="button" className="btn btn-primary" onClick={this.submitValue}>PRINT BILL OF SALE</button>
+			</div>
+      {/* <button type="button" onClick={()=>createPdf()}>Download</button> */}
       </div>
     );
   }
