@@ -43,7 +43,7 @@ const AutoEntrySchema = new Schema({
   vinConfirmed:{type:Boolean,default:false}, 
   inMarketCart:{type:Boolean,default:false},
   photoArray: [String],
-
+  buyer:{type: mongoose.Schema.Types.ObjectId, ref: 'dealerEntry'},
   date: { type: Date, default: Date.now }
 
 });

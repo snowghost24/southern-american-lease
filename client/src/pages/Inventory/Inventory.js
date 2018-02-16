@@ -34,6 +34,10 @@ class Inventory extends Component {
      email:"", 
      dealership:"",
      tel:"",
+     address:"",
+     city:"",
+     state:"",
+     zip:""
   }
 
 
@@ -231,13 +235,16 @@ class Inventory extends Component {
     var email = this.state.email;
     var dealership = this.state.dealership;
     var tel = this.state.tel;
-    var url = this.state.url;
-    var dealerEntryData = {name,email,dealership,tel,url}
+    var address = this.state.address;
+    var city = this.state.city;
+    var state = this.state.state;
+    var zip = this.state.zip;
+    var dealerEntryData = {name,email,dealership,tel,address,city,state,zip}
     console.log(dealerEntryData);
     helpers.enterDealerHelper(dealerEntryData)
     .then(res=>{
       console.log("im back and here is the response",res);
-      this.setState({name:"",email:"",dealership:"",tel:"",url:""}, ()=>{console.log(this.state);})
+      this.setState({name:"",email:"",dealership:"",tel:"",address:"",city:"",state:"",zip:""}, ()=>{console.log(this.state);})
       this.getDealers();
       if (res.data._id){
         swal({
@@ -284,9 +291,6 @@ renderDealerForm(){
           </div>
         </label>
       </div>
-      {/* <div className="form-group row">
-               
-                  </div> */}
       <div className="form-group row">
         <label className="col-2 col-form-label">  Email
                         <div className="col-10">
@@ -296,6 +300,30 @@ renderDealerForm(){
         <label className="col-2 col-form-label"> Telephone
                         <div className="col-10">
             <input className="form-control" name="tel" type="tel" value={this.state.tel} onChange={this.handleDealerChange.bind(this)} data-fv-numeric="true" data-fv-numeric-message="Please enter valid phone numbers" />
+          </div>
+        </label>
+      </div>
+      <div className="form-group row">
+        <label className="col-2 col-form-label">  Address
+                        <div className="col-10">
+            <input className="form-control" name="address" type="string" required="required" value={this.state.address} onChange={this.handleDealerChange.bind(this)} />
+          </div>
+        </label>
+        <label className="col-2 col-form-label"> City
+                        <div className="col-10">
+            <input className="form-control" name="city" type="string" value={this.state.city} onChange={this.handleDealerChange.bind(this)} />
+          </div>
+        </label>
+      </div>
+      <div className="form-group row">
+        <label className="col-2 col-form-label">  State
+                        <div className="col-10">
+            <input className="form-control" name="state" type="string" required="required" value={this.state.state} onChange={this.handleDealerChange.bind(this)} />
+          </div>
+        </label>
+        <label className="col-2 col-form-label"> Zip
+                        <div className="col-10">
+            <input className="form-control" name="zip" type="tel" value={this.state.zip} onChange={this.handleDealerChange.bind(this)}  />
           </div>
         </label>
       </div>
