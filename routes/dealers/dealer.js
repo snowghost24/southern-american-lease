@@ -3,6 +3,7 @@ const router = require("express").Router();
 const DealerEntry = require("../../models/dealers/dealer");
 'use strict';
 require('dotenv').config()
+const mongoose = require("mongoose");
 // brings back all updated values
 // {new: true}r
 // updates value if they dont exist
@@ -25,7 +26,18 @@ router.route("/")
   // handles entering dealers into a database from Helpers func:enterDealerHelper
   .post(function (req, res) {
     console.log(req.body);
-    var newDealerEntry = new DealerEntry(req.body);
+  
+    var newDealerEntry = new DealerEntry({ 
+      _id: new mongoose.Types.ObjectId(),
+      name: req.body.name,
+      email: req.body.email,
+      dealership:req.body.dealership,
+      tel:req.body.tel,
+      address:req.body.address,
+      city:req.body.city,
+      state:req.body.state,
+      zip:req.body.zip
+     });
     newDealerEntry.save(function (err, doc) {
       if (err) {
         //note sure whey the error had to be inside error

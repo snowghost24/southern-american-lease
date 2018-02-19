@@ -568,3 +568,44 @@ const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dcv191fk7/upload'
 //     }
 //   }
 // }
+
+
+
+
+renderFeatureItem1 = () => {
+  if (this.state.vehicle.feature !== undefined){
+    return this.state.vehicle.feature.map((aFeature, index) => {
+     if (0 < index < 8){
+      return (
+        <Col>
+        <div  key={index} >
+         <span className="check"> ☑ </span>{aFeature} 
+        </div>
+        </Col>
+      );
+     } else if (8 < index < 16){
+      return (
+        <Col size="md-3">
+        <div  key={index} >
+         <span className="check"> ☑ </span>{aFeature} 
+        </div>
+        </Col>
+      );
+     }else if (16 < index < 24){
+      return (
+        <Col size="md-3">
+        <div  key={index} >
+         <span className="check"> ☑ </span>{aFeature} 
+        </div>
+        </Col>
+      );
+     }else if (24 < index < 32){
+      return (
+        <Col size="md-3">
+        <div  key={index} >
+         <span className="check"> ☑ </span>{aFeature} 
+        </div>
+        </Col>
+      );
+     }
+    }}

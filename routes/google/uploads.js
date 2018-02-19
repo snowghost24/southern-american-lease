@@ -51,7 +51,7 @@ router.route("/").post(multer.single('file'), (req, res, next) => {
           blob.makePublic().then(() => {
             var changes = {photoArray:publicUrl}
 
-            AutoEntry.findOneAndUpdate({ vin:theOriginalVin }, { $push: changes }, { upsert: true, new: true })
+            AutoEntry.findOneAndUpdate({ vin:theOriginalVin }, { $push: changes }, {new: true })
             .then((dbModel) => {
               console.log("confirmed true model", dbModel);
               res.send(dbModel)
@@ -76,7 +76,7 @@ storage
     .delete()
     .then(() => {
       var changes = {photoArray:deleteLink}
-      AutoEntry.findOneAndUpdate({ vin:theOriginalVin }, { $pull: changes }, { upsert: true, new: true })
+      AutoEntry.findOneAndUpdate({ vin:theOriginalVin }, { $pull: changes }, { new: true })
       .then((dbModel) => {
         console.log("confirmed true model", dbModel);
         res.send(dbModel)

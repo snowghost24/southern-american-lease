@@ -12,3 +12,94 @@
   color:red;
   font-size: 20px;
 }
+
+.check{
+  font-size: 20px;
+}
+
+/* controls the css for dropdown features in client detail */
+.custom-drop{
+  /* background-color: aliceblue; */
+  background-color: #ffffff;
+  color: #337ab7;
+}
+
+/* .border-css{
+ 
+  padding: 14px;
+  border:#337ab7 3px solid;
+} */
+
+.carousel-spacing{
+padding:7px;
+}
+
+
+.navButtons {
+  color: #337ab7;
+  text-decoration: none;
+  display: inline-block;
+    padding: 5px 14px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+}
+
+.veh-info-key{
+
+}
+
+@media (min-width: 769px) {
+  .search-form {
+    width: 422px;
+  }
+}
+
+.Complete{
+  background-color: rgb(67, 170, 67);
+  /* background-color: rgb(36, 49, 163); */
+  color: aliceblue;
+  border-radius: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.Pending{
+  background-color: #fec42d;
+  color: aliceblue;
+  border-radius: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.Processing{
+  background-color:#009df6;
+  color: aliceblue;
+  border-radius: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.vinImage{
+  border-color: red;
+}
+
+
+/* if the screen is below 768 px show this way */
+/* show this way up to 768 px */
+/* @media (max-width: 599px) {
+
+
+/* if the screen is between 768 and 992 px show this way */
+/* 
+@media (min-width: 600px) and (max-width: 992px) {
+
+}
+
+@media (min-width: 600px) and (max-width: 992px) {
+
+}
+
+@media (min-width: 993px) and (max-width: 1200) {
+
+}  */

@@ -41,7 +41,10 @@ getMarketingData(){
   helpers.getSavedMarketing()
   .then((articleData) => {
     this.setState({ savedArticles: articleData.data });
-  }).catch(err=>{console.log(err);})
+  }).catch(err=>{
+    
+    console.log(err)
+    ;})
 }
 
 

@@ -23,3 +23,65 @@
 .center-text{
   text-align:center;
 }
+
+.custom-drop{
+  /* background-color: aliceblue; */
+  background-color: #ffffff;
+  color: #337ab7;
+}
+/* 
+.border-css{
+ 
+  padding: 14px;
+  border:#337ab7 3px solid;
+} */
+
+.carousel-spacing{
+padding:7px;
+}
+
+
+.navButtons {
+  color: #337ab7;
+  text-decoration: none;
+  display: inline-block;
+    padding: 5px 14px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+}
+@media (min-width: 769px){
+  .border-css{
+    padding: 14px;
+    border:#337ab7 3px solid;
+  }
+}
+
+@media (min-width: 400px) and (max-width: 599px) {
+  .veh-info-Key{
+    font-size:100%;
+  }
+}
+@media (min-width: 600px) and (max-width: 768px) {
+  .veh-info-Key{
+    font-size:90%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+  .veh-info-Key{
+    font-size:95%;
+  }
+
+  /* .border-css{
+    padding: 10px;
+    border:#337ab7 3px solid;
+  } */
+}
+
+@media (min-width: 993px) and (max-width: 1900) {
+  .veh-info-Key{
+    font-size:100%;
+  }
+
+}

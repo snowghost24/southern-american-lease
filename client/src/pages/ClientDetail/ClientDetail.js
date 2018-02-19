@@ -6,8 +6,8 @@ import { Input, TextArea } from "../../components/Form";
 import FileUploader from "../../components/FileUploader/FileUploader";
 import AutoDetailsForm from "../../components/AutoDetailsForm/AutoDetailsForm";
 import { Carousel } from 'react-bootstrap';
+// import "./clientDetail.css";
 import "./clientDetail.css";
-// import "./details.css";
 
 class ControlledCarousel extends React.Component {
   constructor(props, context) {
@@ -135,54 +135,93 @@ goToPrev(){
  console.log(this.props.history);
 }
 
+renderFeatureItem = () => {
+  if (this.state.vehicle.feature !== undefined){
+    return this.state.vehicle.feature.map((aFeature, index) => {
+      return (
+        <Col size="sm-6 md-3">
+        <div  key={index} >
+         <span className="check"> ☑ </span>{aFeature} 
+        </div>
+        </Col>
+      );
+    });
+  }
+}
   render() {
-    console.log("state from detail", this.state);
+    console.log("state from detail", this.state.vehicle.feature);
     return (
       <Container fluid>
         <Row>
-          <Col size="md-2 md-offset-3 ">
-            <button type="button" className="btn btn-danger center-block" onClick={this.goToPrev.bind(this)}>Prev Vehicle<i className="far fa-arrow-alt-circle-left"></i></button>
+          <Col size="xs-4 md-4">
+            <button type="button" className="navButtons center-bloc pull-right" onClick={this.goToPrev.bind(this)}>Prev Vehicle<i className="far fa-arrow-alt-circle-left"></i></button>
           </Col>
-          <Col size="md-2">
+          <Col size="xs-4 md-4">
             <h3 className="center-text">{this.state.numbVehicle}/{this.state.inventoryLength}</h3>
           </Col>
-          <Col size="md-2">
-            <button type="button" className="btn btn-danger center-block" onClick={this.goToNext.bind(this)}>Next Vehicle</button>
+          <Col size="xs-4 md-4">
+            <button type="button" className="navButtons center-block" onClick={this.goToNext.bind(this)}>Next Vehicle</button>
           </Col>
         </Row>
 
         <Row>
-          <Col size="md-12">
-            <h3>Vehicle Information</h3><hr />
-            <Col size="md-4">
-              <p><strong>VIN:</strong> {this.state.vehicle.vin}</p>
-              <p><strong>Make:</strong>{this.state.vehicle.make}</p>
-              <p><strong>Model:</strong>{this.state.vehicle.model}</p>
-              <p><strong>Year:</strong>{this.state.vehicle.year}</p>
+            <h4 style={{fontSize:24}}>Vehicle Information</h4><hr />
+            <Col size=" sm-6 md-3">
+              <p className="veh-info-Key"><strong>VIN:</strong> {this.state.vehicle.vin}</p>
+              <p className="veh-info-Key"><strong>Make:</strong> {this.state.vehicle.make}</p>
+              <p className="veh-info-Key"><strong>Model:</strong> {this.state.vehicle.model}</p>
+            
             </Col >
 
-            <Col size="md-4">
-              <p><strong>Trim:</strong> {this.state.vehicle.trim}</p>
-              <p><strong>Miles:</strong>{this.state.vehicle.miles}</p>
-              <p><strong>Asking Price:</strong>{this.state.vehicle.price}</p>
-              <p><strong>Doors:</strong>{this.state.vehicle.doors}</p>
-              <p><strong>Body Type:</strong>{this.state.vehicle.bodyCabType}</p>
+            <Col size="sm-6 md-3">
+            <p className="veh-info-Key"><strong>Year:</strong> {this.state.vehicle.year}</p>
+              <p className="veh-info-Key"><strong>Trim:</strong> {this.state.vehicle.trim}</p>
+              <p className="veh-info-Key"><strong>Miles:</strong> {this.state.vehicle.miles}</p>
+             
             </Col >
 
-            <Col size="md-4">
-              <p><strong>Drivetrain:</strong> {this.state.vehicle.drivetrain}</p>
-              <p><strong>Lift Details:</strong>{this.state.vehicle.liftdetails}</p>
-              <p><strong>Fuel Type:</strong>{this.state.vehicle.fuelType}</p>
-              <p><strong>Key Features:</strong>{this.state.vehicle.keyfeatures}</p>
+            <Col size=" sm-6 md-3">
+            <p className="veh-info-Key"><strong>Asking Price:</strong> {this.state.vehicle.price}</p>
+              <p className="veh-info-Key"><strong>Doors:</strong> {this.state.vehicle.doors}</p>
+              <p className="veh-info-Key"><strong>Body Type:</strong> {this.state.vehicle.bodyCabType}</p>
             </Col >
-          </Col>
+            <Col size="sm-6 md-3">
+            <p className="veh-info-Key"><strong>Drivetrain:</strong> {this.state.vehicle.drivetrain}</p>
+              <p className="veh-info-Key"><strong>Lift Details:</strong> {this.state.vehicle.liftdetails}</p>
+              <p className="veh-info-Key"><strong>Fuel Type:</strong> {this.state.vehicle.fuelType}</p>
+              <p className="veh-info-Key"><strong>Key Features:</strong> {this.state.vehicle.keyfeatures}</p>
+          
+            </Col >
         </Row>
+        <Row>
+        <div className="container">
+ <Row>
+   <Col size="sm-4 sm-offset-4" >
+   <button type="button" className="btn dropdown-toggle custom-drop" data-toggle="collapse" data-target="#demo" style={{marginTop:20, fontSize:20}}>Click To See More Features <span className="caret"></span></button>
+   </Col>
+   </Row>
+  
+  <div id="demo" className="collapse">
+  <Row>
+   <h4>List of Features</h4>
+  {this.renderFeatureItem() }
+  </Row>
+  </div>
+</div>
+          </Row>
        
         <Row>
-          <Col size="md-10 md-offset-1">
-            <ControlledCarousel thePhotosUrls={this.state.vehicle.photoArray} />
+     <div className="carousel-spacing">
+          <Col size="md-10 md-offset-1 "  >
+          <div className="border-css">
+            <ControlledCarousel thePhotosUrls={this.state.vehicle.photoArray} className="border-css"/>
+            </div>
           </Col>
+          </div>
+       
         </Row>
+        <hr/>
+
         <Row>
           <hr/>
           <Col size="md-2">

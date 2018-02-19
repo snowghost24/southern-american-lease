@@ -56,7 +56,7 @@ module.exports = {
     var changes = req.body.newChanges
     console.log(changes);
     console.log("we made it to update");
-    AutoEntry.findOneAndUpdate({ _id: req.params.id, leatherHide:false }, {$set:changes},{upsert:true})
+    AutoEntry.findOneAndUpdate({ _id: req.params.id, leatherHide:false }, {$set:changes})
       .then((dbModel) => {
         console.log("the model is", dbModel );
         res.send(dbModel)})
@@ -64,7 +64,7 @@ module.exports = {
   },
   hide: function(req, res) {
     var changes = {leatherHide:true}
-    AutoEntry.findOneAndUpdate({ _id: req.params.id }, {$set:changes},{upsert:true})
+    AutoEntry.findOneAndUpdate({ _id: req.params.id }, {$set:changes})
     .then((dbModel) => {
       console.log("the model is", dbModel );
       res.send(dbModel)})

@@ -4,6 +4,7 @@ import API from "../../utils/API";
 import Constributors from "../../components/Constributors/Constributors";
 import helpers from "../../utils/helpers";
 import Select from 'react-select';
+import swal from 'sweetalert';
 var pdfMake = require('pdfmake/build/pdfmake.js')
 var pdfFonts = require('pdfmake/build/vfs_fonts.js');
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -46,27 +47,55 @@ class PdfCreate extends Component {
     this.getDealers();
   }
 
+  renderRedirect = () => {
+    var path = "/"
+    this.props.history.push(path)
+  }
+
+
 
   loadVehicleData(){
     var theId = this.props.location.pathname.slice(5);
     API.getVehicle(theId)
     .then(res=>{
-      var miles =res.data.miles.toString()
+      console.log("getting vehicle data", res);
+      if (res.data.miles !== undefined || res.data.miles !== null ){
+        this.setState({
+          buyingPrice:res.data.price,
+          vehicleMake:res.data.make,
+          vehicleModel:res.data.model,
+          vehicleVin:res.data.vin,
+          vehicleColor:res.data.color,
+          vehicleBodyType:res.data.bodyCabType,
+          vehicleYear:res.data.year
+          },()=>{console.log("the state is",this.state);})
+      } else  {
+  
+       
+
+        var miles =res.data.miles.toString()
+  
+        this.setState({
+          buyingPrice:res.data.price,
+          vehicleMiles:miles,
+          vehicleMake:res.data.make,
+          vehicleModel:res.data.model,
+          vehicleVin:res.data.vin,
+          vehicleColor:res.data.color,
+          vehicleBodyType:res.data.bodyCabType,
+          vehicleYear:res.data.year
+          },()=>{console.log("the state is",this.state);})
+
+      }
      
-      this.setState({
-      buyingPrice:res.data.price,
-      vehicleMiles:miles,
-      vehicleMake:res.data.make,
-      vehicleModel:res.data.model,
-      vehicleVin:res.data.vin,
-      vehicleColor:res.data.color,
-      vehicleBodyType:res.data.bodyCabType,
-      vehicleYear:res.data.year
-      })
-      console.log(res);
+   
     })
     .catch(err=>{
-      console.log(err);
+      if (err == "TypeError: Cannot read property 'data' of undefined"){
+        this.renderRedirect();
+      }
+      console.log("this is the error", err);
+    
     })
   }
 
@@ -86,7 +115,6 @@ class PdfCreate extends Component {
               arrayvar.push(this.state.dealersInfo.data[index])
               this.setState({ selectedDealer: arrayvar },()=>{this.createPdf()})
         }
-       
       })
     }
   } 
@@ -123,8 +151,15 @@ class PdfCreate extends Component {
   }
   // {}, window.open('/hello', '_blank'));
 createPdf() {
-  console.log("selected dealer is",this.state.selectedDealer);
-    pdfMake.createPdf(docDefinition).download();
+  console.log("the vin is",this.state);
+  // console.log("selected dealer is",this.state.selectedDealer[0]['_id']);
+  API.setBuyerHandler(this.state.vehicleVin,this.state.selectedDealer[0]['_id']).then(res =>{ console.log("the response model is",res);
+    // if (res.data.buyer !== undefined){
+    //   console.log(res.data.buyer);    }
+// pdfMake.createPdf(docDefinition).download();
+
+  }).catch(err=>{console.log(err);})
+    
   }
 
 

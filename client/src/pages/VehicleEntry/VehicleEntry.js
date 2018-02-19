@@ -215,8 +215,8 @@ class VehicleEntry extends Component {
          
       } else {
         swal({
-          title: "Vehicle entered Successfully!",
-          text: "Find it inventory!",
+          title: "Auto added Successfully. See inventory!",
+          text: "reminder:upload image of vin for acccuracy",
           icon: "success",
           button: "close!",
         }); 
@@ -225,22 +225,6 @@ class VehicleEntry extends Component {
     })
     
 }
-    //  .then(res=>{
-
-    //    // Do NOt change this line
-    //   if (res.data === "duplicate vehicle entry") {
-    //     // console.log(" there is a duplicate entry");
-
-         
-    //   } else {
-    //     // if data_id is true alert vehicle was entered sucessfully
-
-      
-    //   }
-    // })
- 
-
-
 
 
 
@@ -263,22 +247,46 @@ handleBlur = (lowerData) => {
 getVehicleDataFromAPI (theVin) {
   helpers.vinSearchNHTSAHelper(theVin)
   .then(res=>{
-   var vin = res.data[0]["vin"]
-   var make = res.data[1]["make"].trim().toUpperCase();
-   var model = res.data[2]["model"].trim().toUpperCase();
-   var year = res.data[3]["year"].trim().toUpperCase();
-   var lastsix = res.data[4]['lastsix']
-   var series = res.data[5]['series'];
-   var bodyCabType = res.data[6]['bodyCabType'];
-   var bodyClass = res.data[7]['bodyClass'];
-   var trim = res.data[8]['trim'];
-   var drivetrain = res.data[9]['driveType'];
-   var doors = res.data[10]['doors'];
-   var fuelType =res.data[11]['fuelType'];
-   this.setState({vin, make, model, model, year, lastsix, series, bodyCabType, bodyClass, trim, drivetrain, doors, fuelType })
+    if (res.data === "No results found for this vin"){
+      console.log("Bad results from api");
+    } else {
+      var vin = res.data[0]["vin"]
+      var make = res.data[1]["make"].trim().toUpperCase();
+      var model = res.data[2]["model"].trim().toUpperCase();
+      var year = res.data[3]["year"].trim().toUpperCase();
+      var lastsix = res.data[4]['lastsix']
+      var series = res.data[5]['series'];
+      var bodyCabType = res.data[6]['bodyCabType'];
+      var bodyClass = res.data[7]['bodyClass'];
+      var trim = res.data[8]['trim'];
+      var drivetrain = res.data[9]['driveType'];
+      var doors = res.data[10]['doors'];
+      var fuelType =res.data[11]['fuelType'];
+      this.setState({vin, make, model, model, year, lastsix, series, bodyCabType, bodyClass, trim, drivetrain, doors, fuelType })
+    }
+
   })
   .catch(err=>{
-    console.log(err);
+    var vin = "";
+    var make = "";
+    var model = "";
+    var year = "";
+    var lastsix = "";
+    var series = "";
+    var bodyCabType = "";
+    var bodyClass = "";
+    var trim = "";
+    var drivetrain = "";
+    var doors = "";
+    var fuelType = "";
+    this.setState({vin, make, model, model, year, lastsix, series, bodyCabType, bodyClass, trim, drivetrain, doors, fuelType }) 
+    swal({
+      title: "VIN NOT FOUND BY API!",
+text: "check vin number!",
+icon: "warning",
+button: "close!",
+    });  
+  
   })
 }
 

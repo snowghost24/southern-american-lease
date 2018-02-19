@@ -83,7 +83,7 @@ module.exports = {
         resultValues.push({ driveType: driveType });
         resultValues.push({ doors: doors });
         resultValues.push({ fuelType: fuelType });
-        console.log(resultValues);
+        // console.log(resultValues);
         //sends the response back to the client
         next(res.send(resultValues))
       }

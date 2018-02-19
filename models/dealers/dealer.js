@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const DealerEntrySchema = new Schema({
+  _id: Schema.Types.ObjectId,
   email: { type: String, unique : true, required: true },
   name: { type: String, required: true },
   dealership:{ type: String, required: true },
@@ -10,7 +11,6 @@ const DealerEntrySchema = new Schema({
   state:{ type: String, required: true },
   zip:{ type: Number, required: true },
   tel: { type: String },
-
 });
 
 const DealerEntry = mongoose.model("dealerEntry", DealerEntrySchema);

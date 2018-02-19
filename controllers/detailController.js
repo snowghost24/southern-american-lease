@@ -22,7 +22,7 @@ module.exports = {
     //   .then(dbModel => res.json(dbModel))
     //   .catch(err => res.status(422).json(err));
   },
-  // create: function(req, res, next) {
+ 
   bringBackDetail: function(req, res) {
     var vin = req.body.vin.length;
     if (vin === 6){
@@ -43,37 +43,21 @@ module.exports = {
            res.send(dbModel)})
          .catch(err => res.status(422).json(err));
     }
-    // AutoEntry.findOneAndUpdate({ vin: req.params.id, detailHide:false }, {$set:changes},{upsert:true})
-    // .then((dbModel) => {
-    //   console.log("the model is", dbModel );
-    //   res.send(dbModel)})
-    // .catch(err => res.status(422).json(err));
 
   },
   update: function(req, res) {
-    // console.log("update id",req.params.id);
-    // console.log("update body", req.body.theNewColor.leathercolor);
     var changes = req.body.newChanges
-    console.log(changes);
-    console.log("we made it to update");
-    AutoEntry.findOneAndUpdate({ _id: req.params.id, detailHide:false }, {$set:changes},{upsert:true})
+    AutoEntry.findOneAndUpdate({ _id: req.params.id, detailHide:false }, {$set:changes})
       .then((dbModel) => {
-        console.log("the model is", dbModel );
         res.send(dbModel)})
       .catch(err => res.status(422).json(err));
   },
   hide: function(req, res) {
     var changes = {detailHide:true}
-    AutoEntry.findOneAndUpdate({ _id: req.params.id }, {$set:changes},{upsert:true})
+    AutoEntry.findOneAndUpdate({ _id: req.params.id }, {$set:changes})
     .then((dbModel) => {
-      console.log("the model is", dbModel );
       res.send(dbModel)})
     .catch(err => res.status(422).json(err));
- 
-    // AutoEntry.findById({ _id: req.params.id })
-    //   .then(dbModel => dbModel.remove())
-    //   .then(dbModel => res.json(dbModel))
-    //   .catch(err => res.status(422).json(err));
   }
 };
 

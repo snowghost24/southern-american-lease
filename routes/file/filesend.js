@@ -35,7 +35,7 @@ router.route("/").post(function (req, res) {
       if (foundCheck === true) {
         //database updates if true
         var changes = { vinImage: req.body.theUrl, vinConfirmed: true }
-        AutoEntry.findOneAndUpdate({ vin: req.body.theVin }, { $set: changes }, { upsert: true, new: true })
+        AutoEntry.findOneAndUpdate({ vin: req.body.theVin }, { $set: changes }, { new: true })
           .then((dbModel) => {
             console.log("confirmed true model", dbModel);
             res.send(dbModel)
@@ -45,7 +45,7 @@ router.route("/").post(function (req, res) {
       } else {
         //database updates if false
         var changes = { vinImage: req.body.theUrl, vinConfirmed: false }
-        AutoEntry.findOneAndUpdate({ vin: req.body.theVin }, { $set: changes }, { upsert: true, new: true })
+        AutoEntry.findOneAndUpdate({ vin: req.body.theVin }, { $set: changes }, { new: true })
           .then((dbModel) => {
             console.log("confirmed false model", dbModel);
             res.send(dbModel)

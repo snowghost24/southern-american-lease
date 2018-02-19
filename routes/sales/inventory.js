@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const  AutoEntry = require("../../models/autos/auto");
+var mongoose = require('mongoose');
+
 // const cloudinary = require('cloudinary');
 // const vision = require('@google-cloud/vision');
 //retrieves credentials stored in a json file
@@ -35,7 +37,7 @@ router.route("/").post(function (req, res) {
 var id = req.body._id;
 var theFeature = req.body.feature;
 var changes = {feature:theFeature}
-  AutoEntry.findOneAndUpdate({ _id:id }, { $push: changes }, { upsert: true, new: true })
+  AutoEntry.findOneAndUpdate({ _id:id }, { $push: changes }, { new: true })
   .then((dbModel) => {
     res.send(dbModel)
   })
@@ -50,7 +52,7 @@ router.route("/").get(function (req, res) {
   var deleteFeature = req.query.deleteFeature;
   var theId = req.query.theId;
   var changes = { feature: deleteFeature }
-  AutoEntry.findOneAndUpdate({ _id: theId }, { $pull: changes }, { upsert: true, new: true })
+  AutoEntry.findOneAndUpdate({ _id: theId }, { $pull: changes }, {new: true })
     .then((dbModel) => {
       console.log(dbModel);
       res.send(dbModel)
@@ -58,7 +60,26 @@ router.route("/").get(function (req, res) {
     .catch(err => res.status(422).json(err));
 })
 
-
+router.route("/:id").post(function (req, res) {
+  var id = req.body._id;
+  var vin = req.body.vin;
+console.log(id);
+console.log(vin);
+//   var changes = {buyer:id}
+//     AutoEntry.findOneAndUpdate({ vin:vin}, { changes }, { new: true })
+//     .populate('dealerEntry')
+//     .exec(function (err, dbModel) {
+//       if (err) {console.log(err);};
+//       console.log("the model is",dbModel);
+// res.send(dbModel)});
+    
+    // .exec
+    // .then((dbModel) => {
+    //   console.log(dbModel);
+    //   res.send(dbModel)
+    // })
+    // .catch(err => res.status(422).json(err));
+  })
 
 // //1. retrieves values submmited thorugh axios and changes values in database
 // //2. if err clg err else detroy the image from axios

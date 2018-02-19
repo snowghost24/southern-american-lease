@@ -6,7 +6,6 @@ export default {
   getVehicle: function(id) {
     return axios.get("/api/booking/books/" + id)
     .then(function (results) {
-      // console.log("API getVehicle results", results);
       return results;
     }).catch(function (error) {
       console.log(error);
@@ -215,6 +214,18 @@ deleteFeature: deleteFeature,
 },addFeatureFunctionHandler:function(feature,id) {
     return axios.post("/sales/inventory", {
       feature:feature,
+      _id:id
+    })
+      .then(function (results) {
+        return results;
+      }).catch(function (error) {
+        console.log(error);
+      });
+    
+  },setBuyerHandler:function(vin,id) {
+    console.log("id in handler",id);
+    return axios.post("/sales/inventory/" + id, {
+      vin:vin,
       _id:id
     })
       .then(function (results) {
