@@ -5,6 +5,8 @@ import Constributors from "../../components/Constributors/Constributors";
 import helpers from "../../utils/helpers";
 import Select from 'react-select';
 import swal from 'sweetalert';
+import { Link } from "react-router-dom";
+import { Col, Row, Container } from "../../components/Grid";
 var pdfMake = require('pdfmake/build/pdfmake.js')
 var pdfFonts = require('pdfmake/build/vfs_fonts.js');
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -34,7 +36,8 @@ class PdfCreate extends Component {
       rtl: false,
       savedDealers:[],
       dealersInfo:[],
-      selectedDealer:[]
+      selectedDealer:[],
+      id:""
     };
 
     this.submitValue = this.submitValue.bind(this)
@@ -67,14 +70,11 @@ class PdfCreate extends Component {
           vehicleVin:res.data.vin,
           vehicleColor:res.data.color,
           vehicleBodyType:res.data.bodyCabType,
-          vehicleYear:res.data.year
+          vehicleYear:res.data.year,
+          id:res.data._id
           },()=>{console.log("the state is",this.state);})
       } else  {
-  
-       
-
         var miles =res.data.miles.toString()
-  
         this.setState({
           buyingPrice:res.data.price,
           vehicleMiles:miles,
@@ -83,12 +83,10 @@ class PdfCreate extends Component {
           vehicleVin:res.data.vin,
           vehicleColor:res.data.color,
           vehicleBodyType:res.data.bodyCabType,
-          vehicleYear:res.data.year
+          vehicleYear:res.data.year,
+          id:res.data._id
           },()=>{console.log("the state is",this.state);})
-
       }
-     
-   
     })
     .catch(err=>{
       if (err == "TypeError: Cannot read property 'data' of undefined"){
@@ -151,16 +149,23 @@ class PdfCreate extends Component {
   }
   // {}, window.open('/hello', '_blank'));
 createPdf() {
-  console.log("the vin is",this.state);
+  console.log("the vin is",this.state.vehicleVin);
   // console.log("selected dealer is",this.state.selectedDealer[0]['_id']);
-  API.setBuyerHandler(this.state.vehicleVin,this.state.selectedDealer[0]['_id']).then(res =>{ console.log("the response model is",res);
-    // if (res.data.buyer !== undefined){
-    //   console.log(res.data.buyer);    }
-// pdfMake.createPdf(docDefinition).download();
+  API.setBuyerHandler(this.state.vehicleVin,this.state.selectedDealer[0]['_id'])
+  .then(res =>{ 
+    console.log("the response model is",res);
+       if (res.data.buyer !== undefined){
+         console.log("the buyer is",res.data.buyer);
+        }
+pdfMake.createPdf(docDefinition).download();
 
-  }).catch(err=>{console.log(err);})
+}
+
+).catch(err=>{console.log(err);})
     
-  }
+}
+ 
+
 
 
 handleRetrievedContacts(retrievedContacts) {
@@ -815,7 +820,7 @@ var options = this.state.savedDealers;
     return (
       <div>
        <div className="section">
-				<h3 className="section-heading">Select Buyer</h3>
+				<h3 className="section-heading">Select Buyer (on print dealer will be saved as buyer)</h3>
 				<Select
 					id="state-select"
 					ref={(ref) => { this.select = ref; }}
@@ -835,6 +840,12 @@ var options = this.state.savedDealers;
 				{/* <button style={{ marginTop: '15px' }} type="button" onClick={this.focusStateSelect}>Focus Select</button> */}
 				<button style={{ marginTop: '15px' }} type="button" className="btn btn-primary" onClick={this.submitValue}>PRINT BILL OF SALE</button>
 			</div>
+      <Row>
+      <Col size="md-2">
+            {/* This link is to sell vehicle page */}
+            <Link to={"/books/" + this.state.id}>Back to Inventory</Link>
+          </Col>
+          </Row>
       {/* <button type="button" onClick={()=>createPdf()}>Download</button> */}
       </div>
     );

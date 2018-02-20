@@ -63,22 +63,17 @@ router.route("/").get(function (req, res) {
 router.route("/:id").post(function (req, res) {
   var id = req.body._id;
   var vin = req.body.vin;
-console.log(id);
-console.log(vin);
-//   var changes = {buyer:id}
-//     AutoEntry.findOneAndUpdate({ vin:vin}, { changes }, { new: true })
-//     .populate('dealerEntry')
-//     .exec(function (err, dbModel) {
-//       if (err) {console.log(err);};
-//       console.log("the model is",dbModel);
-// res.send(dbModel)});
-    
-    // .exec
-    // .then((dbModel) => {
-    //   console.log(dbModel);
-    //   res.send(dbModel)
-    // })
-    // .catch(err => res.status(422).json(err));
+  // var changes = {buyer:id.$ref}
+    AutoEntry.findOneAndUpdate({ vin:vin}, {$set:{ "buyer":req.body._id }}, {upsert:true, new: true })
+    .then((dbModel) => {
+      AutoEntry.find({vin:vin})
+      .populate("buyer")
+      .exec(function(err, data){
+        console.log("the data is",data);
+           res.json(data)
+          }).catch(err => res.status(422).json(err));
+    })
+    .catch(err => res.status(422).json(err));
   })
 
 // //1. retrieves values submmited thorugh axios and changes values in database

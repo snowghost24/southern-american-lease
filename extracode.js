@@ -572,40 +572,177 @@ const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dcv191fk7/upload'
 
 
 
-renderFeatureItem1 = () => {
-  if (this.state.vehicle.feature !== undefined){
-    return this.state.vehicle.feature.map((aFeature, index) => {
-     if (0 < index < 8){
-      return (
-        <Col>
-        <div  key={index} >
-         <span className="check"> ☑ </span>{aFeature} 
-        </div>
-        </Col>
-      );
-     } else if (8 < index < 16){
-      return (
-        <Col size="md-3">
-        <div  key={index} >
-         <span className="check"> ☑ </span>{aFeature} 
-        </div>
-        </Col>
-      );
-     }else if (16 < index < 24){
-      return (
-        <Col size="md-3">
-        <div  key={index} >
-         <span className="check"> ☑ </span>{aFeature} 
-        </div>
-        </Col>
-      );
-     }else if (24 < index < 32){
-      return (
-        <Col size="md-3">
-        <div  key={index} >
-         <span className="check"> ☑ </span>{aFeature} 
-        </div>
-        </Col>
-      );
-     }
-    }}
+// renderFeatureItem1 = () => {
+//   if (this.state.vehicle.feature !== undefined){
+//     return this.state.vehicle.feature.map((aFeature, index) => {
+//      if (0 < index < 8){
+//       return (
+//         <Col>
+//         <div  key={index} >
+//          <span className="check"> ☑ </span>{aFeature} 
+//         </div>
+//         </Col>
+//       );
+//      } else if (8 < index < 16){
+//       return (
+//         <Col size="md-3">
+//         <div  key={index} >
+//          <span className="check"> ☑ </span>{aFeature} 
+//         </div>
+//         </Col>
+//       );
+//      }else if (16 < index < 24){
+//       return (
+//         <Col size="md-3">
+//         <div  key={index} >
+//          <span className="check"> ☑ </span>{aFeature} 
+//         </div>
+//         </Col>
+//       );
+//      }else if (24 < index < 32){
+//       return (
+//         <Col size="md-3">
+//         <div  key={index} >
+//          <span className="check"> ☑ </span>{aFeature} 
+//         </div>
+//         </Col>
+//       );
+//      }
+//     }}
+
+    //--------------------------------------------------
+    // Include React as a dependency
+// import React, { Component } from 'react'
+// // Including the Link component from React Router to navigate within our application without full page reloads
+// // https://github.com/ReactTraining/react-router/blob/master/docs/API.md#link
+// import { NavLink } from "react-router-dom";
+//   //  import { Input, TextArea, FormBtn } from "../../components/Form";
+//   import SignOutButton from '../../components/SignOutButton/SignOutButton';
+//   import Navigation from '../../components/Navigation';
+// // Create the Main component
+// class Main extends Component {
+
+// buttonTest(){
+//   console.log('alert it works')
+// }
+
+//   render() {
+
+//     return (
+//       // We can only render a single div. So we need to group everything inside of this main-container one
+//       <div className="main-container">
+//         <div className="container">
+//           {/* Navbar */}
+
+//   <nav className="navbar navbar-inverse">
+//   <div className="container-fluid">
+//     <div className="navbar-header">
+//       <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+//         <span className="icon-bar"></span>
+//         <span className="icon-bar"></span>
+//         <span className="icon-bar"></span>                        
+//       </button>
+//       <a className="navbar-brand" href="#"><span className="glyphicon glyphicon-home"></span></a>
+//     </div>
+// <Navigation />
+//     {/* <div className="collapse navbar-collapse" id="myNavbar">
+//                 <ul className="nav navbar-nav">
+//                   <li className="active"><NavLink exact to="/entry">Home</NavLink></li>
+//                   <li className="dropdown">
+//                     <a className="dropdown-toggle" data-toggle="dropdown" href="#">Shops <span className="caret"></span></a>
+//                     <ul className="dropdown-menu">
+//                       <li><NavLink to="/leather">Leather</NavLink></li>
+//                       <li><NavLink to="/lift">Lift</NavLink></li>
+//                       <li><NavLink to="/detail">Detail</NavLink></li>
+//                     </ul>
+//                   </li>
+//                   <li><NavLink to="/saved">Inventory</NavLink></li>
+//                   <li><NavLink to="/inventory/">Marketing Inventory</NavLink></li>
+
+//                 </ul>
+//                 <ul className="nav navbar-nav navbar-right">
+//                   <li><a href="#"><span className="glyphicon glyphicon-user"></span> Sign Up</a></li>
+//                   <li><a href="#"><span className="glyphicon glyphicon-log-in"></span> Login</a></li>
+//                 </ul>
+//     </div> */}
+//   </div>
+// </nav>
+          
+//           <div className="jumbotron hideJumbotron">
+//             <h2 className="text-center"><strong>CAN-AM AUTO</strong></h2>
+//             <h3 className="text-center">Vehicle Inventory</h3>
+//           </div>
+
+
+//           {this.props.children}
+
+//           <footer>
+//             <hr />
+//             <p className="pull-right">
+//               <i className="fa fa-github" aria-hidden="true"></i>
+//               Proudly built using React.js
+//             </p>
+//           </footer>
+//         </div>
+//       </div>
+//     );
+//   }
+// };
+
+// // Export the module back to the route
+// export default Main;
+// //-----------------------------------------------------
+// App
+
+
+// import React from "react";
+// import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+// import Books from "./pages/Books";
+// import Detail from "./pages/Detail";
+// import ClientDetail from "./pages/ClientDetail";
+// import NoMatch from "./pages/NoMatch";
+// // import Nav from "./components/Nav";
+// import Main from "./pages/Main";
+// import Search from "./pages/Search";
+// import Inventory from "./pages/Inventory";
+// import ClientInventory from "./pages/ClientInventory";
+// import Lift from "./pages/Lift";
+// import Leather from "./pages/Leather";
+// import Details from "./pages/Details";
+// import PdfCreate from "./pages/PdfCreate";
+// import VehicleEntry from "./pages/VehicleEntry";
+// import Navigation from './components/Navigation';
+// import * as routes from './constants/routes';
+
+// const App = () =>
+//   <Router>
+//      <Navigation />
+//     <div>
+//       <Main >
+//       <Switch>
+//         {/* <Route exact path="/" component={Access} /> */}
+//       <Route exact path={`${process.env.PUBLIC_URL}/entry`} component={VehicleEntry} />
+//         <Route path={`${process.env.PUBLIC_URL}/sell/:id`} component={Search} />
+//         <Route path={`${process.env.PUBLIC_URL}${routes.LEATHER}`} component={Leather} />
+//         <Route path={`${process.env.PUBLIC_URL}/lift`} component={Lift} />
+//         <Route path={`${process.env.PUBLIC_URL}/detail`} component={Details} />
+//         <Route path={`${process.env.PUBLIC_URL}/pdf/:id`} component={PdfCreate} />
+//         <Route exact path={`${process.env.PUBLIC_URL}/signup`} component={VehicleEntry} />
+//         <Route exact path={`${process.env.PUBLIC_URL}/signin`} component={VehicleEntry} />
+//         <Route path="/saved" component={Inventory} />
+//         <Route exact path="/books" component={Books} />
+//         <Route path="/books/:id" component={Detail} />
+//         <Route exact path="/inventory" component={ClientInventory} />
+//         <Route path="/inventory/:id" component={ClientDetail} />
+//         <Route component={NoMatch} />
+//       </Switch>
+//       </Main>
+//     </div>
+//   </Router>;
+
+// export default App;
+// //--------------------------------------------------------
+
+
+
+

@@ -1,0 +1,15 @@
+export const SIGN_UP = '/signup';
+export const SIGN_IN = '/signin';
+export const LANDING = '/entry';
+export const HOME = '/home';
+export const ENTRY = '/entry';
+export const SAVED = '/saved';
+export const INVENTORY = '/inventory/';
+export const INVENTORY_ID = '/inventory/:id';
+export const LEATHER = '/leather';
+export const LIFT = '/lift';
+export const DETAIL = '/detail';
+export const BOOKS = '/books';
+export const BOOKS_ID = '/books/:id';
+export const PDF_ID = '/PDF/:id';
+export const PASSWORD_FORGET = '/pw-forget';

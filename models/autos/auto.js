@@ -47,6 +47,7 @@ const AutoEntrySchema = new Schema({
   photoArray: [String],
   feature: [String],
   buyer:{type: mongoose.Schema.Types.ObjectId, ref: 'dealerEntry'},
+  sold:{type:Boolean,default:false},
   date: { type: Date, default: Date.now }
 
 });
